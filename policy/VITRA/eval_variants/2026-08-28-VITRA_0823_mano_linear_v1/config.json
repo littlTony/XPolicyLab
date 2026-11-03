@@ -1,0 +1,103 @@
+{
+  "vla_name": "VITRA_Paligemma",
+  "task_name": "2026-08-23-spark0_bench_mano-cotrain-20260823",
+  "model": "vitra_paligemma2",
+  "fwd_pred_next_n": 16,
+  "seed": 42,
+  "batch_size": 8,
+  "total_batch_size": 64,
+  "num_workers": null,
+  "prefetch_factor": null,
+  "output_root": "/mnt/xspark-data/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab/policy/VITRA/checkpoints/spark0_bench_mano-cotrain-20260823-tianji_marvin_wuji-ee-42",
+  "log_root": "/mnt/xspark-data/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab/policy/VITRA/checkpoints/spark0_bench_mano-cotrain-20260823-tianji_marvin_wuji-ee-42/logs",
+  "cache_root": "/mnt/xspark-data/xiangpc/0813_Xpolicylab_bench/VITRA/pretrain_model/cache/vitra_paligemma2",
+  "pretrain_path": "/mnt/xspark-data/xiangpc/0813_Xpolicylab_bench/VITRA/pretrain_model/VITRA-VLA-3B/vitra-vla-3b.pt",
+  "statistics_path": "/mnt/xspark-data/xiangpc/0813_Xpolicylab_bench/VITRA/data_mano/teledata_statistics.json",
+  "model_load_path": null,
+  "resume": false,
+  "wandb_project": "xpolicylab-vitra-spark0",
+  "wandb_entity": null,
+  "save_steps": 10000,
+  "epoch_save_interval": 0,
+  "use_bf16": true,
+  "use_fov": true,
+  "untied_cognition_token": true,
+  "use_state": "DiT",
+  "loss_type": "robot",
+  "train_setup": {
+    "freeze_option": "freeze_vision_encoder"
+  },
+  "state_encoder": {
+    "state_dim": 212
+  },
+  "action_model": {
+    "model_type": "DiT-B",
+    "token_size": 2304,
+    "action_dim": 192,
+    "hidden_size": 1024
+  },
+  "vlm": {
+    "type": "PaliGemmaForConditionalGeneration",
+    "name": "paligemma",
+    "pretrained_model_name_or_path": "/mnt/xspark-data/xiangpc/0813_Xpolicylab_bench/VITRA/pretrain_model/paligemma2-3b-mix-224-local",
+    "initialize_from_config": true
+  },
+  "trainer": {
+    "sharding_strategy": "shard-grad-op",
+    "strategy": "fsdp_paligemma_with_checkpointing",
+    "lr_scheduler_type": "backbone-freeze-warmup",
+    "learning_rate": 1e-05,
+    "gradient_clip_val": 1.0,
+    "weight_decay": 0.1,
+    "max_epochs": 100000,
+    "max_steps": 80000,
+    "reduce_in_full_precision": true,
+    "enable_mixed_precision_training": false,
+    "enable_gradient_checkpointing": true,
+    "action_model_learning_rate": 1e-05,
+    "llm_freeze_step": 0,
+    "warmup_ratio": null,
+    "optimizer_betas": [
+      0.9,
+      0.95
+    ]
+  },
+  "train_dataset": {
+    "data_root_dir": "/mnt/xspark-data/xiangpc/0813_Xpolicylab_bench/VITRA/data_mano",
+    "augmentation": true,
+    "set_none_ratio": 0.0,
+    "data_mix": "robo_dataset",
+    "num_workers": 16,
+    "prefetch_factor": null,
+    "flip_augmentation": 1.0,
+    "action_type": "angle",
+    "use_rel": false,
+    "rel_mode": "step",
+    "clip_len": null,
+    "normalization": true,
+    "state_mask_prob": 0.1,
+    "target_image_height": 224,
+    "representation": "mano45"
+  },
+  "repeated_diffusion_steps": 2,
+  "run_date": "2026-08-23",
+  "statistics_sha256": "f2cfc7d02d59a24efef10f0efddf6adb7b159c3a1d4cd3d5f13cabf42205892f",
+  "data_manifest_path": "/mnt/xspark-data/xiangpc/0813_Xpolicylab_bench/VITRA/data_mano/spark0_manifest.json",
+  "data_manifest_sha256": "9237ac63317031175ebc5d5a4b9becf4cd9abfe9b489dbe50a2b7557cdf9429d",
+  "data_representation": "mano45",
+  "hf_cache_dir": "/mnt/xspark-data/xiangpc/0813_Xpolicylab_bench/VITRA/pretrain_model/huggingface_cache",
+  "config": "/mnt/xspark-data/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab/policy/VITRA/checkpoints/spark0_bench_mano-cotrain-20260823-tianji_marvin_wuji-ee-42/train_config.json",
+  "data_mix": null,
+  "debug": false,
+  "mano_inverse_mode": "linear",
+  "mano_linear_inverse_path": "/personal/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab/policy/VITRA/artifacts/mano45_to_wuji20_linear_v1.json",
+  "mano_linear_inverse_sha256": "f196701addfcddc7bfac70a6caf722b237a398af104aa6a15993a60ccea93940",
+  "eval_variant_provenance": {
+    "variant_name": "VITRA_0823_mano_linear_v1",
+    "created_date": "2026-08-28",
+    "base_run_config": "/personal/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab/policy/VITRA/checkpoints/spark0_bench_mano-cotrain-20260823-tianji_marvin_wuji-ee-42/2026-08-23-spark0_bench_mano-cotrain-20260823_TB64_B8_bf16True/config.json",
+    "base_checkpoint": "/personal/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab/policy/VITRA/checkpoints/spark0_bench_mano-cotrain-20260823-tianji_marvin_wuji-ee-42/2026-08-23-spark0_bench_mano-cotrain-20260823_TB64_B8_bf16True/checkpoints/epoch=33-step=80000.ckpt",
+    "runtime_validation_path": "/personal/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab/policy/VITRA/artifacts/mano45_to_wuji20_linear_v1.runtime_validation.json",
+    "runtime_validation_sha256": "c41da36c6adb1a44aca18b1d51edb959fed7a3614c79b2af89ca5bf8b0fba9c9"
+  }
+}

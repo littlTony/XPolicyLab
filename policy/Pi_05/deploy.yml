@@ -1,0 +1,29 @@
+# Basic experiment configuration
+policy_name: Pi_05
+protocol: ws
+host: localhost
+port: 6000
+bench_name: null
+task_name: null
+ckpt_name: null
+env_cfg_type: null
+seed: null
+action_type: joint
+gpu_id: null
+eval_batch: true
+
+# ``null`` means choose the highest finalized numeric Orbax checkpoint.
+checkpoint_num: null
+result_dir: "./results/pi05/"
+obs_transform_pipeline: "xspark-v1.0"
+
+# Model / action configuration. The EgoVLA adapter emits 7+12+7+12=38
+# joint-space values and uses the isolated environment created for this clone.
+policy_uv_env_path: openpi
+policy_python_bin: .venv-egovla/bin/python
+train_config_name: pi05_egovla_joint38_full
+repo_id: EgoVLA_benchmark
+
+# Explicitly opt in only for offline server/client wiring checks.
+debug_no_model: false
+debug_action_horizon: 50

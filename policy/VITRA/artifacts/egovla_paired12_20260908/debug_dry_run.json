@@ -1,0 +1,62 @@
+{
+  "act_camera_mode": "contract",
+  "action_type": "ee",
+  "adapter_preflight": {
+    "adapter_root": "/personal/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab",
+    "policy": "VITRA",
+    "validation": "delegated-to-policy-contract"
+  },
+  "benchmark_protocol": "basic",
+  "checkpoint": "/personal/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab/policy/VITRA/checkpoints/egovla_humanoid_mano-20260902-tianji_marvin_wuji-ee-42/2026-09-02-egovla_humanoid_mano-20260902_TB64_B8_bf16True/checkpoints/epoch=10-step=80000.ckpt",
+  "checkpoint_contract": {
+    "candidates": [],
+    "canonical_run_directory": null,
+    "guarded_policies": [
+      "ACT",
+      "DP"
+    ],
+    "requested_checkpoint": "/personal/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab/policy/VITRA/checkpoints/egovla_humanoid_mano-20260902-tianji_marvin_wuji-ee-42/2026-09-02-egovla_humanoid_mano-20260902_TB64_B8_bf16True/checkpoints/epoch=10-step=80000.ckpt",
+    "required": false,
+    "resolution": "not_required",
+    "validation": "not_performed"
+  },
+  "env_cfg_type": "ego_h1_inspire",
+  "episodes": 1,
+  "eval_batch": false,
+  "evaluation_id": "egovla-VITRA-pour_balls-3e4d5df896",
+  "mode": "env-client",
+  "num_envs": 1,
+  "official_episodes": null,
+  "official_split": "single",
+  "official_trials": 1,
+  "output_dir": "/personal/xiangpc/0813_Xpolicylab_bench/VITRA/XPolicyLab/policy/VITRA/artifacts/egovla_paired12_20260908/debug_rollout",
+  "policy": "VITRA",
+  "requested_seed": 42,
+  "result_role": "standalone",
+  "room_idx": 1,
+  "runtime_factory": "egovla_xpolicy.isaac_runtime:create_runtime",
+  "seed": 42,
+  "server": "ws://localhost:51249",
+  "suite_fingerprint": null,
+  "table_idx": 2,
+  "task": {
+    "aliases": [],
+    "gym_id": "Humanoid-Pour-Balls-v0",
+    "instruction": "pour balls in cup into bowl",
+    "max_steps": 400,
+    "progress_fields": [
+      {
+        "key": "reach_bottle_success",
+        "max_count": 1
+      },
+      {
+        "key": "lift_success",
+        "max_count": 1
+      }
+    ],
+    "seed_index": 0,
+    "slug": "pour_balls"
+  },
+  "transport": "ws",
+  "trial_id": "pour_balls-seed-42"
+}

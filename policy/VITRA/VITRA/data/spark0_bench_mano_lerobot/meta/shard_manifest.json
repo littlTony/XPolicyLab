@@ -1,0 +1,3028 @@
+{
+  "format": "spark0_mano_lerobot_v30_v1",
+  "global_source_count": 600,
+  "num_shards": 1,
+  "shard_index": 0,
+  "selection": "global_source_index_mod_num_shards",
+  "episodes": [
+    {
+      "local_episode_index": 0,
+      "global_source_index": 0,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000000.hdf5"
+    },
+    {
+      "local_episode_index": 1,
+      "global_source_index": 1,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000001.hdf5"
+    },
+    {
+      "local_episode_index": 2,
+      "global_source_index": 2,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000002.hdf5"
+    },
+    {
+      "local_episode_index": 3,
+      "global_source_index": 3,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000003.hdf5"
+    },
+    {
+      "local_episode_index": 4,
+      "global_source_index": 4,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000004.hdf5"
+    },
+    {
+      "local_episode_index": 5,
+      "global_source_index": 5,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000005.hdf5"
+    },
+    {
+      "local_episode_index": 6,
+      "global_source_index": 6,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000006.hdf5"
+    },
+    {
+      "local_episode_index": 7,
+      "global_source_index": 7,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000007.hdf5"
+    },
+    {
+      "local_episode_index": 8,
+      "global_source_index": 8,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000008.hdf5"
+    },
+    {
+      "local_episode_index": 9,
+      "global_source_index": 9,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000009.hdf5"
+    },
+    {
+      "local_episode_index": 10,
+      "global_source_index": 10,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000010.hdf5"
+    },
+    {
+      "local_episode_index": 11,
+      "global_source_index": 11,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000011.hdf5"
+    },
+    {
+      "local_episode_index": 12,
+      "global_source_index": 12,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000012.hdf5"
+    },
+    {
+      "local_episode_index": 13,
+      "global_source_index": 13,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000013.hdf5"
+    },
+    {
+      "local_episode_index": 14,
+      "global_source_index": 14,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000014.hdf5"
+    },
+    {
+      "local_episode_index": 15,
+      "global_source_index": 15,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000015.hdf5"
+    },
+    {
+      "local_episode_index": 16,
+      "global_source_index": 16,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000016.hdf5"
+    },
+    {
+      "local_episode_index": 17,
+      "global_source_index": 17,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000017.hdf5"
+    },
+    {
+      "local_episode_index": 18,
+      "global_source_index": 18,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000018.hdf5"
+    },
+    {
+      "local_episode_index": 19,
+      "global_source_index": 19,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000019.hdf5"
+    },
+    {
+      "local_episode_index": 20,
+      "global_source_index": 20,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000020.hdf5"
+    },
+    {
+      "local_episode_index": 21,
+      "global_source_index": 21,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000021.hdf5"
+    },
+    {
+      "local_episode_index": 22,
+      "global_source_index": 22,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000022.hdf5"
+    },
+    {
+      "local_episode_index": 23,
+      "global_source_index": 23,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000023.hdf5"
+    },
+    {
+      "local_episode_index": 24,
+      "global_source_index": 24,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000024.hdf5"
+    },
+    {
+      "local_episode_index": 25,
+      "global_source_index": 25,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000025.hdf5"
+    },
+    {
+      "local_episode_index": 26,
+      "global_source_index": 26,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000026.hdf5"
+    },
+    {
+      "local_episode_index": 27,
+      "global_source_index": 27,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000027.hdf5"
+    },
+    {
+      "local_episode_index": 28,
+      "global_source_index": 28,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000028.hdf5"
+    },
+    {
+      "local_episode_index": 29,
+      "global_source_index": 29,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000029.hdf5"
+    },
+    {
+      "local_episode_index": 30,
+      "global_source_index": 30,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000030.hdf5"
+    },
+    {
+      "local_episode_index": 31,
+      "global_source_index": 31,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000031.hdf5"
+    },
+    {
+      "local_episode_index": 32,
+      "global_source_index": 32,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000032.hdf5"
+    },
+    {
+      "local_episode_index": 33,
+      "global_source_index": 33,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000033.hdf5"
+    },
+    {
+      "local_episode_index": 34,
+      "global_source_index": 34,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000034.hdf5"
+    },
+    {
+      "local_episode_index": 35,
+      "global_source_index": 35,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000035.hdf5"
+    },
+    {
+      "local_episode_index": 36,
+      "global_source_index": 36,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000036.hdf5"
+    },
+    {
+      "local_episode_index": 37,
+      "global_source_index": 37,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000037.hdf5"
+    },
+    {
+      "local_episode_index": 38,
+      "global_source_index": 38,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000038.hdf5"
+    },
+    {
+      "local_episode_index": 39,
+      "global_source_index": 39,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000039.hdf5"
+    },
+    {
+      "local_episode_index": 40,
+      "global_source_index": 40,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000040.hdf5"
+    },
+    {
+      "local_episode_index": 41,
+      "global_source_index": 41,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000041.hdf5"
+    },
+    {
+      "local_episode_index": 42,
+      "global_source_index": 42,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000042.hdf5"
+    },
+    {
+      "local_episode_index": 43,
+      "global_source_index": 43,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000043.hdf5"
+    },
+    {
+      "local_episode_index": 44,
+      "global_source_index": 44,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000044.hdf5"
+    },
+    {
+      "local_episode_index": 45,
+      "global_source_index": 45,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000045.hdf5"
+    },
+    {
+      "local_episode_index": 46,
+      "global_source_index": 46,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000046.hdf5"
+    },
+    {
+      "local_episode_index": 47,
+      "global_source_index": 47,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000047.hdf5"
+    },
+    {
+      "local_episode_index": 48,
+      "global_source_index": 48,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000048.hdf5"
+    },
+    {
+      "local_episode_index": 49,
+      "global_source_index": 49,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000049.hdf5"
+    },
+    {
+      "local_episode_index": 50,
+      "global_source_index": 50,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000050.hdf5"
+    },
+    {
+      "local_episode_index": 51,
+      "global_source_index": 51,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000051.hdf5"
+    },
+    {
+      "local_episode_index": 52,
+      "global_source_index": 52,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000052.hdf5"
+    },
+    {
+      "local_episode_index": 53,
+      "global_source_index": 53,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000053.hdf5"
+    },
+    {
+      "local_episode_index": 54,
+      "global_source_index": 54,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000054.hdf5"
+    },
+    {
+      "local_episode_index": 55,
+      "global_source_index": 55,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000055.hdf5"
+    },
+    {
+      "local_episode_index": 56,
+      "global_source_index": 56,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000056.hdf5"
+    },
+    {
+      "local_episode_index": 57,
+      "global_source_index": 57,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000057.hdf5"
+    },
+    {
+      "local_episode_index": 58,
+      "global_source_index": 58,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000058.hdf5"
+    },
+    {
+      "local_episode_index": 59,
+      "global_source_index": 59,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000059.hdf5"
+    },
+    {
+      "local_episode_index": 60,
+      "global_source_index": 60,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000060.hdf5"
+    },
+    {
+      "local_episode_index": 61,
+      "global_source_index": 61,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000061.hdf5"
+    },
+    {
+      "local_episode_index": 62,
+      "global_source_index": 62,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000062.hdf5"
+    },
+    {
+      "local_episode_index": 63,
+      "global_source_index": 63,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000063.hdf5"
+    },
+    {
+      "local_episode_index": 64,
+      "global_source_index": 64,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000064.hdf5"
+    },
+    {
+      "local_episode_index": 65,
+      "global_source_index": 65,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000065.hdf5"
+    },
+    {
+      "local_episode_index": 66,
+      "global_source_index": 66,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000066.hdf5"
+    },
+    {
+      "local_episode_index": 67,
+      "global_source_index": 67,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000067.hdf5"
+    },
+    {
+      "local_episode_index": 68,
+      "global_source_index": 68,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000068.hdf5"
+    },
+    {
+      "local_episode_index": 69,
+      "global_source_index": 69,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000069.hdf5"
+    },
+    {
+      "local_episode_index": 70,
+      "global_source_index": 70,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000070.hdf5"
+    },
+    {
+      "local_episode_index": 71,
+      "global_source_index": 71,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000071.hdf5"
+    },
+    {
+      "local_episode_index": 72,
+      "global_source_index": 72,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000072.hdf5"
+    },
+    {
+      "local_episode_index": 73,
+      "global_source_index": 73,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000073.hdf5"
+    },
+    {
+      "local_episode_index": 74,
+      "global_source_index": 74,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000074.hdf5"
+    },
+    {
+      "local_episode_index": 75,
+      "global_source_index": 75,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000075.hdf5"
+    },
+    {
+      "local_episode_index": 76,
+      "global_source_index": 76,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000076.hdf5"
+    },
+    {
+      "local_episode_index": 77,
+      "global_source_index": 77,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000077.hdf5"
+    },
+    {
+      "local_episode_index": 78,
+      "global_source_index": 78,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000078.hdf5"
+    },
+    {
+      "local_episode_index": 79,
+      "global_source_index": 79,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000079.hdf5"
+    },
+    {
+      "local_episode_index": 80,
+      "global_source_index": 80,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000080.hdf5"
+    },
+    {
+      "local_episode_index": 81,
+      "global_source_index": 81,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000081.hdf5"
+    },
+    {
+      "local_episode_index": 82,
+      "global_source_index": 82,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000082.hdf5"
+    },
+    {
+      "local_episode_index": 83,
+      "global_source_index": 83,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000083.hdf5"
+    },
+    {
+      "local_episode_index": 84,
+      "global_source_index": 84,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000084.hdf5"
+    },
+    {
+      "local_episode_index": 85,
+      "global_source_index": 85,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000085.hdf5"
+    },
+    {
+      "local_episode_index": 86,
+      "global_source_index": 86,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000086.hdf5"
+    },
+    {
+      "local_episode_index": 87,
+      "global_source_index": 87,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000087.hdf5"
+    },
+    {
+      "local_episode_index": 88,
+      "global_source_index": 88,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000088.hdf5"
+    },
+    {
+      "local_episode_index": 89,
+      "global_source_index": 89,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000089.hdf5"
+    },
+    {
+      "local_episode_index": 90,
+      "global_source_index": 90,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000090.hdf5"
+    },
+    {
+      "local_episode_index": 91,
+      "global_source_index": 91,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000091.hdf5"
+    },
+    {
+      "local_episode_index": 92,
+      "global_source_index": 92,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000092.hdf5"
+    },
+    {
+      "local_episode_index": 93,
+      "global_source_index": 93,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000093.hdf5"
+    },
+    {
+      "local_episode_index": 94,
+      "global_source_index": 94,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000094.hdf5"
+    },
+    {
+      "local_episode_index": 95,
+      "global_source_index": 95,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000095.hdf5"
+    },
+    {
+      "local_episode_index": 96,
+      "global_source_index": 96,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000096.hdf5"
+    },
+    {
+      "local_episode_index": 97,
+      "global_source_index": 97,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000097.hdf5"
+    },
+    {
+      "local_episode_index": 98,
+      "global_source_index": 98,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000098.hdf5"
+    },
+    {
+      "local_episode_index": 99,
+      "global_source_index": 99,
+      "source_relative": "collect_objects/tianji_marvin_wuji/data/episode_0000099.hdf5"
+    },
+    {
+      "local_episode_index": 100,
+      "global_source_index": 100,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000000.hdf5"
+    },
+    {
+      "local_episode_index": 101,
+      "global_source_index": 101,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000001.hdf5"
+    },
+    {
+      "local_episode_index": 102,
+      "global_source_index": 102,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000002.hdf5"
+    },
+    {
+      "local_episode_index": 103,
+      "global_source_index": 103,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000003.hdf5"
+    },
+    {
+      "local_episode_index": 104,
+      "global_source_index": 104,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000004.hdf5"
+    },
+    {
+      "local_episode_index": 105,
+      "global_source_index": 105,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000005.hdf5"
+    },
+    {
+      "local_episode_index": 106,
+      "global_source_index": 106,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000006.hdf5"
+    },
+    {
+      "local_episode_index": 107,
+      "global_source_index": 107,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000007.hdf5"
+    },
+    {
+      "local_episode_index": 108,
+      "global_source_index": 108,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000008.hdf5"
+    },
+    {
+      "local_episode_index": 109,
+      "global_source_index": 109,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000009.hdf5"
+    },
+    {
+      "local_episode_index": 110,
+      "global_source_index": 110,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000010.hdf5"
+    },
+    {
+      "local_episode_index": 111,
+      "global_source_index": 111,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000011.hdf5"
+    },
+    {
+      "local_episode_index": 112,
+      "global_source_index": 112,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000012.hdf5"
+    },
+    {
+      "local_episode_index": 113,
+      "global_source_index": 113,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000013.hdf5"
+    },
+    {
+      "local_episode_index": 114,
+      "global_source_index": 114,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000014.hdf5"
+    },
+    {
+      "local_episode_index": 115,
+      "global_source_index": 115,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000015.hdf5"
+    },
+    {
+      "local_episode_index": 116,
+      "global_source_index": 116,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000016.hdf5"
+    },
+    {
+      "local_episode_index": 117,
+      "global_source_index": 117,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000017.hdf5"
+    },
+    {
+      "local_episode_index": 118,
+      "global_source_index": 118,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000018.hdf5"
+    },
+    {
+      "local_episode_index": 119,
+      "global_source_index": 119,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000019.hdf5"
+    },
+    {
+      "local_episode_index": 120,
+      "global_source_index": 120,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000020.hdf5"
+    },
+    {
+      "local_episode_index": 121,
+      "global_source_index": 121,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000021.hdf5"
+    },
+    {
+      "local_episode_index": 122,
+      "global_source_index": 122,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000022.hdf5"
+    },
+    {
+      "local_episode_index": 123,
+      "global_source_index": 123,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000023.hdf5"
+    },
+    {
+      "local_episode_index": 124,
+      "global_source_index": 124,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000024.hdf5"
+    },
+    {
+      "local_episode_index": 125,
+      "global_source_index": 125,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000025.hdf5"
+    },
+    {
+      "local_episode_index": 126,
+      "global_source_index": 126,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000026.hdf5"
+    },
+    {
+      "local_episode_index": 127,
+      "global_source_index": 127,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000027.hdf5"
+    },
+    {
+      "local_episode_index": 128,
+      "global_source_index": 128,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000028.hdf5"
+    },
+    {
+      "local_episode_index": 129,
+      "global_source_index": 129,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000029.hdf5"
+    },
+    {
+      "local_episode_index": 130,
+      "global_source_index": 130,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000030.hdf5"
+    },
+    {
+      "local_episode_index": 131,
+      "global_source_index": 131,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000031.hdf5"
+    },
+    {
+      "local_episode_index": 132,
+      "global_source_index": 132,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000032.hdf5"
+    },
+    {
+      "local_episode_index": 133,
+      "global_source_index": 133,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000033.hdf5"
+    },
+    {
+      "local_episode_index": 134,
+      "global_source_index": 134,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000034.hdf5"
+    },
+    {
+      "local_episode_index": 135,
+      "global_source_index": 135,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000035.hdf5"
+    },
+    {
+      "local_episode_index": 136,
+      "global_source_index": 136,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000036.hdf5"
+    },
+    {
+      "local_episode_index": 137,
+      "global_source_index": 137,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000037.hdf5"
+    },
+    {
+      "local_episode_index": 138,
+      "global_source_index": 138,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000038.hdf5"
+    },
+    {
+      "local_episode_index": 139,
+      "global_source_index": 139,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000039.hdf5"
+    },
+    {
+      "local_episode_index": 140,
+      "global_source_index": 140,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000040.hdf5"
+    },
+    {
+      "local_episode_index": 141,
+      "global_source_index": 141,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000041.hdf5"
+    },
+    {
+      "local_episode_index": 142,
+      "global_source_index": 142,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000042.hdf5"
+    },
+    {
+      "local_episode_index": 143,
+      "global_source_index": 143,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000043.hdf5"
+    },
+    {
+      "local_episode_index": 144,
+      "global_source_index": 144,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000044.hdf5"
+    },
+    {
+      "local_episode_index": 145,
+      "global_source_index": 145,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000045.hdf5"
+    },
+    {
+      "local_episode_index": 146,
+      "global_source_index": 146,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000046.hdf5"
+    },
+    {
+      "local_episode_index": 147,
+      "global_source_index": 147,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000047.hdf5"
+    },
+    {
+      "local_episode_index": 148,
+      "global_source_index": 148,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000048.hdf5"
+    },
+    {
+      "local_episode_index": 149,
+      "global_source_index": 149,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000049.hdf5"
+    },
+    {
+      "local_episode_index": 150,
+      "global_source_index": 150,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000050.hdf5"
+    },
+    {
+      "local_episode_index": 151,
+      "global_source_index": 151,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000051.hdf5"
+    },
+    {
+      "local_episode_index": 152,
+      "global_source_index": 152,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000052.hdf5"
+    },
+    {
+      "local_episode_index": 153,
+      "global_source_index": 153,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000053.hdf5"
+    },
+    {
+      "local_episode_index": 154,
+      "global_source_index": 154,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000054.hdf5"
+    },
+    {
+      "local_episode_index": 155,
+      "global_source_index": 155,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000055.hdf5"
+    },
+    {
+      "local_episode_index": 156,
+      "global_source_index": 156,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000056.hdf5"
+    },
+    {
+      "local_episode_index": 157,
+      "global_source_index": 157,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000057.hdf5"
+    },
+    {
+      "local_episode_index": 158,
+      "global_source_index": 158,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000058.hdf5"
+    },
+    {
+      "local_episode_index": 159,
+      "global_source_index": 159,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000059.hdf5"
+    },
+    {
+      "local_episode_index": 160,
+      "global_source_index": 160,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000060.hdf5"
+    },
+    {
+      "local_episode_index": 161,
+      "global_source_index": 161,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000061.hdf5"
+    },
+    {
+      "local_episode_index": 162,
+      "global_source_index": 162,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000062.hdf5"
+    },
+    {
+      "local_episode_index": 163,
+      "global_source_index": 163,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000063.hdf5"
+    },
+    {
+      "local_episode_index": 164,
+      "global_source_index": 164,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000064.hdf5"
+    },
+    {
+      "local_episode_index": 165,
+      "global_source_index": 165,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000065.hdf5"
+    },
+    {
+      "local_episode_index": 166,
+      "global_source_index": 166,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000066.hdf5"
+    },
+    {
+      "local_episode_index": 167,
+      "global_source_index": 167,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000067.hdf5"
+    },
+    {
+      "local_episode_index": 168,
+      "global_source_index": 168,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000068.hdf5"
+    },
+    {
+      "local_episode_index": 169,
+      "global_source_index": 169,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000069.hdf5"
+    },
+    {
+      "local_episode_index": 170,
+      "global_source_index": 170,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000070.hdf5"
+    },
+    {
+      "local_episode_index": 171,
+      "global_source_index": 171,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000071.hdf5"
+    },
+    {
+      "local_episode_index": 172,
+      "global_source_index": 172,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000072.hdf5"
+    },
+    {
+      "local_episode_index": 173,
+      "global_source_index": 173,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000073.hdf5"
+    },
+    {
+      "local_episode_index": 174,
+      "global_source_index": 174,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000074.hdf5"
+    },
+    {
+      "local_episode_index": 175,
+      "global_source_index": 175,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000075.hdf5"
+    },
+    {
+      "local_episode_index": 176,
+      "global_source_index": 176,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000076.hdf5"
+    },
+    {
+      "local_episode_index": 177,
+      "global_source_index": 177,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000077.hdf5"
+    },
+    {
+      "local_episode_index": 178,
+      "global_source_index": 178,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000078.hdf5"
+    },
+    {
+      "local_episode_index": 179,
+      "global_source_index": 179,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000079.hdf5"
+    },
+    {
+      "local_episode_index": 180,
+      "global_source_index": 180,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000080.hdf5"
+    },
+    {
+      "local_episode_index": 181,
+      "global_source_index": 181,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000081.hdf5"
+    },
+    {
+      "local_episode_index": 182,
+      "global_source_index": 182,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000082.hdf5"
+    },
+    {
+      "local_episode_index": 183,
+      "global_source_index": 183,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000083.hdf5"
+    },
+    {
+      "local_episode_index": 184,
+      "global_source_index": 184,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000084.hdf5"
+    },
+    {
+      "local_episode_index": 185,
+      "global_source_index": 185,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000085.hdf5"
+    },
+    {
+      "local_episode_index": 186,
+      "global_source_index": 186,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000086.hdf5"
+    },
+    {
+      "local_episode_index": 187,
+      "global_source_index": 187,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000087.hdf5"
+    },
+    {
+      "local_episode_index": 188,
+      "global_source_index": 188,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000088.hdf5"
+    },
+    {
+      "local_episode_index": 189,
+      "global_source_index": 189,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000089.hdf5"
+    },
+    {
+      "local_episode_index": 190,
+      "global_source_index": 190,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000090.hdf5"
+    },
+    {
+      "local_episode_index": 191,
+      "global_source_index": 191,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000091.hdf5"
+    },
+    {
+      "local_episode_index": 192,
+      "global_source_index": 192,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000092.hdf5"
+    },
+    {
+      "local_episode_index": 193,
+      "global_source_index": 193,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000093.hdf5"
+    },
+    {
+      "local_episode_index": 194,
+      "global_source_index": 194,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000094.hdf5"
+    },
+    {
+      "local_episode_index": 195,
+      "global_source_index": 195,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000095.hdf5"
+    },
+    {
+      "local_episode_index": 196,
+      "global_source_index": 196,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000096.hdf5"
+    },
+    {
+      "local_episode_index": 197,
+      "global_source_index": 197,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000097.hdf5"
+    },
+    {
+      "local_episode_index": 198,
+      "global_source_index": 198,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000098.hdf5"
+    },
+    {
+      "local_episode_index": 199,
+      "global_source_index": 199,
+      "source_relative": "dual_bottles_pick/tianji_marvin_wuji/data/episode_0000099.hdf5"
+    },
+    {
+      "local_episode_index": 200,
+      "global_source_index": 200,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000000.hdf5"
+    },
+    {
+      "local_episode_index": 201,
+      "global_source_index": 201,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000001.hdf5"
+    },
+    {
+      "local_episode_index": 202,
+      "global_source_index": 202,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000002.hdf5"
+    },
+    {
+      "local_episode_index": 203,
+      "global_source_index": 203,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000003.hdf5"
+    },
+    {
+      "local_episode_index": 204,
+      "global_source_index": 204,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000004.hdf5"
+    },
+    {
+      "local_episode_index": 205,
+      "global_source_index": 205,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000005.hdf5"
+    },
+    {
+      "local_episode_index": 206,
+      "global_source_index": 206,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000006.hdf5"
+    },
+    {
+      "local_episode_index": 207,
+      "global_source_index": 207,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000007.hdf5"
+    },
+    {
+      "local_episode_index": 208,
+      "global_source_index": 208,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000008.hdf5"
+    },
+    {
+      "local_episode_index": 209,
+      "global_source_index": 209,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000009.hdf5"
+    },
+    {
+      "local_episode_index": 210,
+      "global_source_index": 210,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000010.hdf5"
+    },
+    {
+      "local_episode_index": 211,
+      "global_source_index": 211,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000011.hdf5"
+    },
+    {
+      "local_episode_index": 212,
+      "global_source_index": 212,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000012.hdf5"
+    },
+    {
+      "local_episode_index": 213,
+      "global_source_index": 213,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000013.hdf5"
+    },
+    {
+      "local_episode_index": 214,
+      "global_source_index": 214,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000014.hdf5"
+    },
+    {
+      "local_episode_index": 215,
+      "global_source_index": 215,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000015.hdf5"
+    },
+    {
+      "local_episode_index": 216,
+      "global_source_index": 216,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000016.hdf5"
+    },
+    {
+      "local_episode_index": 217,
+      "global_source_index": 217,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000017.hdf5"
+    },
+    {
+      "local_episode_index": 218,
+      "global_source_index": 218,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000018.hdf5"
+    },
+    {
+      "local_episode_index": 219,
+      "global_source_index": 219,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000019.hdf5"
+    },
+    {
+      "local_episode_index": 220,
+      "global_source_index": 220,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000020.hdf5"
+    },
+    {
+      "local_episode_index": 221,
+      "global_source_index": 221,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000021.hdf5"
+    },
+    {
+      "local_episode_index": 222,
+      "global_source_index": 222,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000022.hdf5"
+    },
+    {
+      "local_episode_index": 223,
+      "global_source_index": 223,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000023.hdf5"
+    },
+    {
+      "local_episode_index": 224,
+      "global_source_index": 224,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000024.hdf5"
+    },
+    {
+      "local_episode_index": 225,
+      "global_source_index": 225,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000025.hdf5"
+    },
+    {
+      "local_episode_index": 226,
+      "global_source_index": 226,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000026.hdf5"
+    },
+    {
+      "local_episode_index": 227,
+      "global_source_index": 227,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000027.hdf5"
+    },
+    {
+      "local_episode_index": 228,
+      "global_source_index": 228,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000028.hdf5"
+    },
+    {
+      "local_episode_index": 229,
+      "global_source_index": 229,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000029.hdf5"
+    },
+    {
+      "local_episode_index": 230,
+      "global_source_index": 230,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000030.hdf5"
+    },
+    {
+      "local_episode_index": 231,
+      "global_source_index": 231,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000031.hdf5"
+    },
+    {
+      "local_episode_index": 232,
+      "global_source_index": 232,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000032.hdf5"
+    },
+    {
+      "local_episode_index": 233,
+      "global_source_index": 233,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000033.hdf5"
+    },
+    {
+      "local_episode_index": 234,
+      "global_source_index": 234,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000034.hdf5"
+    },
+    {
+      "local_episode_index": 235,
+      "global_source_index": 235,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000035.hdf5"
+    },
+    {
+      "local_episode_index": 236,
+      "global_source_index": 236,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000036.hdf5"
+    },
+    {
+      "local_episode_index": 237,
+      "global_source_index": 237,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000037.hdf5"
+    },
+    {
+      "local_episode_index": 238,
+      "global_source_index": 238,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000038.hdf5"
+    },
+    {
+      "local_episode_index": 239,
+      "global_source_index": 239,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000039.hdf5"
+    },
+    {
+      "local_episode_index": 240,
+      "global_source_index": 240,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000040.hdf5"
+    },
+    {
+      "local_episode_index": 241,
+      "global_source_index": 241,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000041.hdf5"
+    },
+    {
+      "local_episode_index": 242,
+      "global_source_index": 242,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000042.hdf5"
+    },
+    {
+      "local_episode_index": 243,
+      "global_source_index": 243,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000043.hdf5"
+    },
+    {
+      "local_episode_index": 244,
+      "global_source_index": 244,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000044.hdf5"
+    },
+    {
+      "local_episode_index": 245,
+      "global_source_index": 245,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000045.hdf5"
+    },
+    {
+      "local_episode_index": 246,
+      "global_source_index": 246,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000046.hdf5"
+    },
+    {
+      "local_episode_index": 247,
+      "global_source_index": 247,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000047.hdf5"
+    },
+    {
+      "local_episode_index": 248,
+      "global_source_index": 248,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000048.hdf5"
+    },
+    {
+      "local_episode_index": 249,
+      "global_source_index": 249,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000049.hdf5"
+    },
+    {
+      "local_episode_index": 250,
+      "global_source_index": 250,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000050.hdf5"
+    },
+    {
+      "local_episode_index": 251,
+      "global_source_index": 251,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000051.hdf5"
+    },
+    {
+      "local_episode_index": 252,
+      "global_source_index": 252,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000052.hdf5"
+    },
+    {
+      "local_episode_index": 253,
+      "global_source_index": 253,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000053.hdf5"
+    },
+    {
+      "local_episode_index": 254,
+      "global_source_index": 254,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000054.hdf5"
+    },
+    {
+      "local_episode_index": 255,
+      "global_source_index": 255,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000055.hdf5"
+    },
+    {
+      "local_episode_index": 256,
+      "global_source_index": 256,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000056.hdf5"
+    },
+    {
+      "local_episode_index": 257,
+      "global_source_index": 257,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000057.hdf5"
+    },
+    {
+      "local_episode_index": 258,
+      "global_source_index": 258,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000058.hdf5"
+    },
+    {
+      "local_episode_index": 259,
+      "global_source_index": 259,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000059.hdf5"
+    },
+    {
+      "local_episode_index": 260,
+      "global_source_index": 260,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000060.hdf5"
+    },
+    {
+      "local_episode_index": 261,
+      "global_source_index": 261,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000061.hdf5"
+    },
+    {
+      "local_episode_index": 262,
+      "global_source_index": 262,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000062.hdf5"
+    },
+    {
+      "local_episode_index": 263,
+      "global_source_index": 263,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000063.hdf5"
+    },
+    {
+      "local_episode_index": 264,
+      "global_source_index": 264,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000064.hdf5"
+    },
+    {
+      "local_episode_index": 265,
+      "global_source_index": 265,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000065.hdf5"
+    },
+    {
+      "local_episode_index": 266,
+      "global_source_index": 266,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000066.hdf5"
+    },
+    {
+      "local_episode_index": 267,
+      "global_source_index": 267,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000067.hdf5"
+    },
+    {
+      "local_episode_index": 268,
+      "global_source_index": 268,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000068.hdf5"
+    },
+    {
+      "local_episode_index": 269,
+      "global_source_index": 269,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000069.hdf5"
+    },
+    {
+      "local_episode_index": 270,
+      "global_source_index": 270,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000070.hdf5"
+    },
+    {
+      "local_episode_index": 271,
+      "global_source_index": 271,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000071.hdf5"
+    },
+    {
+      "local_episode_index": 272,
+      "global_source_index": 272,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000072.hdf5"
+    },
+    {
+      "local_episode_index": 273,
+      "global_source_index": 273,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000073.hdf5"
+    },
+    {
+      "local_episode_index": 274,
+      "global_source_index": 274,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000074.hdf5"
+    },
+    {
+      "local_episode_index": 275,
+      "global_source_index": 275,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000075.hdf5"
+    },
+    {
+      "local_episode_index": 276,
+      "global_source_index": 276,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000076.hdf5"
+    },
+    {
+      "local_episode_index": 277,
+      "global_source_index": 277,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000077.hdf5"
+    },
+    {
+      "local_episode_index": 278,
+      "global_source_index": 278,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000078.hdf5"
+    },
+    {
+      "local_episode_index": 279,
+      "global_source_index": 279,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000079.hdf5"
+    },
+    {
+      "local_episode_index": 280,
+      "global_source_index": 280,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000080.hdf5"
+    },
+    {
+      "local_episode_index": 281,
+      "global_source_index": 281,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000081.hdf5"
+    },
+    {
+      "local_episode_index": 282,
+      "global_source_index": 282,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000082.hdf5"
+    },
+    {
+      "local_episode_index": 283,
+      "global_source_index": 283,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000083.hdf5"
+    },
+    {
+      "local_episode_index": 284,
+      "global_source_index": 284,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000084.hdf5"
+    },
+    {
+      "local_episode_index": 285,
+      "global_source_index": 285,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000085.hdf5"
+    },
+    {
+      "local_episode_index": 286,
+      "global_source_index": 286,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000086.hdf5"
+    },
+    {
+      "local_episode_index": 287,
+      "global_source_index": 287,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000087.hdf5"
+    },
+    {
+      "local_episode_index": 288,
+      "global_source_index": 288,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000088.hdf5"
+    },
+    {
+      "local_episode_index": 289,
+      "global_source_index": 289,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000089.hdf5"
+    },
+    {
+      "local_episode_index": 290,
+      "global_source_index": 290,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000090.hdf5"
+    },
+    {
+      "local_episode_index": 291,
+      "global_source_index": 291,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000091.hdf5"
+    },
+    {
+      "local_episode_index": 292,
+      "global_source_index": 292,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000092.hdf5"
+    },
+    {
+      "local_episode_index": 293,
+      "global_source_index": 293,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000093.hdf5"
+    },
+    {
+      "local_episode_index": 294,
+      "global_source_index": 294,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000094.hdf5"
+    },
+    {
+      "local_episode_index": 295,
+      "global_source_index": 295,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000095.hdf5"
+    },
+    {
+      "local_episode_index": 296,
+      "global_source_index": 296,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000096.hdf5"
+    },
+    {
+      "local_episode_index": 297,
+      "global_source_index": 297,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000097.hdf5"
+    },
+    {
+      "local_episode_index": 298,
+      "global_source_index": 298,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000098.hdf5"
+    },
+    {
+      "local_episode_index": 299,
+      "global_source_index": 299,
+      "source_relative": "hammer_beat/tianji_marvin_wuji/data/episode_0000099.hdf5"
+    },
+    {
+      "local_episode_index": 300,
+      "global_source_index": 300,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000000.hdf5"
+    },
+    {
+      "local_episode_index": 301,
+      "global_source_index": 301,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000001.hdf5"
+    },
+    {
+      "local_episode_index": 302,
+      "global_source_index": 302,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000002.hdf5"
+    },
+    {
+      "local_episode_index": 303,
+      "global_source_index": 303,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000003.hdf5"
+    },
+    {
+      "local_episode_index": 304,
+      "global_source_index": 304,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000004.hdf5"
+    },
+    {
+      "local_episode_index": 305,
+      "global_source_index": 305,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000005.hdf5"
+    },
+    {
+      "local_episode_index": 306,
+      "global_source_index": 306,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000006.hdf5"
+    },
+    {
+      "local_episode_index": 307,
+      "global_source_index": 307,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000007.hdf5"
+    },
+    {
+      "local_episode_index": 308,
+      "global_source_index": 308,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000008.hdf5"
+    },
+    {
+      "local_episode_index": 309,
+      "global_source_index": 309,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000009.hdf5"
+    },
+    {
+      "local_episode_index": 310,
+      "global_source_index": 310,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000010.hdf5"
+    },
+    {
+      "local_episode_index": 311,
+      "global_source_index": 311,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000011.hdf5"
+    },
+    {
+      "local_episode_index": 312,
+      "global_source_index": 312,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000012.hdf5"
+    },
+    {
+      "local_episode_index": 313,
+      "global_source_index": 313,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000013.hdf5"
+    },
+    {
+      "local_episode_index": 314,
+      "global_source_index": 314,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000014.hdf5"
+    },
+    {
+      "local_episode_index": 315,
+      "global_source_index": 315,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000015.hdf5"
+    },
+    {
+      "local_episode_index": 316,
+      "global_source_index": 316,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000016.hdf5"
+    },
+    {
+      "local_episode_index": 317,
+      "global_source_index": 317,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000017.hdf5"
+    },
+    {
+      "local_episode_index": 318,
+      "global_source_index": 318,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000018.hdf5"
+    },
+    {
+      "local_episode_index": 319,
+      "global_source_index": 319,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000019.hdf5"
+    },
+    {
+      "local_episode_index": 320,
+      "global_source_index": 320,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000020.hdf5"
+    },
+    {
+      "local_episode_index": 321,
+      "global_source_index": 321,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000021.hdf5"
+    },
+    {
+      "local_episode_index": 322,
+      "global_source_index": 322,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000022.hdf5"
+    },
+    {
+      "local_episode_index": 323,
+      "global_source_index": 323,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000023.hdf5"
+    },
+    {
+      "local_episode_index": 324,
+      "global_source_index": 324,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000024.hdf5"
+    },
+    {
+      "local_episode_index": 325,
+      "global_source_index": 325,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000025.hdf5"
+    },
+    {
+      "local_episode_index": 326,
+      "global_source_index": 326,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000026.hdf5"
+    },
+    {
+      "local_episode_index": 327,
+      "global_source_index": 327,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000027.hdf5"
+    },
+    {
+      "local_episode_index": 328,
+      "global_source_index": 328,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000028.hdf5"
+    },
+    {
+      "local_episode_index": 329,
+      "global_source_index": 329,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000029.hdf5"
+    },
+    {
+      "local_episode_index": 330,
+      "global_source_index": 330,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000030.hdf5"
+    },
+    {
+      "local_episode_index": 331,
+      "global_source_index": 331,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000031.hdf5"
+    },
+    {
+      "local_episode_index": 332,
+      "global_source_index": 332,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000032.hdf5"
+    },
+    {
+      "local_episode_index": 333,
+      "global_source_index": 333,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000033.hdf5"
+    },
+    {
+      "local_episode_index": 334,
+      "global_source_index": 334,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000034.hdf5"
+    },
+    {
+      "local_episode_index": 335,
+      "global_source_index": 335,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000035.hdf5"
+    },
+    {
+      "local_episode_index": 336,
+      "global_source_index": 336,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000036.hdf5"
+    },
+    {
+      "local_episode_index": 337,
+      "global_source_index": 337,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000037.hdf5"
+    },
+    {
+      "local_episode_index": 338,
+      "global_source_index": 338,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000038.hdf5"
+    },
+    {
+      "local_episode_index": 339,
+      "global_source_index": 339,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000039.hdf5"
+    },
+    {
+      "local_episode_index": 340,
+      "global_source_index": 340,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000040.hdf5"
+    },
+    {
+      "local_episode_index": 341,
+      "global_source_index": 341,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000041.hdf5"
+    },
+    {
+      "local_episode_index": 342,
+      "global_source_index": 342,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000042.hdf5"
+    },
+    {
+      "local_episode_index": 343,
+      "global_source_index": 343,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000043.hdf5"
+    },
+    {
+      "local_episode_index": 344,
+      "global_source_index": 344,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000044.hdf5"
+    },
+    {
+      "local_episode_index": 345,
+      "global_source_index": 345,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000045.hdf5"
+    },
+    {
+      "local_episode_index": 346,
+      "global_source_index": 346,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000046.hdf5"
+    },
+    {
+      "local_episode_index": 347,
+      "global_source_index": 347,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000047.hdf5"
+    },
+    {
+      "local_episode_index": 348,
+      "global_source_index": 348,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000048.hdf5"
+    },
+    {
+      "local_episode_index": 349,
+      "global_source_index": 349,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000049.hdf5"
+    },
+    {
+      "local_episode_index": 350,
+      "global_source_index": 350,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000050.hdf5"
+    },
+    {
+      "local_episode_index": 351,
+      "global_source_index": 351,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000051.hdf5"
+    },
+    {
+      "local_episode_index": 352,
+      "global_source_index": 352,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000052.hdf5"
+    },
+    {
+      "local_episode_index": 353,
+      "global_source_index": 353,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000053.hdf5"
+    },
+    {
+      "local_episode_index": 354,
+      "global_source_index": 354,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000054.hdf5"
+    },
+    {
+      "local_episode_index": 355,
+      "global_source_index": 355,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000055.hdf5"
+    },
+    {
+      "local_episode_index": 356,
+      "global_source_index": 356,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000056.hdf5"
+    },
+    {
+      "local_episode_index": 357,
+      "global_source_index": 357,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000057.hdf5"
+    },
+    {
+      "local_episode_index": 358,
+      "global_source_index": 358,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000058.hdf5"
+    },
+    {
+      "local_episode_index": 359,
+      "global_source_index": 359,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000059.hdf5"
+    },
+    {
+      "local_episode_index": 360,
+      "global_source_index": 360,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000060.hdf5"
+    },
+    {
+      "local_episode_index": 361,
+      "global_source_index": 361,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000061.hdf5"
+    },
+    {
+      "local_episode_index": 362,
+      "global_source_index": 362,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000062.hdf5"
+    },
+    {
+      "local_episode_index": 363,
+      "global_source_index": 363,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000063.hdf5"
+    },
+    {
+      "local_episode_index": 364,
+      "global_source_index": 364,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000064.hdf5"
+    },
+    {
+      "local_episode_index": 365,
+      "global_source_index": 365,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000065.hdf5"
+    },
+    {
+      "local_episode_index": 366,
+      "global_source_index": 366,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000066.hdf5"
+    },
+    {
+      "local_episode_index": 367,
+      "global_source_index": 367,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000067.hdf5"
+    },
+    {
+      "local_episode_index": 368,
+      "global_source_index": 368,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000068.hdf5"
+    },
+    {
+      "local_episode_index": 369,
+      "global_source_index": 369,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000069.hdf5"
+    },
+    {
+      "local_episode_index": 370,
+      "global_source_index": 370,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000070.hdf5"
+    },
+    {
+      "local_episode_index": 371,
+      "global_source_index": 371,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000071.hdf5"
+    },
+    {
+      "local_episode_index": 372,
+      "global_source_index": 372,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000072.hdf5"
+    },
+    {
+      "local_episode_index": 373,
+      "global_source_index": 373,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000073.hdf5"
+    },
+    {
+      "local_episode_index": 374,
+      "global_source_index": 374,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000074.hdf5"
+    },
+    {
+      "local_episode_index": 375,
+      "global_source_index": 375,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000075.hdf5"
+    },
+    {
+      "local_episode_index": 376,
+      "global_source_index": 376,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000076.hdf5"
+    },
+    {
+      "local_episode_index": 377,
+      "global_source_index": 377,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000077.hdf5"
+    },
+    {
+      "local_episode_index": 378,
+      "global_source_index": 378,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000078.hdf5"
+    },
+    {
+      "local_episode_index": 379,
+      "global_source_index": 379,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000079.hdf5"
+    },
+    {
+      "local_episode_index": 380,
+      "global_source_index": 380,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000080.hdf5"
+    },
+    {
+      "local_episode_index": 381,
+      "global_source_index": 381,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000081.hdf5"
+    },
+    {
+      "local_episode_index": 382,
+      "global_source_index": 382,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000082.hdf5"
+    },
+    {
+      "local_episode_index": 383,
+      "global_source_index": 383,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000083.hdf5"
+    },
+    {
+      "local_episode_index": 384,
+      "global_source_index": 384,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000084.hdf5"
+    },
+    {
+      "local_episode_index": 385,
+      "global_source_index": 385,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000085.hdf5"
+    },
+    {
+      "local_episode_index": 386,
+      "global_source_index": 386,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000086.hdf5"
+    },
+    {
+      "local_episode_index": 387,
+      "global_source_index": 387,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000087.hdf5"
+    },
+    {
+      "local_episode_index": 388,
+      "global_source_index": 388,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000088.hdf5"
+    },
+    {
+      "local_episode_index": 389,
+      "global_source_index": 389,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000089.hdf5"
+    },
+    {
+      "local_episode_index": 390,
+      "global_source_index": 390,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000090.hdf5"
+    },
+    {
+      "local_episode_index": 391,
+      "global_source_index": 391,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000091.hdf5"
+    },
+    {
+      "local_episode_index": 392,
+      "global_source_index": 392,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000092.hdf5"
+    },
+    {
+      "local_episode_index": 393,
+      "global_source_index": 393,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000093.hdf5"
+    },
+    {
+      "local_episode_index": 394,
+      "global_source_index": 394,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000094.hdf5"
+    },
+    {
+      "local_episode_index": 395,
+      "global_source_index": 395,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000095.hdf5"
+    },
+    {
+      "local_episode_index": 396,
+      "global_source_index": 396,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000096.hdf5"
+    },
+    {
+      "local_episode_index": 397,
+      "global_source_index": 397,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000097.hdf5"
+    },
+    {
+      "local_episode_index": 398,
+      "global_source_index": 398,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000098.hdf5"
+    },
+    {
+      "local_episode_index": 399,
+      "global_source_index": 399,
+      "source_relative": "insert_block/tianji_marvin_wuji/data/episode_0000099.hdf5"
+    },
+    {
+      "local_episode_index": 400,
+      "global_source_index": 400,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000000.hdf5"
+    },
+    {
+      "local_episode_index": 401,
+      "global_source_index": 401,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000001.hdf5"
+    },
+    {
+      "local_episode_index": 402,
+      "global_source_index": 402,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000002.hdf5"
+    },
+    {
+      "local_episode_index": 403,
+      "global_source_index": 403,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000003.hdf5"
+    },
+    {
+      "local_episode_index": 404,
+      "global_source_index": 404,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000004.hdf5"
+    },
+    {
+      "local_episode_index": 405,
+      "global_source_index": 405,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000005.hdf5"
+    },
+    {
+      "local_episode_index": 406,
+      "global_source_index": 406,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000006.hdf5"
+    },
+    {
+      "local_episode_index": 407,
+      "global_source_index": 407,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000007.hdf5"
+    },
+    {
+      "local_episode_index": 408,
+      "global_source_index": 408,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000008.hdf5"
+    },
+    {
+      "local_episode_index": 409,
+      "global_source_index": 409,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000009.hdf5"
+    },
+    {
+      "local_episode_index": 410,
+      "global_source_index": 410,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000010.hdf5"
+    },
+    {
+      "local_episode_index": 411,
+      "global_source_index": 411,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000011.hdf5"
+    },
+    {
+      "local_episode_index": 412,
+      "global_source_index": 412,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000012.hdf5"
+    },
+    {
+      "local_episode_index": 413,
+      "global_source_index": 413,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000013.hdf5"
+    },
+    {
+      "local_episode_index": 414,
+      "global_source_index": 414,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000014.hdf5"
+    },
+    {
+      "local_episode_index": 415,
+      "global_source_index": 415,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000015.hdf5"
+    },
+    {
+      "local_episode_index": 416,
+      "global_source_index": 416,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000016.hdf5"
+    },
+    {
+      "local_episode_index": 417,
+      "global_source_index": 417,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000017.hdf5"
+    },
+    {
+      "local_episode_index": 418,
+      "global_source_index": 418,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000018.hdf5"
+    },
+    {
+      "local_episode_index": 419,
+      "global_source_index": 419,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000019.hdf5"
+    },
+    {
+      "local_episode_index": 420,
+      "global_source_index": 420,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000020.hdf5"
+    },
+    {
+      "local_episode_index": 421,
+      "global_source_index": 421,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000021.hdf5"
+    },
+    {
+      "local_episode_index": 422,
+      "global_source_index": 422,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000022.hdf5"
+    },
+    {
+      "local_episode_index": 423,
+      "global_source_index": 423,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000023.hdf5"
+    },
+    {
+      "local_episode_index": 424,
+      "global_source_index": 424,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000024.hdf5"
+    },
+    {
+      "local_episode_index": 425,
+      "global_source_index": 425,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000025.hdf5"
+    },
+    {
+      "local_episode_index": 426,
+      "global_source_index": 426,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000026.hdf5"
+    },
+    {
+      "local_episode_index": 427,
+      "global_source_index": 427,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000027.hdf5"
+    },
+    {
+      "local_episode_index": 428,
+      "global_source_index": 428,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000028.hdf5"
+    },
+    {
+      "local_episode_index": 429,
+      "global_source_index": 429,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000029.hdf5"
+    },
+    {
+      "local_episode_index": 430,
+      "global_source_index": 430,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000030.hdf5"
+    },
+    {
+      "local_episode_index": 431,
+      "global_source_index": 431,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000031.hdf5"
+    },
+    {
+      "local_episode_index": 432,
+      "global_source_index": 432,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000032.hdf5"
+    },
+    {
+      "local_episode_index": 433,
+      "global_source_index": 433,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000033.hdf5"
+    },
+    {
+      "local_episode_index": 434,
+      "global_source_index": 434,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000034.hdf5"
+    },
+    {
+      "local_episode_index": 435,
+      "global_source_index": 435,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000035.hdf5"
+    },
+    {
+      "local_episode_index": 436,
+      "global_source_index": 436,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000036.hdf5"
+    },
+    {
+      "local_episode_index": 437,
+      "global_source_index": 437,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000037.hdf5"
+    },
+    {
+      "local_episode_index": 438,
+      "global_source_index": 438,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000038.hdf5"
+    },
+    {
+      "local_episode_index": 439,
+      "global_source_index": 439,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000039.hdf5"
+    },
+    {
+      "local_episode_index": 440,
+      "global_source_index": 440,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000040.hdf5"
+    },
+    {
+      "local_episode_index": 441,
+      "global_source_index": 441,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000041.hdf5"
+    },
+    {
+      "local_episode_index": 442,
+      "global_source_index": 442,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000042.hdf5"
+    },
+    {
+      "local_episode_index": 443,
+      "global_source_index": 443,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000043.hdf5"
+    },
+    {
+      "local_episode_index": 444,
+      "global_source_index": 444,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000044.hdf5"
+    },
+    {
+      "local_episode_index": 445,
+      "global_source_index": 445,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000045.hdf5"
+    },
+    {
+      "local_episode_index": 446,
+      "global_source_index": 446,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000046.hdf5"
+    },
+    {
+      "local_episode_index": 447,
+      "global_source_index": 447,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000047.hdf5"
+    },
+    {
+      "local_episode_index": 448,
+      "global_source_index": 448,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000048.hdf5"
+    },
+    {
+      "local_episode_index": 449,
+      "global_source_index": 449,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000049.hdf5"
+    },
+    {
+      "local_episode_index": 450,
+      "global_source_index": 450,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000050.hdf5"
+    },
+    {
+      "local_episode_index": 451,
+      "global_source_index": 451,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000051.hdf5"
+    },
+    {
+      "local_episode_index": 452,
+      "global_source_index": 452,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000052.hdf5"
+    },
+    {
+      "local_episode_index": 453,
+      "global_source_index": 453,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000053.hdf5"
+    },
+    {
+      "local_episode_index": 454,
+      "global_source_index": 454,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000054.hdf5"
+    },
+    {
+      "local_episode_index": 455,
+      "global_source_index": 455,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000055.hdf5"
+    },
+    {
+      "local_episode_index": 456,
+      "global_source_index": 456,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000056.hdf5"
+    },
+    {
+      "local_episode_index": 457,
+      "global_source_index": 457,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000057.hdf5"
+    },
+    {
+      "local_episode_index": 458,
+      "global_source_index": 458,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000058.hdf5"
+    },
+    {
+      "local_episode_index": 459,
+      "global_source_index": 459,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000059.hdf5"
+    },
+    {
+      "local_episode_index": 460,
+      "global_source_index": 460,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000060.hdf5"
+    },
+    {
+      "local_episode_index": 461,
+      "global_source_index": 461,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000061.hdf5"
+    },
+    {
+      "local_episode_index": 462,
+      "global_source_index": 462,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000062.hdf5"
+    },
+    {
+      "local_episode_index": 463,
+      "global_source_index": 463,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000063.hdf5"
+    },
+    {
+      "local_episode_index": 464,
+      "global_source_index": 464,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000064.hdf5"
+    },
+    {
+      "local_episode_index": 465,
+      "global_source_index": 465,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000065.hdf5"
+    },
+    {
+      "local_episode_index": 466,
+      "global_source_index": 466,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000066.hdf5"
+    },
+    {
+      "local_episode_index": 467,
+      "global_source_index": 467,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000067.hdf5"
+    },
+    {
+      "local_episode_index": 468,
+      "global_source_index": 468,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000068.hdf5"
+    },
+    {
+      "local_episode_index": 469,
+      "global_source_index": 469,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000069.hdf5"
+    },
+    {
+      "local_episode_index": 470,
+      "global_source_index": 470,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000070.hdf5"
+    },
+    {
+      "local_episode_index": 471,
+      "global_source_index": 471,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000071.hdf5"
+    },
+    {
+      "local_episode_index": 472,
+      "global_source_index": 472,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000072.hdf5"
+    },
+    {
+      "local_episode_index": 473,
+      "global_source_index": 473,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000073.hdf5"
+    },
+    {
+      "local_episode_index": 474,
+      "global_source_index": 474,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000074.hdf5"
+    },
+    {
+      "local_episode_index": 475,
+      "global_source_index": 475,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000075.hdf5"
+    },
+    {
+      "local_episode_index": 476,
+      "global_source_index": 476,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000076.hdf5"
+    },
+    {
+      "local_episode_index": 477,
+      "global_source_index": 477,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000077.hdf5"
+    },
+    {
+      "local_episode_index": 478,
+      "global_source_index": 478,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000078.hdf5"
+    },
+    {
+      "local_episode_index": 479,
+      "global_source_index": 479,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000079.hdf5"
+    },
+    {
+      "local_episode_index": 480,
+      "global_source_index": 480,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000080.hdf5"
+    },
+    {
+      "local_episode_index": 481,
+      "global_source_index": 481,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000081.hdf5"
+    },
+    {
+      "local_episode_index": 482,
+      "global_source_index": 482,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000082.hdf5"
+    },
+    {
+      "local_episode_index": 483,
+      "global_source_index": 483,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000083.hdf5"
+    },
+    {
+      "local_episode_index": 484,
+      "global_source_index": 484,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000084.hdf5"
+    },
+    {
+      "local_episode_index": 485,
+      "global_source_index": 485,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000085.hdf5"
+    },
+    {
+      "local_episode_index": 486,
+      "global_source_index": 486,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000086.hdf5"
+    },
+    {
+      "local_episode_index": 487,
+      "global_source_index": 487,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000087.hdf5"
+    },
+    {
+      "local_episode_index": 488,
+      "global_source_index": 488,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000088.hdf5"
+    },
+    {
+      "local_episode_index": 489,
+      "global_source_index": 489,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000089.hdf5"
+    },
+    {
+      "local_episode_index": 490,
+      "global_source_index": 490,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000090.hdf5"
+    },
+    {
+      "local_episode_index": 491,
+      "global_source_index": 491,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000091.hdf5"
+    },
+    {
+      "local_episode_index": 492,
+      "global_source_index": 492,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000092.hdf5"
+    },
+    {
+      "local_episode_index": 493,
+      "global_source_index": 493,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000093.hdf5"
+    },
+    {
+      "local_episode_index": 494,
+      "global_source_index": 494,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000094.hdf5"
+    },
+    {
+      "local_episode_index": 495,
+      "global_source_index": 495,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000095.hdf5"
+    },
+    {
+      "local_episode_index": 496,
+      "global_source_index": 496,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000096.hdf5"
+    },
+    {
+      "local_episode_index": 497,
+      "global_source_index": 497,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000097.hdf5"
+    },
+    {
+      "local_episode_index": 498,
+      "global_source_index": 498,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000098.hdf5"
+    },
+    {
+      "local_episode_index": 499,
+      "global_source_index": 499,
+      "source_relative": "retrieve_gap/tianji_marvin_wuji/data/episode_0000099.hdf5"
+    },
+    {
+      "local_episode_index": 500,
+      "global_source_index": 500,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000000.hdf5"
+    },
+    {
+      "local_episode_index": 501,
+      "global_source_index": 501,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000001.hdf5"
+    },
+    {
+      "local_episode_index": 502,
+      "global_source_index": 502,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000002.hdf5"
+    },
+    {
+      "local_episode_index": 503,
+      "global_source_index": 503,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000003.hdf5"
+    },
+    {
+      "local_episode_index": 504,
+      "global_source_index": 504,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000004.hdf5"
+    },
+    {
+      "local_episode_index": 505,
+      "global_source_index": 505,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000005.hdf5"
+    },
+    {
+      "local_episode_index": 506,
+      "global_source_index": 506,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000006.hdf5"
+    },
+    {
+      "local_episode_index": 507,
+      "global_source_index": 507,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000007.hdf5"
+    },
+    {
+      "local_episode_index": 508,
+      "global_source_index": 508,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000008.hdf5"
+    },
+    {
+      "local_episode_index": 509,
+      "global_source_index": 509,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000009.hdf5"
+    },
+    {
+      "local_episode_index": 510,
+      "global_source_index": 510,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000010.hdf5"
+    },
+    {
+      "local_episode_index": 511,
+      "global_source_index": 511,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000011.hdf5"
+    },
+    {
+      "local_episode_index": 512,
+      "global_source_index": 512,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000012.hdf5"
+    },
+    {
+      "local_episode_index": 513,
+      "global_source_index": 513,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000013.hdf5"
+    },
+    {
+      "local_episode_index": 514,
+      "global_source_index": 514,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000014.hdf5"
+    },
+    {
+      "local_episode_index": 515,
+      "global_source_index": 515,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000015.hdf5"
+    },
+    {
+      "local_episode_index": 516,
+      "global_source_index": 516,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000016.hdf5"
+    },
+    {
+      "local_episode_index": 517,
+      "global_source_index": 517,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000017.hdf5"
+    },
+    {
+      "local_episode_index": 518,
+      "global_source_index": 518,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000018.hdf5"
+    },
+    {
+      "local_episode_index": 519,
+      "global_source_index": 519,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000019.hdf5"
+    },
+    {
+      "local_episode_index": 520,
+      "global_source_index": 520,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000020.hdf5"
+    },
+    {
+      "local_episode_index": 521,
+      "global_source_index": 521,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000021.hdf5"
+    },
+    {
+      "local_episode_index": 522,
+      "global_source_index": 522,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000022.hdf5"
+    },
+    {
+      "local_episode_index": 523,
+      "global_source_index": 523,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000023.hdf5"
+    },
+    {
+      "local_episode_index": 524,
+      "global_source_index": 524,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000024.hdf5"
+    },
+    {
+      "local_episode_index": 525,
+      "global_source_index": 525,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000025.hdf5"
+    },
+    {
+      "local_episode_index": 526,
+      "global_source_index": 526,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000026.hdf5"
+    },
+    {
+      "local_episode_index": 527,
+      "global_source_index": 527,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000027.hdf5"
+    },
+    {
+      "local_episode_index": 528,
+      "global_source_index": 528,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000028.hdf5"
+    },
+    {
+      "local_episode_index": 529,
+      "global_source_index": 529,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000029.hdf5"
+    },
+    {
+      "local_episode_index": 530,
+      "global_source_index": 530,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000030.hdf5"
+    },
+    {
+      "local_episode_index": 531,
+      "global_source_index": 531,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000031.hdf5"
+    },
+    {
+      "local_episode_index": 532,
+      "global_source_index": 532,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000032.hdf5"
+    },
+    {
+      "local_episode_index": 533,
+      "global_source_index": 533,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000033.hdf5"
+    },
+    {
+      "local_episode_index": 534,
+      "global_source_index": 534,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000034.hdf5"
+    },
+    {
+      "local_episode_index": 535,
+      "global_source_index": 535,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000035.hdf5"
+    },
+    {
+      "local_episode_index": 536,
+      "global_source_index": 536,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000036.hdf5"
+    },
+    {
+      "local_episode_index": 537,
+      "global_source_index": 537,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000037.hdf5"
+    },
+    {
+      "local_episode_index": 538,
+      "global_source_index": 538,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000038.hdf5"
+    },
+    {
+      "local_episode_index": 539,
+      "global_source_index": 539,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000039.hdf5"
+    },
+    {
+      "local_episode_index": 540,
+      "global_source_index": 540,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000040.hdf5"
+    },
+    {
+      "local_episode_index": 541,
+      "global_source_index": 541,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000041.hdf5"
+    },
+    {
+      "local_episode_index": 542,
+      "global_source_index": 542,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000042.hdf5"
+    },
+    {
+      "local_episode_index": 543,
+      "global_source_index": 543,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000043.hdf5"
+    },
+    {
+      "local_episode_index": 544,
+      "global_source_index": 544,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000044.hdf5"
+    },
+    {
+      "local_episode_index": 545,
+      "global_source_index": 545,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000045.hdf5"
+    },
+    {
+      "local_episode_index": 546,
+      "global_source_index": 546,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000046.hdf5"
+    },
+    {
+      "local_episode_index": 547,
+      "global_source_index": 547,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000047.hdf5"
+    },
+    {
+      "local_episode_index": 548,
+      "global_source_index": 548,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000048.hdf5"
+    },
+    {
+      "local_episode_index": 549,
+      "global_source_index": 549,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000049.hdf5"
+    },
+    {
+      "local_episode_index": 550,
+      "global_source_index": 550,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000050.hdf5"
+    },
+    {
+      "local_episode_index": 551,
+      "global_source_index": 551,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000051.hdf5"
+    },
+    {
+      "local_episode_index": 552,
+      "global_source_index": 552,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000052.hdf5"
+    },
+    {
+      "local_episode_index": 553,
+      "global_source_index": 553,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000053.hdf5"
+    },
+    {
+      "local_episode_index": 554,
+      "global_source_index": 554,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000054.hdf5"
+    },
+    {
+      "local_episode_index": 555,
+      "global_source_index": 555,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000055.hdf5"
+    },
+    {
+      "local_episode_index": 556,
+      "global_source_index": 556,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000056.hdf5"
+    },
+    {
+      "local_episode_index": 557,
+      "global_source_index": 557,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000057.hdf5"
+    },
+    {
+      "local_episode_index": 558,
+      "global_source_index": 558,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000058.hdf5"
+    },
+    {
+      "local_episode_index": 559,
+      "global_source_index": 559,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000059.hdf5"
+    },
+    {
+      "local_episode_index": 560,
+      "global_source_index": 560,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000060.hdf5"
+    },
+    {
+      "local_episode_index": 561,
+      "global_source_index": 561,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000061.hdf5"
+    },
+    {
+      "local_episode_index": 562,
+      "global_source_index": 562,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000062.hdf5"
+    },
+    {
+      "local_episode_index": 563,
+      "global_source_index": 563,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000063.hdf5"
+    },
+    {
+      "local_episode_index": 564,
+      "global_source_index": 564,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000064.hdf5"
+    },
+    {
+      "local_episode_index": 565,
+      "global_source_index": 565,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000065.hdf5"
+    },
+    {
+      "local_episode_index": 566,
+      "global_source_index": 566,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000066.hdf5"
+    },
+    {
+      "local_episode_index": 567,
+      "global_source_index": 567,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000067.hdf5"
+    },
+    {
+      "local_episode_index": 568,
+      "global_source_index": 568,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000068.hdf5"
+    },
+    {
+      "local_episode_index": 569,
+      "global_source_index": 569,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000069.hdf5"
+    },
+    {
+      "local_episode_index": 570,
+      "global_source_index": 570,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000070.hdf5"
+    },
+    {
+      "local_episode_index": 571,
+      "global_source_index": 571,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000071.hdf5"
+    },
+    {
+      "local_episode_index": 572,
+      "global_source_index": 572,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000072.hdf5"
+    },
+    {
+      "local_episode_index": 573,
+      "global_source_index": 573,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000073.hdf5"
+    },
+    {
+      "local_episode_index": 574,
+      "global_source_index": 574,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000074.hdf5"
+    },
+    {
+      "local_episode_index": 575,
+      "global_source_index": 575,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000075.hdf5"
+    },
+    {
+      "local_episode_index": 576,
+      "global_source_index": 576,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000076.hdf5"
+    },
+    {
+      "local_episode_index": 577,
+      "global_source_index": 577,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000077.hdf5"
+    },
+    {
+      "local_episode_index": 578,
+      "global_source_index": 578,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000078.hdf5"
+    },
+    {
+      "local_episode_index": 579,
+      "global_source_index": 579,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000079.hdf5"
+    },
+    {
+      "local_episode_index": 580,
+      "global_source_index": 580,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000080.hdf5"
+    },
+    {
+      "local_episode_index": 581,
+      "global_source_index": 581,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000081.hdf5"
+    },
+    {
+      "local_episode_index": 582,
+      "global_source_index": 582,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000082.hdf5"
+    },
+    {
+      "local_episode_index": 583,
+      "global_source_index": 583,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000083.hdf5"
+    },
+    {
+      "local_episode_index": 584,
+      "global_source_index": 584,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000084.hdf5"
+    },
+    {
+      "local_episode_index": 585,
+      "global_source_index": 585,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000085.hdf5"
+    },
+    {
+      "local_episode_index": 586,
+      "global_source_index": 586,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000086.hdf5"
+    },
+    {
+      "local_episode_index": 587,
+      "global_source_index": 587,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000087.hdf5"
+    },
+    {
+      "local_episode_index": 588,
+      "global_source_index": 588,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000088.hdf5"
+    },
+    {
+      "local_episode_index": 589,
+      "global_source_index": 589,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000089.hdf5"
+    },
+    {
+      "local_episode_index": 590,
+      "global_source_index": 590,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000090.hdf5"
+    },
+    {
+      "local_episode_index": 591,
+      "global_source_index": 591,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000091.hdf5"
+    },
+    {
+      "local_episode_index": 592,
+      "global_source_index": 592,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000092.hdf5"
+    },
+    {
+      "local_episode_index": 593,
+      "global_source_index": 593,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000093.hdf5"
+    },
+    {
+      "local_episode_index": 594,
+      "global_source_index": 594,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000094.hdf5"
+    },
+    {
+      "local_episode_index": 595,
+      "global_source_index": 595,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000095.hdf5"
+    },
+    {
+      "local_episode_index": 596,
+      "global_source_index": 596,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000096.hdf5"
+    },
+    {
+      "local_episode_index": 597,
+      "global_source_index": 597,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000097.hdf5"
+    },
+    {
+      "local_episode_index": 598,
+      "global_source_index": 598,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000098.hdf5"
+    },
+    {
+      "local_episode_index": 599,
+      "global_source_index": 599,
+      "source_relative": "stack_bowls/tianji_marvin_wuji/data/episode_0000099.hdf5"
+    }
+  ],
+  "augmentation": {
+    "base_lerobot_root": "/mnt/xspark-data/zijian/Spark_0/data/spark0_bench_mano/sim_6tasks_lerobot",
+    "source_root": "/mnt/xspark-data/zijian/Spark_0/data/spark0_bench_mano",
+    "mano_columns": [
+      "observation.mano.left_ee_poses",
+      "observation.mano.left_ee_joint_states",
+      "observation.mano.left_hand_betas",
+      "observation.mano.right_ee_poses",
+      "observation.mano.right_ee_joint_states",
+      "observation.mano.right_hand_betas",
+      "action.mano.left_ee_poses",
+      "action.mano.left_ee_joint_states",
+      "action.mano.left_hand_betas",
+      "action.mano.right_ee_poses",
+      "action.mano.right_ee_joint_states",
+      "action.mano.right_hand_betas"
+    ],
+    "dtype": "float64"
+  }
+}

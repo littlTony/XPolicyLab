@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "format": "spark0_mano_lerobot_v30_v1",
+  "source_root": "/mnt/xspark-data/zijian/Spark_0/data/spark0_bench_mano",
+  "parameterization": {
+    "ee_poses": {
+      "shape_per_hand": [
+        7
+      ],
+      "order": [
+        "x",
+        "y",
+        "z",
+        "qw",
+        "qx",
+        "qy",
+        "qz"
+      ],
+      "position_frame": "env/world frame",
+      "position_anchor": "numerically anchored to the source Wuji Link7 EE position",
+      "position_warning": "The source HDF5 labels xyz as a physical MANO wrist, but the stored values equal the source Wuji Link7 EE xyz. Treat Link7 as the verified anchor until a separate Link7-to-physical-wrist calibration is supplied.",
+      "orientation": "MANO global_orient quaternion in wxyz order; not Wuji palm-to-EE orientation"
+    },
+    "ee_joint_states": {
+      "shape_per_hand": [
+        45
+      ],
+      "representation": "15 local axis-angle rotation vectors",
+      "unit": "radians",
+      "joint_order": [
+        "index_mcp",
+        "index_pip",
+        "index_dip",
+        "middle_mcp",
+        "middle_pip",
+        "middle_dip",
+        "pinky_mcp",
+        "pinky_pip",
+        "pinky_dip",
+        "ring_mcp",
+        "ring_pip",
+        "ring_dip",
+        "thumb_cmc",
+        "thumb_mcp",
+        "thumb_ip"
+      ],
+      "component_order_per_joint": [
+        "x",
+        "y",
+        "z"
+      ],
+      "warning": "These are rotation vectors, not Euler xyz. Convert rotvec -> matrix -> Euler xyz for VITRA."
+    },
+    "hand_betas": {
+      "shape_per_hand": [
+        10
+      ],
+      "order": [
+        "beta_0",
+        "beta_1",
+        "beta_2",
+        "beta_3",
+        "beta_4",
+        "beta_5",
+        "beta_6",
+        "beta_7",
+        "beta_8",
+        "beta_9"
+      ]
+    },
+    "left_hand_convention": "mirror_model_true_left_hand",
+    "translation": "MANO transl is not stored; ee_poses xyz stores the fitted wrist position"
+  },
+  "temporal_contract": {
+    "source_hdf5_frames": 151410,
+    "lerobot_rows": 150810,
+    "episodes": 600,
+    "row_i_observation": "mano/state/*[i]",
+    "row_i_action": "mano/action/*[i] == mano/state/*[i+1]",
+    "terminal_action": "one all-NaN/invalid row per source episode is dropped",
+    "terminal_observation": "stored in meta/mano_terminal_states.parquet"
+  },
+  "quality_scope": {
+    "retained_rows": "all MANO state/action leaves are finite and source validity masks are true",
+    "important": "Finite/valid does not prove that MANO retarget residual is below a geometric threshold."
+  },
+  "mano_asset_sha256": "800db7acb35f4b283f63c14f12e1aafb410744920886ee7dc401a0bbe27df8a3",
+  "storage_dtype": "float64 (preserves source MANO array precision)",
+  "statistics_contract": "mean/std are exact population aggregates; q01/q10/q50/q90/q99 follow LeRobot's frame-count-weighted aggregation of per-episode quantiles"
+}

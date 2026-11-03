@@ -1,0 +1,50 @@
+[
+  {
+    "side": "left",
+    "input_euler_xyz": [
+      0,
+      0,
+      0
+    ],
+    "position_error_m": 0.0,
+    "orientation_error_rad": 0.016147582752281304,
+    "q20_rms_rad": 0.06516687611421747,
+    "backend": "geometric_fallback"
+  },
+  {
+    "side": "left",
+    "input_euler_xyz": [
+      0.4,
+      -0.2,
+      0.7
+    ],
+    "position_error_m": 0.0,
+    "orientation_error_rad": 0.0161475827522766,
+    "q20_rms_rad": 0.06516687611421747,
+    "backend": "geometric_fallback"
+  },
+  {
+    "side": "right",
+    "input_euler_xyz": [
+      0,
+      0,
+      0
+    ],
+    "position_error_m": 0.0,
+    "orientation_error_rad": 0.015889807978239287,
+    "q20_rms_rad": 0.0657789345889412,
+    "backend": "geometric_fallback"
+  },
+  {
+    "side": "right",
+    "input_euler_xyz": [
+      0.4,
+      -0.2,
+      0.7
+    ],
+    "position_error_m": 0.0,
+    "orientation_error_rad": 0.015889807978237087,
+    "q20_rms_rad": 0.0657789345889412,
+    "backend": "geometric_fallback"
+  }
+]

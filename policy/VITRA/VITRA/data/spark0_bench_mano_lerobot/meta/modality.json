@@ -1,0 +1,151 @@
+{
+  "state": {
+    "left_ee_poses": {
+      "start": 0,
+      "end": 7,
+      "absolute": true,
+      "dtype": "float32",
+      "original_key": "observation.state"
+    },
+    "left_ee_joint_states": {
+      "start": 7,
+      "end": 27,
+      "absolute": true,
+      "dtype": "float32",
+      "original_key": "observation.state"
+    },
+    "right_ee_poses": {
+      "start": 27,
+      "end": 34,
+      "absolute": true,
+      "dtype": "float32",
+      "original_key": "observation.state"
+    },
+    "right_ee_joint_states": {
+      "start": 34,
+      "end": 54,
+      "absolute": true,
+      "dtype": "float32",
+      "original_key": "observation.state"
+    }
+  },
+  "action": {
+    "left_ee_poses": {
+      "start": 0,
+      "end": 7,
+      "absolute": true,
+      "dtype": "float32",
+      "original_key": "action"
+    },
+    "left_ee_joint_states": {
+      "start": 7,
+      "end": 27,
+      "absolute": true,
+      "dtype": "float32",
+      "original_key": "action"
+    },
+    "right_ee_poses": {
+      "start": 27,
+      "end": 34,
+      "absolute": true,
+      "dtype": "float32",
+      "original_key": "action"
+    },
+    "right_ee_joint_states": {
+      "start": 34,
+      "end": 54,
+      "absolute": true,
+      "dtype": "float32",
+      "original_key": "action"
+    }
+  },
+  "video": {
+    "cam_high": {
+      "original_key": "observation.images.cam_high"
+    },
+    "cam_left_wrist": {
+      "original_key": "observation.images.cam_left_wrist"
+    },
+    "cam_right_wrist": {
+      "original_key": "observation.images.cam_right_wrist"
+    }
+  },
+  "annotation": {
+    "human.action.task_description": {
+      "original_key": "task_index"
+    }
+  },
+  "camera_extrinsics": {
+    "cam_high": {
+      "original_key": "observation.camera_extrinsics.cam_high",
+      "semantics": "world_from_camera",
+      "camera_axes": "x_right_y_up_z_back",
+      "pose_order": "x_y_z_qw_qx_qy_qz"
+    }
+  },
+  "mano": {
+    "storage": "separate_float64_columns",
+    "state": {
+      "left": {
+        "ee_poses": {
+          "original_key": "observation.mano.left_ee_poses",
+          "absolute": true
+        },
+        "ee_joint_states": {
+          "original_key": "observation.mano.left_ee_joint_states",
+          "absolute": true
+        },
+        "hand_betas": {
+          "original_key": "observation.mano.left_hand_betas",
+          "absolute": true
+        }
+      },
+      "right": {
+        "ee_poses": {
+          "original_key": "observation.mano.right_ee_poses",
+          "absolute": true
+        },
+        "ee_joint_states": {
+          "original_key": "observation.mano.right_ee_joint_states",
+          "absolute": true
+        },
+        "hand_betas": {
+          "original_key": "observation.mano.right_hand_betas",
+          "absolute": true
+        }
+      }
+    },
+    "action": {
+      "left": {
+        "ee_poses": {
+          "original_key": "action.mano.left_ee_poses",
+          "absolute": true
+        },
+        "ee_joint_states": {
+          "original_key": "action.mano.left_ee_joint_states",
+          "absolute": true
+        },
+        "hand_betas": {
+          "original_key": "action.mano.left_hand_betas",
+          "absolute": true
+        }
+      },
+      "right": {
+        "ee_poses": {
+          "original_key": "action.mano.right_ee_poses",
+          "absolute": true
+        },
+        "ee_joint_states": {
+          "original_key": "action.mano.right_ee_joint_states",
+          "absolute": true
+        },
+        "hand_betas": {
+          "original_key": "action.mano.right_hand_betas",
+          "absolute": true
+        }
+      }
+    },
+    "parameterization_metadata": "meta/mano.json",
+    "terminal_states": "meta/mano_terminal_states.parquet"
+  }
+}

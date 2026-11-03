@@ -1,0 +1,36 @@
+policy_name: UniT
+protocol: ws
+host: localhost
+port: null
+bench_name: null
+task_name: null
+ckpt_name: null
+env_cfg_type: null
+seed: null
+action_type: joint
+gpu_id: null
+eval_batch: true
+
+# Default Spark0 recipe is head-only.  0908_7task / 0908-SparkArena
+# checkpoints are auto-upgraded to sparkarena_3view_joint54
+# (cam_high + both wrists) by the adapter.  Adapter keeps 480×640;
+# sparkarena_3view_joint54 then applies VideoSparkNativeCrop0908
+# (square → 256 → 243 → 224) to match 0908 training.
+data_config: spark0_dual_arm_dexterous_joint
+embodiment_tag: new_embodiment
+camera_name: cam_head
+image_size: 256
+denoising_steps: 4
+execute_action_steps: 16
+
+# ckpt_name must identify a checkpoint trained with the Spark joint54 schema.
+# The linked public VLA-UniT GR1 checkpoint uses 6-D hands, while Spark uses
+# 20-D hands, so it is deliberately retained only as a pretraining asset and
+# is never selected implicitly for evaluation.
+model_path: null
+dinov2_path_override: null
+dry_run: false
+
+ws_ping_interval_s: 20
+ws_ping_timeout_s: 120
+request_timeout_s: 1200

@@ -1,0 +1,1507 @@
+{
+  "path": "/personal/xiangpc/EgoVLA benchmark/Ego_Humanoid_Manipulation_Benchmark/source/extensions/humanoid.tasks/humanoid/tasks/data/h1/h1_inspire_convex_decomp.usd",
+  "sha256": "c66589fffb2520cf51403ff5fd62569a18f4994b323ba53414d49acc7f8ec75d",
+  "meters_per_unit": 1.0,
+  "joints": [
+    {
+      "name": "L_index_proximal_joint",
+      "path": "/h1/L_hand_base_link/L_index_proximal_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.0002853299956768751,
+          -0.13652999699115753,
+          0.03226799890398979
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.0,
+          0.0,
+          0.9998477101325989,
+          -0.01745261251926422
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_hand_base_link"
+        ],
+        "physics:body1": [
+          "/h1/L_index_proximal"
+        ]
+      }
+    },
+    {
+      "name": "L_middle_proximal_joint",
+      "path": "/h1/L_hand_base_link/L_middle_proximal_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.0002853299956768751,
+          -0.1370999962091446,
+          0.01295000035315752
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_hand_base_link"
+        ],
+        "physics:body1": [
+          "/h1/L_middle_proximal"
+        ]
+      }
+    },
+    {
+      "name": "L_pinky_proximal_joint",
+      "path": "/h1/L_hand_base_link/L_pinky_proximal_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.0002853299956768751,
+          -0.1357100009918213,
+          -0.025488000363111496
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.0,
+          0.0,
+          0.9986295104026794,
+          0.05233607813715935
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_hand_base_link"
+        ],
+        "physics:body1": [
+          "/h1/L_pinky_proximal"
+        ]
+      }
+    },
+    {
+      "name": "L_ring_proximal_joint",
+      "path": "/h1/L_hand_base_link/L_ring_proximal_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.0002853299956768751,
+          -0.13691000640392303,
+          -0.0062871999107301235
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.0,
+          0.0,
+          0.9996573328971863,
+          0.02617700770497322
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_hand_base_link"
+        ],
+        "physics:body1": [
+          "/h1/L_ring_proximal"
+        ]
+      }
+    },
+    {
+      "name": "L_thumb_proximal_yaw_joint",
+      "path": "/h1/L_hand_base_link/L_thumb_proximal_yaw_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.01696000061929226,
+          -0.06909999996423721,
+          0.02044999971985817
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.49999821186065674,
+          0.5,
+          -0.5,
+          0.500001847743988
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": -5.729577541351318,
+        "physics:upperLimit": 74.48450469970703
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_hand_base_link"
+        ],
+        "physics:body1": [
+          "/h1/L_thumb_proximal_base"
+        ]
+      }
+    },
+    {
+      "name": "L_index_intermediate_joint",
+      "path": "/h1/L_index_proximal/L_index_intermediate_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.002422899939119816,
+          -0.032040998339653015,
+          -0.0010000000474974513
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_index_proximal"
+        ],
+        "physics:body1": [
+          "/h1/L_index_intermediate"
+        ]
+      }
+    },
+    {
+      "name": "L_index_tip_joint",
+      "path": "/h1/L_index_intermediate/L_index_tip_joint",
+      "type": "PhysicsFixedJoint",
+      "attrs": {
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.004999999888241291,
+          -0.03999999910593033,
+          -0.004000000189989805
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_index_intermediate"
+        ],
+        "physics:body1": [
+          "/h1/L_index_tip"
+        ]
+      }
+    },
+    {
+      "name": "L_middle_intermediate_joint",
+      "path": "/h1/L_middle_proximal/L_middle_intermediate_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.002422899939119816,
+          -0.032040998339653015,
+          -0.0010000000474974513
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_middle_proximal"
+        ],
+        "physics:body1": [
+          "/h1/L_middle_intermediate"
+        ]
+      }
+    },
+    {
+      "name": "L_middle_tip_joint",
+      "path": "/h1/L_middle_intermediate/L_middle_tip_joint",
+      "type": "PhysicsFixedJoint",
+      "attrs": {
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.004999999888241291,
+          -0.04500000178813934,
+          -0.004000000189989805
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_middle_intermediate"
+        ],
+        "physics:body1": [
+          "/h1/L_middle_tip"
+        ]
+      }
+    },
+    {
+      "name": "L_pinky_intermediate_joint",
+      "path": "/h1/L_pinky_proximal/L_pinky_intermediate_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.002422899939119816,
+          -0.032040998339653015,
+          -0.0010000000474974513
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_pinky_proximal"
+        ],
+        "physics:body1": [
+          "/h1/L_pinky_intermediate"
+        ]
+      }
+    },
+    {
+      "name": "L_pinky_tip_joint",
+      "path": "/h1/L_pinky_intermediate/L_pinky_tip_joint",
+      "type": "PhysicsFixedJoint",
+      "attrs": {
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.0020000000949949026,
+          -0.03200000151991844,
+          -0.004000000189989805
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_pinky_intermediate"
+        ],
+        "physics:body1": [
+          "/h1/L_pinky_tip"
+        ]
+      }
+    },
+    {
+      "name": "L_ring_intermediate_joint",
+      "path": "/h1/L_ring_proximal/L_ring_intermediate_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.002422899939119816,
+          -0.032040998339653015,
+          -0.0010000000474974513
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_ring_proximal"
+        ],
+        "physics:body1": [
+          "/h1/L_ring_intermediate"
+        ]
+      }
+    },
+    {
+      "name": "L_ring_tip_joint",
+      "path": "/h1/L_ring_intermediate/L_ring_tip_joint",
+      "type": "PhysicsFixedJoint",
+      "attrs": {
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.0020000000949949026,
+          -0.03999999910593033,
+          -0.004000000189989805
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_ring_intermediate"
+        ],
+        "physics:body1": [
+          "/h1/L_ring_tip"
+        ]
+      }
+    },
+    {
+      "name": "L_thumb_proximal_pitch_joint",
+      "path": "/h1/L_thumb_proximal_base/L_thumb_proximal_pitch_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.009986699558794498,
+          0.009824199602007866,
+          -0.008899999782443047
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.05981694161891937,
+          -0.05981672182679176,
+          0.7045708894729614,
+          -0.7045734524726868
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 28.64788818359375
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_thumb_proximal_base"
+        ],
+        "physics:body1": [
+          "/h1/L_thumb_proximal"
+        ]
+      }
+    },
+    {
+      "name": "L_thumb_intermediate_joint",
+      "path": "/h1/L_thumb_proximal/L_thumb_intermediate_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.04407000169157982,
+          -0.03455299884080887,
+          -0.0007999999797903001
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 45.83662033081055
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_thumb_proximal"
+        ],
+        "physics:body1": [
+          "/h1/L_thumb_intermediate"
+        ]
+      }
+    },
+    {
+      "name": "L_thumb_distal_joint",
+      "path": "/h1/L_thumb_intermediate/L_thumb_distal_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.02024799957871437,
+          -0.010156000033020973,
+          -0.0012000000569969416
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 68.75493621826172
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_thumb_intermediate"
+        ],
+        "physics:body1": [
+          "/h1/L_thumb_distal"
+        ]
+      }
+    },
+    {
+      "name": "L_thumb_tip_joint",
+      "path": "/h1/L_thumb_distal/L_thumb_tip_joint",
+      "type": "PhysicsFixedJoint",
+      "attrs": {
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.014999999664723873,
+          -0.013000000268220901,
+          -0.004000000189989805
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/L_thumb_distal"
+        ],
+        "physics:body1": [
+          "/h1/L_thumb_tip"
+        ]
+      }
+    },
+    {
+      "name": "R_index_proximal_joint",
+      "path": "/h1/R_hand_base_link/R_index_proximal_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.0002853299956768751,
+          -0.13652999699115753,
+          -0.03226799890398979
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.01744546927511692,
+          -0.9998478293418884,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_hand_base_link"
+        ],
+        "physics:body1": [
+          "/h1/R_index_proximal"
+        ]
+      }
+    },
+    {
+      "name": "R_middle_proximal_joint",
+      "path": "/h1/R_hand_base_link/R_middle_proximal_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.0002853299956768751,
+          -0.1370999962091446,
+          -0.01295000035315752
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          -3.6199901387590216e-06,
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_hand_base_link"
+        ],
+        "physics:body1": [
+          "/h1/R_middle_proximal"
+        ]
+      }
+    },
+    {
+      "name": "R_pinky_proximal_joint",
+      "path": "/h1/R_hand_base_link/R_pinky_proximal_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.0002853299956768751,
+          -0.1357100009918213,
+          0.025488000363111496
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.052322402596473694,
+          0.9986302256584167,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_hand_base_link"
+        ],
+        "physics:body1": [
+          "/h1/R_pinky_proximal"
+        ]
+      }
+    },
+    {
+      "name": "R_ring_proximal_joint",
+      "path": "/h1/R_hand_base_link/R_ring_proximal_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.0002853299956768751,
+          -0.13691000640392303,
+          0.0062871999107301235
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.026193320751190186,
+          0.9996569156646729,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_hand_base_link"
+        ],
+        "physics:body1": [
+          "/h1/R_ring_proximal"
+        ]
+      }
+    },
+    {
+      "name": "R_thumb_proximal_yaw_joint",
+      "path": "/h1/R_hand_base_link/R_thumb_proximal_yaw_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.01696000061929226,
+          -0.06909999996423721,
+          -0.02044999971985817
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.5,
+          -0.500001847743988,
+          0.49999821186065674,
+          0.5
+        ],
+        "physics:localRot1": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "physics:lowerLimit": -5.729577541351318,
+        "physics:upperLimit": 74.48450469970703
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_hand_base_link"
+        ],
+        "physics:body1": [
+          "/h1/R_thumb_proximal_base"
+        ]
+      }
+    },
+    {
+      "name": "R_index_intermediate_joint",
+      "path": "/h1/R_index_proximal/R_index_intermediate_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.00261380011215806,
+          0.03202600032091141,
+          -0.0010000000474974513
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_index_proximal"
+        ],
+        "physics:body1": [
+          "/h1/R_index_intermediate"
+        ]
+      }
+    },
+    {
+      "name": "R_index_tip_joint",
+      "path": "/h1/R_index_intermediate/R_index_tip_joint",
+      "type": "PhysicsFixedJoint",
+      "attrs": {
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.004999999888241291,
+          0.03999999910593033,
+          -0.004000000189989805
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_index_intermediate"
+        ],
+        "physics:body1": [
+          "/h1/R_index_tip"
+        ]
+      }
+    },
+    {
+      "name": "R_middle_intermediate_joint",
+      "path": "/h1/R_middle_proximal/R_middle_intermediate_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.002422899939119816,
+          0.032040998339653015,
+          -0.0010000000474974513
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_middle_proximal"
+        ],
+        "physics:body1": [
+          "/h1/R_middle_intermediate"
+        ]
+      }
+    },
+    {
+      "name": "R_middle_tip_joint",
+      "path": "/h1/R_middle_intermediate/R_middle_tip_joint",
+      "type": "PhysicsFixedJoint",
+      "attrs": {
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.004999999888241291,
+          0.04500000178813934,
+          -0.004000000189989805
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_middle_intermediate"
+        ],
+        "physics:body1": [
+          "/h1/R_middle_tip"
+        ]
+      }
+    },
+    {
+      "name": "R_pinky_intermediate_joint",
+      "path": "/h1/R_pinky_proximal/R_pinky_intermediate_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.002422899939119816,
+          0.032040998339653015,
+          -0.0010000000474974513
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_pinky_proximal"
+        ],
+        "physics:body1": [
+          "/h1/R_pinky_intermediate"
+        ]
+      }
+    },
+    {
+      "name": "R_pinky_tip_joint",
+      "path": "/h1/R_pinky_intermediate/R_pinky_tip_joint",
+      "type": "PhysicsFixedJoint",
+      "attrs": {
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.0020000000949949026,
+          0.03200000151991844,
+          -0.004000000189989805
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_pinky_intermediate"
+        ],
+        "physics:body1": [
+          "/h1/R_pinky_tip"
+        ]
+      }
+    },
+    {
+      "name": "R_ring_intermediate_joint",
+      "path": "/h1/R_ring_proximal/R_ring_intermediate_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.002422899939119816,
+          0.032040998339653015,
+          -0.0010000000474974513
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 97.40282440185547
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_ring_proximal"
+        ],
+        "physics:body1": [
+          "/h1/R_ring_intermediate"
+        ]
+      }
+    },
+    {
+      "name": "R_ring_tip_joint",
+      "path": "/h1/R_ring_intermediate/R_ring_tip_joint",
+      "type": "PhysicsFixedJoint",
+      "attrs": {
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.0020000000949949026,
+          0.03999999910593033,
+          -0.004000000189989805
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_ring_intermediate"
+        ],
+        "physics:body1": [
+          "/h1/R_ring_tip"
+        ]
+      }
+    },
+    {
+      "name": "R_thumb_proximal_pitch_joint",
+      "path": "/h1/R_thumb_proximal_base/R_thumb_proximal_pitch_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          -0.008809899911284447,
+          0.010892000049352646,
+          -0.00925000011920929
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          0.09968429058790207,
+          0.09968465566635132,
+          0.7000463008880615,
+          0.7000437378883362
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 28.64788818359375
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_thumb_proximal_base"
+        ],
+        "physics:body1": [
+          "/h1/R_thumb_proximal"
+        ]
+      }
+    },
+    {
+      "name": "R_thumb_intermediate_joint",
+      "path": "/h1/R_thumb_proximal/R_thumb_intermediate_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.04407000169157982,
+          0.03455299884080887,
+          -0.0007999999797903001
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 45.83662033081055
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_thumb_proximal"
+        ],
+        "physics:body1": [
+          "/h1/R_thumb_intermediate"
+        ]
+      }
+    },
+    {
+      "name": "R_thumb_distal_joint",
+      "path": "/h1/R_thumb_intermediate/R_thumb_distal_joint",
+      "type": "PhysicsRevoluteJoint",
+      "attrs": {
+        "physics:axis": "Z",
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.02024799957871437,
+          0.010156000033020973,
+          -0.0012000000569969416
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:lowerLimit": 0.0,
+        "physics:upperLimit": 68.75493621826172
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_thumb_intermediate"
+        ],
+        "physics:body1": [
+          "/h1/R_thumb_distal"
+        ]
+      }
+    },
+    {
+      "name": "R_thumb_tip_joint",
+      "path": "/h1/R_thumb_distal/R_thumb_tip_joint",
+      "type": "PhysicsFixedJoint",
+      "attrs": {
+        "physics:breakForce": 3.4028234663852886e+38,
+        "physics:breakTorque": 3.4028234663852886e+38,
+        "physics:collisionEnabled": false,
+        "physics:excludeFromArticulation": false,
+        "physics:jointEnabled": true,
+        "physics:localPos0": [
+          0.014999999664723873,
+          0.013000000268220901,
+          -0.004000000189989805
+        ],
+        "physics:localPos1": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot0": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physics:localRot1": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "relations": {
+        "physics:body0": [
+          "/h1/R_thumb_distal"
+        ],
+        "physics:body1": [
+          "/h1/R_thumb_tip"
+        ]
+      }
+    }
+  ]
+}

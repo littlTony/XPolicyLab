@@ -1,0 +1,43 @@
+policy_name: RLDX_1
+protocol: ws
+host: localhost
+port: null
+bench_name: EgoVLA
+task_name: null
+ckpt_name: null
+env_cfg_type: ego_h1_inspire
+seed: null
+action_type: joint
+gpu_id: null
+eval_batch: true
+
+# RLDX-1-PT official inference/training geometry for EgoVLA joint38.
+embodiment_tag: GENERAL_EMBODIMENT
+device: cuda
+strict: true
+verbose: false
+video_length: 4
+video_stride: 2
+execution_horizon: 16
+language_key: annotation.human.action.task_description
+camera_map:
+  cam_head: cam_head
+  cam_left_wrist: cam_left_wrist
+  cam_right_wrist: cam_right_wrist
+input_image_size: [384, 384]
+processor_image_size: [256, 256]
+missing_wrist_policy: black
+swap_rgb_bgr: false
+action_contract: none
+
+# Used only when eval.sh receives the reserved ckpt_name "pretrain".
+# A symlink with this name is created under the strategy's pretrain_model/.
+pretrained_model_path: ../../pretrain_model/RLDX-1-PT-1592013a
+model_path: null
+debug_no_model: false
+
+request_timeout_s: 600
+max_connect_attempts: 120
+connect_retry_delay_s: 2
+ws_ping_interval_s: 20
+ws_ping_timeout_s: 20

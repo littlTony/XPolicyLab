@@ -1,0 +1,14 @@
+{
+  "left": {
+    "equality_max_abs_rad": 2.220446049250313e-16,
+    "frames": 96,
+    "geometry_max_rms_m": 0.03019179463149566,
+    "failures": []
+  },
+  "right": {
+    "equality_max_abs_rad": 2.220446049250313e-16,
+    "frames": 96,
+    "geometry_max_rms_m": 0.03197176708329756,
+    "failures": []
+  }
+}

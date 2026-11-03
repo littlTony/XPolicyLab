@@ -1,0 +1,34 @@
+policy_name: UniT
+protocol: ws
+host: localhost
+port: null
+bench_name: null
+task_name: null
+ckpt_name: null
+env_cfg_type: ego_h1_inspire
+seed: 42
+action_type: joint
+gpu_id: null
+eval_batch: true
+
+# EgoVLA benchmark: canonical three-view ABI.  All active episodes expose
+# head + left/right wrist streams; 1,003 head-only episodes carry explicit
+# black wrist fallback packets with camera_mask=[1,0,0], while the 900
+# Insert-And-Unload-Cans episodes carry real wrist packets [1,1,1].
+data_config: egovla_h1_joint38_threeview
+embodiment_tag: new_embodiment
+camera_names: [cam_head, cam_left_wrist, cam_right_wrist]
+# Legacy readers may inspect camera_name; keep the head alias too.
+camera_name: cam_head
+camera_mask_policy: zero_inactive
+allow_missing_wrist_views: true
+image_size: 384
+denoising_steps: 4
+execute_action_steps: 16
+model_path: null
+dinov2_path_override: null
+dry_run: false
+
+ws_ping_interval_s: 20
+ws_ping_timeout_s: 120
+request_timeout_s: 1200

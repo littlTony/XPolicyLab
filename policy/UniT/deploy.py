@@ -1,0 +1,50 @@
+"""Environment loops for the XPolicyLab websocket policy client."""
+
+
+def eval_one_episode(TASK_ENV, model_client):
+    model_client.call(func_name="reset")
+
+    while not TASK_ENV.is_episode_end():
+        obs = TASK_ENV.get_obs()
+        model_client.call(func_name="update_obs", obs=obs)
+        actions = model_client.call(func_name="get_action")
+        if not actions:
+            raise RuntimeError("UniT returned an empty action chunk")
+
+        for action_index, action in enumerate(actions):
+            TASK_ENV.take_action(action)
+            if TASK_ENV.is_episode_end() or action_index + 1 == len(actions):
+                break
+            model_client.call(func_name="update_obs", obs=TASK_ENV.get_obs())
+
+
+def eval_one_episode_batch(TASK_ENV, model_client):
+    model_client.call(func_name="reset")
+
+    while not TASK_ENV.is_episode_end():
+        env_idx_list = TASK_ENV.get_running_env_idx_list()
+        obs_list = TASK_ENV.get_obs_batch(env_idx_list)
+        model_client.call(func_name="update_obs_batch", obs=obs_list)
+        actions = model_client.call(func_name="get_action_batch", obs=env_idx_list)
+        if not actions or not actions[0]:
+            raise RuntimeError("UniT returned an empty batched action chunk")
+
+        chunk_size = len(actions[0])
+        if any(len(env_actions) != chunk_size for env_actions in actions):
+            raise RuntimeError("UniT returned inconsistent action horizons across environments")
+
+        for action_index in range(chunk_size):
+            current_actions = [env_actions[action_index] for env_actions in actions]
+            TASK_ENV.take_action_batch(current_actions, env_idx_list)
+
+            if TASK_ENV.is_episode_end() or action_index + 1 == chunk_size:
+                break
+
+            running = set(TASK_ENV.get_running_env_idx_list())
+            active = [i for i, env_idx in enumerate(env_idx_list) if env_idx in running]
+            actions = [actions[i] for i in active]
+            env_idx_list = [env_idx_list[i] for i in active]
+            model_client.call(
+                func_name="update_obs_batch",
+                obs=TASK_ENV.get_obs_batch(env_idx_list),
+            )

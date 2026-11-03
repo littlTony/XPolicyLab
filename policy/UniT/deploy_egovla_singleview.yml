@@ -1,0 +1,27 @@
+policy_name: UniT
+protocol: ws
+host: localhost
+port: null
+bench_name: null
+task_name: null
+ckpt_name: null
+env_cfg_type: ego_h1_inspire
+seed: 42
+action_type: joint
+gpu_id: null
+eval_batch: true
+
+# EgoVLA benchmark legacy single-view deployment (head stream only).
+data_config: egovla_h1_joint38_singleview
+embodiment_tag: new_embodiment
+camera_name: cam_head
+image_size: 384
+denoising_steps: 4
+execute_action_steps: 16
+model_path: null
+dinov2_path_override: null
+dry_run: false
+
+ws_ping_interval_s: 20
+ws_ping_timeout_s: 120
+request_timeout_s: 1200
