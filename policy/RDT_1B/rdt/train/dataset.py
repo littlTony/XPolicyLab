@@ -137,7 +137,10 @@ class VLAConsumerDataset(Dataset):
             self.empty_lang_embed = torch.load(empty_embed_path)
         
         # Load dataset stat
-        with open("configs/dataset_stat.json", 'r') as f:
+        # Keep the repository default for legacy runs, while allowing a
+        # dataset-specific stats file generated alongside a new HDF5 tree.
+        dataset_stat_path = os.environ.get("RDT_DATASET_STAT_PATH", "configs/dataset_stat.json")
+        with open(dataset_stat_path, 'r') as f:
             dataset_stat = json.load(f)
         self.dataset_stat = dataset_stat
         

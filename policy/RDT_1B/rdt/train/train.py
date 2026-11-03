@@ -326,7 +326,18 @@ def train(args, logger):
     # We need to initialize the trackers we use, and also store our configuration.
     # The trackers initializes automatically on the main process.
     if accelerator.is_main_process:
-        accelerator.init_trackers("roboticDiffusionTransformer", config=vars(args))
+        wandb_init_kwargs = {
+            "name": os.environ.get("WANDB_NAME", "rdt-1b"),
+        }
+        wandb_run_id = os.environ.get("WANDB_RUN_ID", "").strip()
+        if wandb_run_id:
+            wandb_init_kwargs["id"] = wandb_run_id
+            wandb_init_kwargs["resume"] = os.environ.get("WANDB_RESUME", "allow")
+        accelerator.init_trackers(
+            os.environ.get("WANDB_PROJECT", "xpolicylab-0908-SparkArena"),
+            config=vars(args),
+            init_kwargs={"wandb": wandb_init_kwargs},
+        )
 
     # Train!
     total_batch_size = args.train_batch_size * accelerator.num_processes * args.gradient_accumulation_steps
@@ -448,6 +459,28 @@ def train(args, logger):
             if accelerator.sync_gradients:
                 progress_bar.update(1)
                 global_step += 1
+                if accelerator.is_main_process:
+                    import json as _json
+                    import time as _time
+                    _status_path = os.environ.get(
+                        "RDT_PROGRESS_PATH",
+                        os.path.join(args.output_dir, "progress.json"),
+                    )
+                    _status = {
+                        "optimizer_step": global_step,
+                        "loss": float(loss.detach().item()),
+                        "time": _time.time(),
+                        "global_batch_size": total_batch_size,
+                        "max_optimizer_steps": args.max_train_steps,
+                        "wandb_run_id": wandb.run.id if wandb.run else None,
+                        "wandb_url": wandb.run.url if wandb.run else None,
+                    }
+                    os.makedirs(os.path.dirname(_status_path) or ".", exist_ok=True)
+                    with open(_status_path + ".tmp", "w") as _stream:
+                        _json.dump(_status, _stream)
+                    os.replace(_status_path + ".tmp", _status_path)
+                    if global_step <= 10 or global_step % 100 == 0:
+                        print("RDT_PROGRESS", _json.dumps(_status), flush=True)
 
                 if global_step % args.checkpointing_period == 0:
                     save_path = os.path.join(args.output_dir, f"checkpoint-{global_step}")

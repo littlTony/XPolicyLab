@@ -4,8 +4,11 @@ protocol: ws
 host: localhost
 bench_name: null
 task_name: null
+ckpt_name: null
 env_cfg_type: null
 seed: null
+action_type: joint
+gpu_id: null
 eval_batch: true
 
 checkpoint_num: null
@@ -13,7 +16,6 @@ result_dir: "./results/RDT_1B/"
 obs_transform_pipeline: null
 
 # Model / action configuration
-action_type: joint
 prompt: null
 checkpoint_path: null
 model_path: null
@@ -21,9 +23,17 @@ config_path: null
 text_encoder_path: null
 vision_encoder_path: null
 model_root: null
-ctrl_freq: 25
+# Server script overrides this per env: EgoVLA=30, SparkArena/Tianji=25.
+ctrl_freq: 30
 chunk_size: 64
-image_size: [640, 480]
+# Leave unset here. setup_eval_policy_server.sh / Model pick:
+#   ego_h1_inspire -> [384, 384] (EgoVLA staged square images)
+#   tianji_marvin_wuji / SparkArena -> [640, 480] then letterbox, matching train
+image_size: null
+# For EgoVLA this is resolved to black_wrist by eval.sh/server. main_replicated
+# is only for the old checkpoint that copied the main view into wrist slots.
+# real_wrist is for checkpoints trained with independent wrist views.
+camera_mode: null
 device: cuda
 dtype: bfloat16
 

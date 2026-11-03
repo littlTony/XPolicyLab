@@ -14,7 +14,13 @@ policy_server_ip=${11:-"localhost"}
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 XPL_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-BENCH_ROOT="$(cd "${XPL_ROOT}/.." && pwd)"
+# eval_web sets EVAL_MAIN_ROOT to xspark-0-simeval.  Do not derive the
+# simulator from the training checkout parent (/personal/xiangpc).
+if [[ -n "${EVAL_MAIN_ROOT:-}" && -f "${EVAL_MAIN_ROOT}/scripts/eval_policy.sh" ]]; then
+    BENCH_ROOT="${EVAL_MAIN_ROOT}"
+else
+    BENCH_ROOT="$(cd "${XPL_ROOT}/.." && pwd)"
+fi
 UTILS_DIR="${XPL_ROOT}/utils"
 
 policy_name="$(basename "${SCRIPT_DIR}")"

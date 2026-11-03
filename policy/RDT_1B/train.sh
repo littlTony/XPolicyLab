@@ -20,6 +20,7 @@ export TEXT_ENCODER_NAME="${TEXT_ENCODER_NAME:-${WEIGHTS_DIR}/t5-v1_1-xxl}"
 export VISION_ENCODER_NAME="${VISION_ENCODER_NAME:-${WEIGHTS_DIR}/siglip-so400m-patch14-384}"
 export RDT_PRETRAINED_MODEL="${RDT_PRETRAINED_MODEL:-${WEIGHTS_DIR}/rdt-1b}"
 export RDT_DATASET_NAME="${RDT_DATASET_NAME:-robodojo_aloha_hdf5}"
+export RDT_DROP_SHORT_EPISODES="${RDT_DROP_SHORT_EPISODES:-1}"
 
 data_setting="${bench_name}-${ckpt_name}-${env_cfg_type}-${action_type}"
 ckpt_setting="${bench_name}-${ckpt_name}-${env_cfg_type}-${action_type}-${seed}"
@@ -63,14 +64,20 @@ echo "[RDT_1B] checkpoint_dir=${OUTPUT_DIR}"
 echo "[RDT_1B] RDT_HDF5_DIR=${RDT_HDF5_DIR}"
 echo "[RDT_1B] RDT_LANG_EMBED_DIR=${RDT_LANG_EMBED_DIR}"
 echo "[RDT_1B] RDT_DATASET_NAME=${RDT_DATASET_NAME}"
+echo "[RDT_1B] RDT_DROP_SHORT_EPISODES=${RDT_DROP_SHORT_EPISODES}"
 
+RDT_LAUNCHER="${RDT_LAUNCHER:-deepspeed}"
 RDT_DEEPSPEED_ARGS="${RDT_DEEPSPEED_ARGS:---num_gpus=${NUM_GPUS}}"
 RDT_PRECOMP_LANG_EMBED_FLAG=""
 if [[ "${RDT_PRECOMP_LANG_EMBED:-1}" == "1" ]]; then
   RDT_PRECOMP_LANG_EMBED_FLAG="--precomp_lang_embed"
 fi
-# shellcheck disable=SC2086
-deepspeed ${RDT_DEEPSPEED_ARGS} main.py \
+RDT_RESUME_ARGS=()
+if [[ -n "${RDT_RESUME_FROM_CHECKPOINT:-}" ]]; then
+  RDT_RESUME_ARGS+=("--resume_from_checkpoint=${RDT_RESUME_FROM_CHECKPOINT}")
+fi
+TRAIN_ARGS=(
+    --config_path="${RDT_CONFIG_PATH:-./configs/base.yaml}"
     --deepspeed="./configs/zero2.json" \
     --pretrained_model_name_or_path="${RDT_PRETRAINED_MODEL}" \
     --pretrained_text_encoder_name_or_path="${TEXT_ENCODER_NAME}" \
@@ -81,6 +88,7 @@ deepspeed ${RDT_DEEPSPEED_ARGS} main.py \
     --sample_batch_size="${RDT_SAMPLE_BATCH_SIZE:-64}" \
     --max_train_steps="${RDT_MAX_TRAIN_STEPS:-200000}" \
     --checkpointing_period="${RDT_CHECKPOINTING_PERIOD:-1000}" \
+    "${RDT_RESUME_ARGS[@]}" \
     --sample_period="${RDT_SAMPLE_PERIOD:-500}" \
     --checkpoints_total_limit="${RDT_CHECKPOINTS_TOTAL_LIMIT:-40}" \
     --lr_scheduler="${RDT_LR_SCHEDULER:-constant}" \
@@ -93,3 +101,42 @@ deepspeed ${RDT_DEEPSPEED_ARGS} main.py \
     --load_from_hdf5 \
     ${RDT_PRECOMP_LANG_EMBED_FLAG} \
     --report_to="${RDT_REPORT_TO:-wandb}"
+)
+
+# DeepSpeed's CUDA extension probe requires a local CUDA toolkit.  Some H20
+# hosts expose the driver and PyTorch CUDA runtime but intentionally do not
+# ship nvcc; use torchrun in that case.  It preserves the same per-rank batch
+# size and global batch (8 x 8 = 64) while avoiding a runtime compile.
+if [[ "${RDT_LAUNCHER}" == "torchrun" ]]; then
+    # Remove the deepspeed argument by rebuilding a clean argument list.
+    TRAIN_ARGS=(
+        --config_path="${RDT_CONFIG_PATH:-./configs/base.yaml}"
+        --pretrained_model_name_or_path="${RDT_PRETRAINED_MODEL}"
+        --pretrained_text_encoder_name_or_path="${TEXT_ENCODER_NAME}"
+        --pretrained_vision_encoder_name_or_path="${VISION_ENCODER_NAME}"
+        --output_dir="${OUTPUT_DIR}"
+        --seed="${seed}"
+        --train_batch_size="${RDT_TRAIN_BATCH_SIZE:-32}"
+        --sample_batch_size="${RDT_SAMPLE_BATCH_SIZE:-64}"
+        --max_train_steps="${RDT_MAX_TRAIN_STEPS:-200000}"
+        --checkpointing_period="${RDT_CHECKPOINTING_PERIOD:-1000}"
+        "${RDT_RESUME_ARGS[@]}"
+        --sample_period="${RDT_SAMPLE_PERIOD:-500}"
+        --checkpoints_total_limit="${RDT_CHECKPOINTS_TOTAL_LIMIT:-40}"
+        --lr_scheduler="${RDT_LR_SCHEDULER:-constant}"
+        --learning_rate="${RDT_LEARNING_RATE:-1e-4}"
+        --mixed_precision="${RDT_MIXED_PRECISION:-bf16}"
+        --dataloader_num_workers="${RDT_DATALOADER_NUM_WORKERS:-8}"
+        --image_aug
+        --dataset_type="finetune"
+        --state_noise_snr="${RDT_STATE_NOISE_SNR:-40}"
+        --load_from_hdf5
+        ${RDT_PRECOMP_LANG_EMBED_FLAG}
+        --report_to="${RDT_REPORT_TO:-wandb}"
+    )
+    # shellcheck disable=SC2086
+    torchrun --standalone --nproc_per_node="${NUM_GPUS}" main.py "${TRAIN_ARGS[@]}"
+else
+    # shellcheck disable=SC2086
+    deepspeed ${RDT_DEEPSPEED_ARGS} main.py "${TRAIN_ARGS[@]}"
+fi

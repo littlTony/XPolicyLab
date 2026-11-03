@@ -9,6 +9,14 @@ import cv2
 import numpy as np
 
 from configs.state_vec import STATE_VEC_IDX_MAPPING
+from configs.tianji_joint54 import (
+    TIANJI_JOINT54_DIM,
+    TIANJI_JOINT54_STATE_INDICES,
+)
+from configs.egovla_joint38 import (
+    EGOVLA_JOINT38_DIM,
+    EGOVLA_JOINT38_STATE_INDICES,
+)
 
 _XPOLICYLAB_ROOT = Path(__file__).resolve().parents[4]
 for _search_path in (str(_XPOLICYLAB_ROOT.parent), str(_XPOLICYLAB_ROOT)):
@@ -16,6 +24,22 @@ for _search_path in (str(_XPOLICYLAB_ROOT.parent), str(_XPOLICYLAB_ROOT)):
         sys.path.insert(0, _search_path)
 
 from XPolicyLab.utils.process_data import decode_image_bit
+
+
+def _read_bool_env(name, default):
+    raw_value = os.environ.get(name)
+    if raw_value is None:
+        return default
+
+    normalized = raw_value.strip().lower()
+    if normalized in {"1", "true", "yes", "on"}:
+        return True
+    if normalized in {"0", "false", "no", "off"}:
+        return False
+    raise ValueError(
+        f"{name} must be one of 1/0, true/false, yes/no, or on/off; "
+        f"got {raw_value!r}."
+    )
 
 
 class HDF5VLADataset:
@@ -31,6 +55,12 @@ class HDF5VLADataset:
         self.DATASET_NAME = os.environ.get("RDT_DATASET_NAME", "robodojo_aloha_hdf5")
         self.lang_embed_dir = os.environ.get("RDT_LANG_EMBED_DIR")
         self.use_precomp_lang_embed = use_precomp_lang_embed
+        # Preserve the official RDT behavior by default, while allowing datasets
+        # with meaningful short episodes to opt out of the 128-step filter.
+        self.drop_short_episodes = _read_bool_env(
+            "RDT_DROP_SHORT_EPISODES", default=True
+        )
+        self.min_episode_steps = 128
         
         self.file_paths = []
         for root, _, files in os.walk(self.HDF5_DIR):
@@ -57,6 +87,13 @@ class HDF5VLADataset:
         if total_len <= 0:
             raise RuntimeError(f"No valid HDF5 episodes found under {self.HDF5_DIR}")
         self.episode_sample_weights = np.array(episode_lens) / total_len
+        valid_episode_count = int(np.count_nonzero(episode_lens))
+        print(
+            "[RDT HDF5] "
+            f"drop_short_episodes={self.drop_short_episodes}, "
+            f"min_episode_steps={self.min_episode_steps}, "
+            f"valid_episodes={valid_episode_count}/{len(self.file_paths)}"
+        )
     
     def __len__(self):
         return len(self.file_paths)
@@ -105,12 +142,21 @@ class HDF5VLADataset:
         )
         return np.concatenate([left, right], axis=-1)
 
+    def _ego_single_view(self):
+        """EgoVLA releases one RGB stream. Wrist slots must stay black."""
+        return str(self.DATASET_NAME or "").lower().startswith("egovla")
+
     def _parse_robodojo_images(self, h5_file, step_id, first_idx):
-        camera_map = {
-            "cam_high": "cam_head",
-            "cam_left_wrist": "cam_left_wrist",
-            "cam_right_wrist": "cam_right_wrist",
-        }
+        # EgoVLA canonical files hard-link cam_head into both wrist datasets.
+        # That is not a wrist view. Skip those datasets and fill black later.
+        if self._ego_single_view():
+            camera_map = {"cam_high": "cam_head"}
+        else:
+            camera_map = {
+                "cam_high": "cam_head",
+                "cam_left_wrist": "cam_left_wrist",
+                "cam_right_wrist": "cam_right_wrist",
+            }
         valid_len = min(step_id - (first_idx - 1) + 1, self.IMG_HISORY_SIZE)
         mask = np.array(
             [False] * (self.IMG_HISORY_SIZE - valid_len) + [True] * valid_len
@@ -136,6 +182,11 @@ class HDF5VLADataset:
                 imgs = np.zeros((self.IMG_HISORY_SIZE, 0, 0, 0), dtype=np.uint8)
             parsed[output_key] = imgs
             parsed[f"{output_key}_mask"] = mask.copy()
+        if self._ego_single_view():
+            black = np.zeros_like(parsed["cam_high"])
+            for wrist_key in ("cam_left_wrist", "cam_right_wrist"):
+                parsed[wrist_key] = black.copy()
+                parsed[f"{wrist_key}_mask"] = parsed["cam_high_mask"].copy()
         return parsed
 
     def parse_hdf5_file(self, file_path):
@@ -183,8 +234,8 @@ class HDF5VLADataset:
             else:
                 qpos = f['observations']['qpos'][:]
             num_steps = qpos.shape[0]
-            # [Optional] We drop too-short episode
-            if num_steps < 128:
+            # [Optional] Drop too-short episodes when the compatibility switch is on.
+            if self.drop_short_episodes and num_steps < self.min_episode_steps:
                 return False, None
             
             # [Optional] We skip the first few still steps
@@ -198,7 +249,11 @@ class HDF5VLADataset:
                 raise ValueError("Found no qpos that exceeds the threshold.")
             
             # We randomly sample a timestep
-            step_id = np.random.randint(first_idx-1, num_steps)
+            # Include the first frame when it is already moving.  The old
+            # first_idx - 1 expression becomes -1 for such episodes and
+            # accidentally samples only the final frame.
+            start_idx = max(first_idx - 1, 0)
+            step_id = np.random.randint(start_idx, num_steps)
             
             # One RoboDojo task/env group shares a single instruction embedding.
             instruction = self._get_instruction(file_path, f)
@@ -316,8 +371,8 @@ class HDF5VLADataset:
             else:
                 qpos = f['observations']['qpos'][:]
             num_steps = qpos.shape[0]
-            # [Optional] We drop too-short episode
-            if num_steps < 128:
+            # Keep sampling and dataset-statistics filtering consistent.
+            if self.drop_short_episodes and num_steps < self.min_episode_steps:
                 return False, None
             
             # [Optional] We skip the first few still steps
@@ -336,8 +391,9 @@ class HDF5VLADataset:
                 target_qpos = f['action'][:]
             
             # Parse the state and action
-            state = qpos[first_idx-1:]
-            action = target_qpos[first_idx-1:]
+            start_idx = max(first_idx - 1, 0)
+            state = qpos[start_idx:]
+            action = target_qpos[start_idx:]
             
             # Fill the state/action into the unified vector
             left_arm_dim, right_arm_dim = self._get_arm_dims(f, qpos.shape[-1])
@@ -400,6 +456,30 @@ class HDF5VLADataset:
             raise ValueError(f"Expected state dim {expected_dim}, got {values.shape[-1]}")
 
         uni_vec = np.zeros(values.shape[:-1] + (self.STATE_DIM,), dtype=np.float32)
+
+        # Tianji + Wuji uses 7 arm and 20 hand joints on each side.  The
+        # generic ALOHA fallback below only retains ten joints plus one
+        # gripper value per side, which silently drops 32 hand-joint values.
+        # Keep all 54 joints using the same map as deployment.
+        if (
+            expected_dim == TIANJI_JOINT54_DIM
+            and left_arm_dim == TIANJI_JOINT54_DIM // 2
+            and right_arm_dim == TIANJI_JOINT54_DIM // 2
+        ):
+            uni_vec[..., TIANJI_JOINT54_STATE_INDICES] = values
+            return uni_vec
+
+        # EgoVLA H1 + Inspire has seven arm and twelve hand values per side.
+        # Do not send its 19D halves through the generic ALOHA fallback: that
+        # fallback intentionally keeps only ten joints and one gripper value.
+        if (
+            expected_dim == EGOVLA_JOINT38_DIM
+            and left_arm_dim == EGOVLA_JOINT38_DIM // 2
+            and right_arm_dim == EGOVLA_JOINT38_DIM // 2
+        ):
+            uni_vec[..., EGOVLA_JOINT38_STATE_INDICES] = values
+            return uni_vec
+
         left_values = values[..., :left_arm_dim]
         right_values = values[..., left_arm_dim:]
 

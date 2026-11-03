@@ -125,15 +125,14 @@ class ACT:
         if self.temporal_agg:
             self.query_frequency = 1
 
-        # Per-env temporal state. A single shared policy instance serves all
-        # parallel envs; each env keeps its own timestep and (for temporal_agg)
-        # its own sliding action buffer. Inference loops over envs one at a
-        # time (single-env forward), so neither a batched forward nor duplicated
-        # model weights blow up GPU memory.
+        # Per-env temporal state. DexBench calls update_obs_batch / get_action_batch
+        # with num_envs=5; a single shared policy instance serves all envs.
         self.t_by_env = {}
         self.obs_by_env = {}
         self.all_actions_by_env = {}
         self.all_time_actions_by_env = {}
+        self.t = 0
+        self.obs_cache = None
 
         # Load statistics and policy weights. Missing files are fatal because
         # running with an unnormalized/randomly initialized ACT policy is invalid.
@@ -154,8 +153,6 @@ class ACT:
             raise FileNotFoundError(f"ACT policy checkpoint not found: {ckpt_path}")
         self.policy.load_state_dict(torch.load(ckpt_path, map_location=self.device))
 
-        self.obs_cache = None
-
     def pre_process(self, qpos):
         """Normalize input joint positions"""
         if self.stats is not None:
@@ -171,6 +168,7 @@ class ACT:
     def update_obs(self, obs, env_idx=0):
         env_idx = int(env_idx)
         self.obs_by_env[env_idx] = obs
+        self.obs_cache = obs
         if env_idx not in self.t_by_env:
             self.t_by_env[env_idx] = 0
 
@@ -188,25 +186,17 @@ class ACT:
         return torch.from_numpy(curr_image).float().to(self.device).unsqueeze(0)
 
     def _get_raw_actions_batch(self, env_idx_list):
-        # Loop over envs and run a single-env forward for each. This avoids the
-        # large activation spike of concatenating all envs into one batch while
-        # still sharing a single set of model weights.
         raw_actions = []
         for e in env_idx_list:
             t = self.t_by_env.get(e, 0)
             qpos = self._preprocess_qpos(self.obs_by_env[e]["qpos"])
             image = self._preprocess_image(self.obs_by_env[e])
             with torch.no_grad():
-                # Only query the policy at specified intervals - exactly like imitate_episodes.py
                 if t % self.query_frequency == 0:
                     self.all_actions_by_env[e] = self.policy(qpos, image)
-            all_actions = self.all_actions_by_env[e]  # (1, num_queries, state_dim)
+            all_actions = self.all_actions_by_env[e]
 
             if self.temporal_agg:
-                # Match temporal aggregation exactly from imitate_episodes.py.
-                # The aggregation buffer is kept on CPU (it is only used for a
-                # weighted average each step and the result is moved to CPU
-                # anyway), so it does not consume GPU memory per env.
                 at = self.all_time_actions_by_env.setdefault(
                     e,
                     torch.zeros([
@@ -220,7 +210,6 @@ class ACT:
                 actions_populated = torch.all(actions_for_curr_step != 0, axis=1)
                 actions_for_curr_step = actions_for_curr_step[actions_populated]
 
-                # Use same weighting factor as in imitate_episodes.py
                 k = 0.01
                 exp_weights = np.exp(-k * np.arange(len(actions_for_curr_step)))
                 exp_weights = exp_weights / exp_weights.sum()
@@ -228,13 +217,12 @@ class ACT:
 
                 raw_action = (actions_for_curr_step * exp_weights).sum(dim=0, keepdim=True)
             else:
-                # Direct action selection, same as imitate_episodes.py
                 raw_action = all_actions[:, t % self.query_frequency]
 
-            # Denormalize action
             raw_action = raw_action.cpu().numpy()
             raw_actions.append(self.post_process(raw_action))
             self.t_by_env[e] = t + 1
+            self.t = t + 1
         return raw_actions
 
     def get_action(self, env_idx=0):
@@ -253,3 +241,5 @@ class ACT:
         self.obs_by_env.clear()
         self.all_actions_by_env.clear()
         self.all_time_actions_by_env.clear()
+        self.t = 0
+        self.obs_cache = None
