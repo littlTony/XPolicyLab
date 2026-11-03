@@ -1,7 +1,0 @@
-# @package _global_
-
-defaults:
-  - _self_
-  - data: mobile_arena_native
-  - model: posttrain_mobile_arena
-  - trainer: deepspeed
