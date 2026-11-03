@@ -1,0 +1,30 @@
+type: egovla
+
+dataset_dir: /personal/xiangpc/0912_Xpolicylab_bench/openwam/data/egovla_benchmark_joint38
+embodiment: ego_h1_inspire
+action_mode: eef
+
+# Official OpenWAM-α slots: EE xyz+rot6d + Inspire hand12 (gripper/hand-pad unused).
+unify_action: true
+unify_action_map: ["0-2", "3-8", "10-21", "34-36", "37-42", "44-55"]
+unify_state_map: ["0-2", "3-8", "10-21", "34-36", "37-42", "44-55"]
+
+num_frames: 33
+video_stride: 4
+window_stride: 1
+split: train
+
+height: 384
+width: 320
+multiview: false
+target_camera: cam_head
+
+normalize_mode: min-max
+normalization_stats_path: /personal/xiangpc/0912_Xpolicylab_bench/openwam/data/egovla_benchmark_joint38/meta/normalization_stats_eef.npy
+
+color_jitter:
+  enabled: true
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.2
+  hue: 0.0

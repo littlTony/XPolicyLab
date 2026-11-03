@@ -106,6 +106,9 @@ def _normalization_transforms_equal(left, right) -> bool:
     """
     if not isinstance(left, dict) or not isinstance(right, dict):
         return False
+    if left.get("action_contract") is not None or right.get("action_contract") is not None:
+        if not _normalization_stats_values_equal(left.get("action_contract"), right.get("action_contract")):
+            return False
     left_modes = {
         key: value
         for key, value in left.items()

@@ -1,0 +1,143 @@
+# @package _global_
+# FastWAM training recipe for the active bench_v5 0908-real / SparkArena
+# 7-task benchmark (54 upper-body joints, three camera streams).
+defaults:
+  - override /data: robotwin
+  - override /model: fastwam
+  - _self_
+
+batch_size: 8
+num_workers: 8
+lr_scheduler_type: cosine
+learning_rate: 1.0e-4
+num_epochs: 100000
+max_steps: 80000
+log_every: 10
+save_every: 10000
+eval_every: 10000
+eval_num_inference_steps: 10
+gradient_accumulation_steps: 1
+mixed_precision: bf16
+seed: 42
+max_grad_norm: 1.0
+weight_decay: 1.0e-2
+resume: null
+
+wandb:
+  enabled: true
+  workspace: null
+  project: fast-wam
+  name: egovla_joint54_bs64_s42_80k
+  group: null
+  mode: online
+
+data:
+  train:
+    dataset_dirs: []
+    shape_meta:
+      images:
+        - key: cam_high
+          raw_shape: [3, 544, 544]
+          shape: [3, 240, 320]
+        - key: cam_left_wrist
+          raw_shape: [3, 544, 544]
+          shape: [3, 240, 320]
+        - key: cam_right_wrist
+          raw_shape: [3, 544, 544]
+          shape: [3, 240, 320]
+      action:
+        - key: default
+          raw_shape: 54
+          shape: 54
+      state:
+        - key: default
+          raw_shape: 54
+          shape: 54
+    num_frames: 33
+    global_sample_stride: 1
+    action_video_freq_ratio: 4
+    video_size: [544, 320]
+    camera_key: null
+    val_set_proportion: 0.01
+    is_training_set: true
+    pretrained_norm_stats: null
+    skip_padding_as_possible: false
+    concat_multi_camera: robotwin
+    processor:
+      _target_: fastwam.datasets.lerobot.processors.fastwam_processor.FastWAMProcessor
+      shape_meta: ${data.train.shape_meta}
+      num_obs_steps: ${data.train.num_frames}
+      num_output_cameras: 3
+      action_output_dim: 54
+      proprio_output_dim: 54
+      action_state_transforms: null
+      use_stepwise_action_norm: false
+      norm_default_mode: z-score
+      norm_exception_mode: null
+      action_state_merger:
+        _target_: fastwam.datasets.lerobot.transforms.action_state_merger.ConcatLeftAlign
+      train_transforms:
+        - _target_: fastwam.datasets.lerobot.transforms.image.ToTensor
+        - _target_: torchvision.transforms.Resize
+          size: [240, 320]
+      val_transforms:
+        - _target_: fastwam.datasets.lerobot.transforms.image.ToTensor
+        - _target_: torchvision.transforms.Resize
+          size: [240, 320]
+    text_embedding_cache_dir: null
+    context_len: 128
+
+  val:
+    dataset_dirs: []
+    shape_meta:
+      images:
+        - key: cam_high
+          raw_shape: [3, 544, 544]
+          shape: [3, 240, 320]
+        - key: cam_left_wrist
+          raw_shape: [3, 544, 544]
+          shape: [3, 240, 320]
+        - key: cam_right_wrist
+          raw_shape: [3, 544, 544]
+          shape: [3, 240, 320]
+      action:
+        - key: default
+          raw_shape: 54
+          shape: 54
+      state:
+        - key: default
+          raw_shape: 54
+          shape: 54
+    num_frames: 33
+    global_sample_stride: 1
+    action_video_freq_ratio: 4
+    video_size: [544, 320]
+    camera_key: null
+    val_set_proportion: 0.01
+    is_training_set: false
+    pretrained_norm_stats: null
+    skip_padding_as_possible: false
+    concat_multi_camera: robotwin
+    processor:
+      _target_: fastwam.datasets.lerobot.processors.fastwam_processor.FastWAMProcessor
+      shape_meta: ${data.val.shape_meta}
+      num_obs_steps: ${data.val.num_frames}
+      num_output_cameras: 3
+      action_output_dim: 54
+      proprio_output_dim: 54
+      action_state_transforms: null
+      use_stepwise_action_norm: false
+      norm_default_mode: z-score
+      norm_exception_mode: null
+      action_state_merger:
+        _target_: fastwam.datasets.lerobot.transforms.action_state_merger.ConcatLeftAlign
+      train_transforms:
+        - _target_: fastwam.datasets.lerobot.transforms.image.ToTensor
+        - _target_: torchvision.transforms.Resize
+          size: [240, 320]
+      val_transforms:
+        - _target_: fastwam.datasets.lerobot.transforms.image.ToTensor
+        - _target_: torchvision.transforms.Resize
+          size: [240, 320]
+    text_embedding_cache_dir: null
+    context_len: 128

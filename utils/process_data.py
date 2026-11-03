@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from pathlib import Path
 import cv2
 from XPolicyLab.utils.load_file import load_json, load_yaml
 
@@ -249,24 +250,30 @@ def unpack_robot_state(
 
     return result
 
+def _env_cfg_root():
+    """env_cfg is owned by the parent simulator workspace, outside XPolicyLab."""
+    root = Path(os.environ.get("EVAL_MAIN_ROOT", Path(__file__).resolve().parents[2]))
+    return root / "env_cfg"
+
+
 def get_robot_action_dim_info(env_cfg_type):
-    env_cfg = load_yaml(os.path.join(os.path.dirname(__file__), "../../env_cfg", f"{env_cfg_type}.yml"))
+    env_cfg = load_yaml(_env_cfg_root() / f"{env_cfg_type}.yml")
     robot_name = env_cfg['config']['robot']
-    robot_action_dim_info = load_json(os.path.join(os.path.dirname(__file__), "../../env_cfg/robot", "_robot_info.json"))[robot_name]
+    robot_action_dim_info = load_json(_env_cfg_root() / "robot" / "_robot_info.json")[robot_name]
 
     return robot_action_dim_info
 
 def get_batch_size(env_cfg_type):
-    env_cfg = load_yaml(os.path.join(os.path.dirname(__file__), "../../env_cfg", f"{env_cfg_type}.yml"))
+    env_cfg = load_yaml(_env_cfg_root() / f"{env_cfg_type}.yml")
     sim_cfg = env_cfg['config']['sim']
-    sim_info = load_yaml(os.path.join(os.path.dirname(__file__), "../../env_cfg/sim", f"{sim_cfg}.yml"))
+    sim_info = load_yaml(_env_cfg_root() / "sim" / f"{sim_cfg}.yml")
 
     return sim_info['scene']['num_envs']
 
 def get_action_dim(env_cfg_type):
-    env_cfg = load_yaml(os.path.join(os.path.dirname(__file__), "../../env_cfg", f"{env_cfg_type}.yml"))
+    env_cfg = load_yaml(_env_cfg_root() / f"{env_cfg_type}.yml")
     robot_name = env_cfg['config']['robot']
-    robot_action_dim_info = load_json(os.path.join(os.path.dirname(__file__), "../../env_cfg/robot", "_robot_info.json"))[robot_name]
+    robot_action_dim_info = load_json(_env_cfg_root() / "robot" / "_robot_info.json")[robot_name]
     return sum(robot_action_dim_info["arm_dim"]) + sum(robot_action_dim_info["ee_dim"])
 
 # Two image bit stream formats exist in XPolicyLab data, and both decode to RGB.

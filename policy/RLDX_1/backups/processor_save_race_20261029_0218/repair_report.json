@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-29T02:18:51.583021+08:00",
+  "source": "/personal/wenwei/DexBench/XPolicyLab/policy/RLDX_1/RLDX-1/rldx/experiment/experiment.py",
+  "artifact": "/personal/wenwei/DexBench/XPolicyLab/policy/RLDX_1/checkpoints/DexBench-dq128_60k_rldx_20261027_a01_ga1-tianji_marvin_wuji-ee-42/dq128_60k_rldx_20261027_a01_ga1/processor/statistics.json",
+  "backup": "/personal/wenwei/DexBench/XPolicyLab/policy/RLDX_1/backups/processor_save_race_20261029_0218",
+  "processor_stats_source": "pretrained processor statistics + exact native dataset_statistics.general_embodiment",
+  "native_vs_raw_max_error": 3.885780586188048e-16,
+  "dimensions": [
+    16,
+    64,
+    64
+  ],
+  "tests": {
+    "eight_rank_single_writer": true,
+    "eight_rank_barrier": true,
+    "single_process_save": true,
+    "source_parse": true,
+    "restored_stats_valid_json": true
+  },
+  "running_training_restarted": false
+}

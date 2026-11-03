@@ -1,26 +1,28 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
-# Standard XPolicyLab arguments; extra arguments are Hydra overrides.
-bench_name=${1:?Usage: bash train.sh <bench_name> <ckpt_name> <env_cfg_type> <action_type> <seed> <gpu_ids> [num_gpus] [Hydra overrides...]}
-ckpt_name=${2:?}
-env_cfg_type=${3:?}
-action_type=${4:?}
-seed=${5:?}
-gpu_ids=${6:?}
-shift 6
-if [[ "${action_type}" != "ee" ]]; then
-    echo '[OpenWAM] MobileArena OpenWAM requires action_type=ee.' >&2
+if [[ $# -lt 6 ]]; then
+    echo 'Usage: bash train.sh <bench> <run> <env_cfg> ee <seed> <GPU IDs> [Hydra overrides...]' >&2
     exit 1
 fi
-if [[ $# -gt 0 && "$1" =~ ^[1-9][0-9]*$ ]]; then
-    export NPROC_PER_NODE=$1
-    shift
-else
-    IFS=',' read -r -a selected_gpus <<< "${gpu_ids}"
-    export NPROC_PER_NODE=${#selected_gpus[@]}
+source "$(dirname "$(readlink -f "$0")")/runtime.sh"
+bench=$1; run=$2; env_cfg=$3; action=$4; seed=$5; gpu_ids=$6
+shift 6
+if [[ "${action}" != ee || "${env_cfg}" != tianji_marvin_wuji ]]; then
+    echo 'Expected absolute EE + two Wuji20 hands: tianji_marvin_wuji ee' >&2
+    exit 2
 fi
-POLICY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export OPENWAM_GPUS="${gpu_ids}"
-export OPENWAM_OUTPUT_PATH="${OPENWAM_OUTPUT_PATH:-${POLICY_DIR}/checkpoints/${bench_name}-${ckpt_name}-${env_cfg_type}-${action_type}-${seed}}"
-exec bash "${POLICY_DIR}/train_mobile_arena_openwam_ee.sh" "project.seed=${seed}" "$@"
+"${OPENWAM_PYTHON}" "${OPENWAM_POLICY_DIR}/check_contract.py"
+output="${OPENWAM_POLICY_DIR}/checkpoints/${bench}-${run}-${env_cfg}-ee-${seed}"
+if [[ -e "${output}" ]]; then
+    echo "Output exists: ${output}; use another run name or an explicit resume workflow" >&2
+    exit 1
+fi
+export CUDA_VISIBLE_DEVICES="${gpu_ids}"
+export NPROC_PER_NODE="$(awk -F, '{print NF}' <<<"${gpu_ids}")"
+export MASTER_PORT="${MASTER_PORT:-29519}"
+export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
+cd "${OPENWAM_ROOT}"
+exec bash scripts/train.sh dataloader=dexbench \
+    "training.output_path=${output}" "project.seed=${seed}" \
+    "training.finetune_ckpt_path=/personal/xiangpc/0912_Xpolicylab_bench/openwam/pretrain_model/OpenWAM-Alpha-Pretrain-Foundation-Model/checkpoint_step_154000.safetensors" \
+    training.resume_ckpt_path=null "$@"

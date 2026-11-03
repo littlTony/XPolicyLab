@@ -1,4 +1,5 @@
 import hashlib
+import json
 import logging
 import os
 import re
@@ -13,7 +14,6 @@ from omegaconf import DictConfig, ListConfig
 from tqdm import tqdm
 
 from fastwam.datasets.lerobot.robot_video_dataset import DEFAULT_PROMPT
-from fastwam.datasets.lerobot.lerobot.datasets.utils import load_tasks
 from fastwam.models.wan22.helpers.loader import _load_registered_model, _resolve_configs
 from fastwam.models.wan22.wan_video_text_encoder import HuggingfaceTokenizer
 from fastwam.utils.config_resolvers import register_default_resolvers
@@ -117,13 +117,36 @@ def _read_unique_prompts(dataset_dirs: list[str]) -> list[str]:
     total_task_rows = 0
 
     for ds_dir in dataset_dirs:
-        tasks, _ = load_tasks(Path(ds_dir))
-        for task in tasks.values():
-            prompt = DEFAULT_PROMPT.format(task=str(task))
-            total_task_rows += 1
-            if prompt not in seen:
-                seen.add(prompt)
-                prompts.append(prompt)
+        parquet_path = Path(ds_dir) / "meta" / "tasks.parquet"
+        if parquet_path.exists():
+            import pyarrow.parquet as pq
+            df = pq.read_table(parquet_path).to_pandas()
+            tasks = df["task"].tolist() if "task" in df else df.index.tolist()
+            for task in tasks:
+                prompt = DEFAULT_PROMPT.format(task=str(task))
+                total_task_rows += 1
+                if prompt not in seen:
+                    seen.add(prompt)
+                    prompts.append(prompt)
+            continue
+        tasks_path = Path(ds_dir) / "meta" / "tasks.jsonl"
+        if not tasks_path.exists():
+            raise FileNotFoundError(f"Missing tasks file: {tasks_path}")
+
+        with tasks_path.open("r", encoding="utf-8") as f:
+            for line_idx, line in enumerate(f, start=1):
+                line = line.strip()
+                if not line:
+                    continue
+                record = json.loads(line)
+                if "task" not in record:
+                    raise KeyError(f"Missing `task` field at {tasks_path}:{line_idx}")
+                task = str(record["task"])
+                prompt = DEFAULT_PROMPT.format(task=task)
+                total_task_rows += 1
+                if prompt not in seen:
+                    seen.add(prompt)
+                    prompts.append(prompt)
 
     logger.info(
         "Loaded %d task rows from %d datasets, deduplicated to %d prompts.",
@@ -190,7 +213,7 @@ def main(cfg: DictConfig):
             raise ValueError("No `dataset_dirs` found under `cfg.data`.")
         prompts = _read_unique_prompts(dataset_dirs)
     if not prompts:
-        logger.warning("No prompts found from dataset task metadata; nothing to do.")
+        logger.warning("No prompts found from tasks.jsonl; nothing to do.")
         return
 
     if torch.cuda.is_available():

@@ -226,22 +226,8 @@ def write_task(task_index: int, task: dict, local_dir: Path):
 
 
 def load_tasks(local_dir: Path) -> tuple[dict, dict]:
-    jsonl_path = local_dir / TASKS_PATH
-    if jsonl_path.exists():
-        rows = load_jsonlines(jsonl_path)
-    else:
-        parquet_path = local_dir / "meta" / "tasks.parquet"
-        if not parquet_path.exists():
-            raise FileNotFoundError(f"Missing task metadata under {local_dir}")
-        import pyarrow.parquet as pq
-        # LeRobot v3 writes task text as the pandas index. Restore that index
-        # from the parquet metadata instead of treating it as a `task` column.
-        task_table = pq.read_table(parquet_path).to_pandas()
-        rows = [
-            {"task_index": task_index, "task": task}
-            for task, task_index in task_table["task_index"].items()
-        ]
-    tasks = {int(item["task_index"]): item["task"] for item in sorted(rows, key=lambda x: x["task_index"])}
+    tasks = load_jsonlines(local_dir / TASKS_PATH)
+    tasks = {item["task_index"]: item["task"] for item in sorted(tasks, key=lambda x: x["task_index"])}
     task_to_task_index = {task: task_index for task_index, task in tasks.items()}
     return tasks, task_to_task_index
 
@@ -258,19 +244,9 @@ def write_episode(episode: dict, local_dir: Path):
 
 
 def load_episodes(local_dir: Path) -> dict:
-    jsonl_path = local_dir / EPISODES_PATH
-    if jsonl_path.exists():
-        rows = load_jsonlines(jsonl_path)
-    else:
-        episode_dir = local_dir / "meta" / "episodes"
-        episode_files = sorted(episode_dir.glob("chunk-*/*.parquet"))
-        if not episode_files:
-            raise FileNotFoundError(f"Missing episode metadata under {local_dir}")
-        import pyarrow.parquet as pq
-        rows = []
-        for path in episode_files:
-            rows.extend(pq.read_table(path).to_pylist())
-    return {int(item["episode_index"]): item for item in sorted(rows, key=lambda x: x["episode_index"])}
+    episodes = load_jsonlines(local_dir / EPISODES_PATH)
+    return {item["episode_index"]: item for item in sorted(episodes, key=lambda x: x["episode_index"])}
+
 
 def write_episode_stats(episode_index: int, episode_stats: dict, local_dir: Path):
     # We wrap episode_stats in a dictionary since `episode_stats["episode_index"]`

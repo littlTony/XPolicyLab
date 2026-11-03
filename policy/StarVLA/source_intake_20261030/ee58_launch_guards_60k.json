@@ -1,0 +1,15 @@
+{
+  "bs_guard": true,
+  "batch_guard": true,
+  "world_size_guard": true,
+  "adapter_hash_guard": true,
+  "GA2_CPU_numeric_callbacks": "PASS: GA2 CPU numeric equivalence, Adam/clip/LR once per update, optimizer-step counters and callbacks",
+  "upstream_clean": true,
+  "new_output_absent": true,
+  "status": "passed",
+  "config": "/personal/wenwei/DexBench/XPolicyLab/policy/StarVLA/.generated/DexBench-tianji_wuji-tianji_marvin_wuji-ee-42_3sjmm7ye/config.yaml",
+  "optimizer_updates": 60000,
+  "global_batch": 64,
+  "no_GPU_training_started": true,
+  "latest_sidecar_stats_hardening_rechecked": true
+}

@@ -1,5 +1,5 @@
+# XPolicyLab deploy: policy server env=uv; run setup_eval_policy_server.sh with this env.
 #!/usr/bin/env bash
-# XPolicyLab deploy: policy server env=uv.
 set -euo pipefail
 
 POLICY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

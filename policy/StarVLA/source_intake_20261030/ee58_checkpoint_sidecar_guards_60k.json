@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "private_statistics_hash_checked_before_sidecar": true,
+  "unchanged_statistics_sidecar_saved": true,
+  "tampered_statistics_rejected": true,
+  "GPU": false
+}

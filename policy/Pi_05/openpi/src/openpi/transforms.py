@@ -337,15 +337,9 @@ class PromptFromLeRobotTask(DataTransformFn):
         columns = getattr(self.tasks, "columns", None)
         index = getattr(self.tasks, "index", None)
         if columns is not None and index is not None and "task_index" in columns:
-            matches = self.tasks[self.tasks["task_index"] == task_index]
+            matches = index[self.tasks["task_index"] == task_index]
             if len(matches) > 0:
-                # MobileArena/LeRobot v3 stores natural language in the explicit
-                # ``task`` column and keeps a numeric RangeIndex.  Prefer the
-                # column whenever present; falling back to the index preserves
-                # compatibility with older LeRobot task tables.
-                if "task" in columns:
-                    return str(matches.iloc[0]["task"])
-                return str(matches.index[0])
+                return str(matches[0])
 
         return None
 

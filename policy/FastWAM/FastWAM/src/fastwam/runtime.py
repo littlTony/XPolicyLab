@@ -361,6 +361,12 @@ def run_training(cfg: DictConfig):
         log_level=logging.INFO,
         is_main_process=torch.distributed.get_rank() == 0 if torch.distributed.is_initialized() else True,
     )
+    if cfg.get("action_contract") is not None and cfg.get("resume"):
+        from fastwam.datasets.dexbench_contract import CONTRACT
+        resume = Path(str(cfg.resume)).resolve()
+        resume_root = next((r for r in [resume, *resume.parents] if (r / "config.yaml").is_file()), None)
+        if resume_root is None or OmegaConf.to_container(OmegaConf.load(resume_root / "config.yaml").get("action_contract", {})) != CONTRACT:
+            raise ValueError("Resume requires matching absolute DexBench EE58 contract")
     misc.register_work_dir(cfg.output_dir)
     config_payload = OmegaConf.to_container(cfg, resolve=True)
     with open(Path(cfg.output_dir) / "config.yaml", "w") as f:

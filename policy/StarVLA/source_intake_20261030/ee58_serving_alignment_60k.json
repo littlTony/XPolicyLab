@@ -1,0 +1,169 @@
+{
+  "status": "passed",
+  "source_frames": [
+    {
+      "task": "add_food_to_pot",
+      "episode": 0,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "add_food_to_pot",
+      "episode": 2884,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "collect_objects",
+      "episode": 11,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "collect_objects",
+      "episode": 2894,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "dual_bottles_pick",
+      "episode": 21,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "dual_bottles_pick",
+      "episode": 2905,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "grasp_two_items",
+      "episode": 32,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "grasp_two_items",
+      "episode": 2915,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "hammer_beat",
+      "episode": 42,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "hammer_beat",
+      "episode": 2926,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "insert_block",
+      "episode": 53,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "insert_block",
+      "episode": 2936,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "place_fruit_on_plate",
+      "episode": 63,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "place_fruit_on_plate",
+      "episode": 2946,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "put_food_in_microwave",
+      "episode": 73,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "put_food_in_microwave",
+      "episode": 2957,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "retrieve_gap",
+      "episode": 84,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "retrieve_gap",
+      "episode": 2967,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "screw_nut_onto_bolt",
+      "episode": 94,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "screw_nut_onto_bolt",
+      "episode": 2978,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "stack_bowls",
+      "episode": 105,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "stack_bowls",
+      "episode": 2988,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "stack_paper_cups",
+      "episode": 115,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    },
+    {
+      "task": "stack_paper_cups",
+      "episode": 2999,
+      "state_and_bin_exact": true,
+      "pixels_exact": true
+    }
+  ],
+  "frames_checked": 24,
+  "state_bins": "exact, native q99->float16->native state2str",
+  "pixels": "exact native PIL resize",
+  "wire54_native58": "actual Model init/update/get_action; GT normalized actions inverse->SO3->wxyz54",
+  "single_and_batch": [
+    1,
+    2
+  ],
+  "statistics_tamper_rejected": true,
+  "training_dataset_required_at_runtime": false,
+  "GPU_or_large_model_forward": false,
+  "network": "explicit GT oracle stub only",
+  "seed_and_epoch_workers": {
+    "seed": 19,
+    "persistent_workers": 2,
+    "draws_checked": 128,
+    "worker_epoch0_and1": "all observed correctly",
+    "changed_draws": 128,
+    "mode": "native uniform-episode replacement, not shuffled no-replacement"
+  }
+}

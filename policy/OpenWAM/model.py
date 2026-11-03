@@ -1,316 +1,166 @@
-"""MobileArena M92UW EE45 adapter for the 80-D unified OpenWAM model.
+"""DexBench OpenWAM-alpha: absolute world EE+wxyz/Wuji20, model raw58/80D.
 
-Three RGB views and base-frame end-effector poses follow the MobileArena converter
-and reader. Batched inference makes one generate_batch call for active envs.
+Use the original SparkArena generation engine; share packing and preprocessing
+with its LeRobot reader. No legacy base-origin or xyzw compatibility path.
 """
-
-from __future__ import annotations
-
-import sys
-from collections.abc import Mapping
 from pathlib import Path
-from typing import Any
-
+import sys,json,hashlib
 import numpy as np
-
+from PIL import Image
 from XPolicyLab.model_template import ModelTemplate
+from XPolicyLab.utils.eval_checkpoint import configure_eval_cuda,task_name_for_prompt
+from XPolicyLab.utils.process_data import get_robot_action_dim_info,pack_robot_state
 from XPolicyLab.utils.checkpoint_resolver import resolve_checkpoint_root
-from XPolicyLab.policy.OpenWAM import mobile_arena_ee_adapter
 
-POLICY_DIR = Path(__file__).resolve().parent
-# Vendored OpenWAM source tree (weights excluded).
-VENDORED_OPENWAM_ROOT = POLICY_DIR / "OpenWAM"
-CHECKPOINTS_DIR = POLICY_DIR / "checkpoints"
-
-# Fixed obs -> OpenWAM payload camera mapping (matches training camera_layout).
-_CAMERA_TO_PAYLOAD = {
-    "cam_head": "head_camera",
-    "cam_left_wrist": "left_wrist_camera",
-    "cam_right_wrist": "right_wrist_camera",
-}
+POLICY_DIR=Path(__file__).resolve().parent
+OPENWAM_ROOT=POLICY_DIR/'OpenWAM'
+sys.path.insert(0,str(OPENWAM_ROOT))
+from openwam.dataloader.dexbench_contract import CONTRACT,CONTRACT_ID,UNIFY_MAP,pack54,unpack58,task_prompt
+from openwam.dataloader.transforms.multiview import assemble_multiview_layout,format_prompt_for_inference
 
 
-def _is_true(value: Any) -> bool:
-    if isinstance(value, bool):
-        return value
-    if value is None:
-        return False
-    return str(value).strip().lower() in {"1", "true", "yes", "y", "on"}
+def rgb(image):
+    image=np.asarray(image)
+    if image.dtype!=np.uint8 or image.ndim!=3:raise ValueError('Expected decoded RGB uint8 image')
+    if image.shape[-1]==3:return Image.fromarray(image)
+    if image.shape[0]==3:return Image.fromarray(image.transpose(1,2,0))
+    raise ValueError(f'Expected RGB image, got {image.shape}')
 
 
-def _is_none_like(value: Any) -> bool:
-    if value is None:
-        return True
-    return isinstance(value, str) and value.strip().lower() in {"", "none", "null"}
+def _resolve_ckpt_dir(cfg):
+    root=resolve_checkpoint_root(cfg,POLICY_DIR/'checkpoints',policy_dir=POLICY_DIR,
+        explicit_keys=('ckpt_dir','checkpoint_path','ckpt_path','model_dir'),must_exist=True)
+    if (root/'config.yaml').is_file():return root
+    # Native OpenWAM creates one timestamp directory below the named run.
+    # Evaluation receives that named run from eval.sh, so resolve its saved
+    # assets without importing training code or consulting the live dataset.
+    from datetime import datetime
+    candidates=[]
+    if root.is_dir():
+        for child in root.iterdir():
+            if not child.is_dir() or not (child/'config.yaml').is_file():continue
+            try:datetime.strptime(child.name,'%Y-%m-%d_%H-%M-%S')
+            except ValueError:continue
+            candidates.append(child)
+    if len(candidates)==1:return candidates[0]
+    if len(candidates)>1:
+        raise ValueError(f'Multiple checkpoint timestamps under {root}; pass the exact timestamp directory')
+    raise FileNotFoundError(f'Checkpoint config missing: {root}')
 
-
-def _resolve_ckpt_dir(model_cfg: dict) -> Path:
-    """Resolve the OpenWAM checkpoint directory via the shared XPolicyLab rules.
-
-    Precedence: explicit ``ckpt_dir`` / path-like ``ckpt_name`` >
-    ``checkpoints/<bench>-<ckpt>-<env>-<action>-<seed>/`` >
-    ``checkpoints/<ckpt_name>/``. The directory must contain ``config.yaml``.
-    """
-    root = resolve_checkpoint_root(
-        model_cfg,
-        CHECKPOINTS_DIR,
-        policy_dir=POLICY_DIR,
-        explicit_keys=("ckpt_dir", "checkpoint_path", "ckpt_path", "model_dir"),
-        must_exist=True,
-    )
-    if not (root / "config.yaml").is_file():
-        raise FileNotFoundError(f"checkpoint dir has no config.yaml: {root}")
-    return root
-
-
-def _resolve_openwam_root(openwam_root: Any) -> Path:
-    """Resolve the OpenWAM source root and make it win the import resolution.
-
-    Default is the vendored copy next to this file. The root is prepended to
-    sys.path unconditionally: the policy conda env typically carries an
-    editable install pointing at the external dev repo, and the vendored /
-    explicitly-configured tree must take precedence over it.
-    """
-    root = VENDORED_OPENWAM_ROOT if _is_none_like(openwam_root) else Path(str(openwam_root)).expanduser()
-    if not (root / "openwam" / "__init__.py").is_file():
-        raise FileNotFoundError(f"openwam package not found under openwam_root: {root}")
-    root_str = str(root)
-    if root_str in sys.path:
-        sys.path.remove(root_str)
-    sys.path.insert(0, root_str)
-    if "openwam" in sys.modules:
-        loaded = Path(getattr(sys.modules["openwam"], "__file__", "") or "").resolve()
-        if not str(loaded).startswith(str(root.resolve())):
-            raise RuntimeError(
-                f"openwam was already imported from {loaded}, not from openwam_root {root}; "
-                "start the server in a fresh process."
-            )
-    return root
-
-
-def _decode_instruction(value: Any, fallback: str) -> str:
-    if isinstance(value, (list, tuple)):
-        value = value[0] if value else None
-    if isinstance(value, np.ndarray):
-        value = value.item() if value.shape == () else (value.reshape(-1)[0] if value.size else None)
-    if isinstance(value, (bytes, np.bytes_)):
-        value = bytes(value).decode("utf-8")
-    if value is None:
-        return fallback
-    text = str(value).strip()
-    return text if text else fallback
-
-
-def _to_pil(value: Any, ctx: str):
-    """Standardize a decoded obs camera frame into an RGB PIL image."""
-    from PIL import Image
-
-    if isinstance(value, Image.Image):
-        return value if value.mode == "RGB" else value.convert("RGB")
-    arr = np.asarray(value)
-    if arr.ndim != 3 or arr.shape[2] < 3 or 0 in arr.shape:
-        raise ValueError(f"{ctx}: expected decoded (H, W, >=3) image array, got shape {arr.shape}")
-    arr = arr[:, :, :3]
-    if np.issubdtype(arr.dtype, np.floating):
-        scale = 255.0 if float(np.nanmax(arr)) <= 1.5 else 1.0
-        arr = np.clip(arr * scale, 0, 255).astype(np.uint8)
-    elif arr.dtype != np.uint8:
-        arr = np.clip(arr, 0, 255).astype(np.uint8)
-    return Image.fromarray(np.ascontiguousarray(arr), mode="RGB")
+def _validate_checkpoint_contract(saved,stats):
+    """Validate checkpoint-local representation without reading the live dataset."""
+    from omegaconf import OmegaConf
+    if OmegaConf.select(saved,'dataloader.contract_id')!=CONTRACT_ID:
+        raise ValueError('Checkpoint is not DexBench world-wxyz alpha80')
+    for key in ['unify_action_map','unify_state_map']:
+        if list(OmegaConf.select(saved,'dataloader.'+key) or [])!=UNIFY_MAP:
+            raise ValueError(f'Wrong {key}')
+    for key in ['action_dim','state_dim']:
+        if OmegaConf.select(saved,'model.architecture.'+key)!=80:
+            raise ValueError(f'Expected model {key}=80')
+    if OmegaConf.select(saved,'dataloader.normalize_mode')!='min-max':
+        raise ValueError('DexBench OpenWAM requires normalize_mode=min-max')
+    if OmegaConf.select(saved,'dataloader.action_mode')!='eef':
+        raise ValueError('DexBench OpenWAM requires action_mode=eef')
+    if OmegaConf.select(saved,'dataloader.binary_action_dims'):
+        raise ValueError('DexBench absolute hand joints must not use binary_action_dims')
+    if stats.get('action_contract')!=CONTRACT:
+        raise ValueError('Normalization action contract mismatch')
+    for section in ['eef','eef_state']:
+        for key in ['min','max','mean','std']:
+            value=np.asarray(stats.get(section,{}).get(key))
+            if value.shape!=(58,) or not np.isfinite(value).all():
+                raise ValueError(f'Expected finite checkpoint {section}/{key} raw58 statistics')
 
 
 class Model(ModelTemplate):
-    def __init__(self, model_cfg):
-        self.model_cfg = dict(model_cfg)
-        self.raw_action_dim = mobile_arena_ee_adapter.RAW_DIM
-        action_type = self.model_cfg.get("action_type") or "ee"
-        if action_type != "ee":
-            raise ValueError(f"MobileArena OpenWAM requires action_type='ee', got {action_type!r}")
-        configured_dim = int(self.model_cfg.get("action_dim") or self.raw_action_dim)
-        if configured_dim != self.raw_action_dim:
-            raise ValueError(f"MobileArena OpenWAM expects action_dim=45, got {configured_dim}")
-        self.openwam_root = _resolve_openwam_root(self.model_cfg.get("openwam_root"))
-
-        self.default_instruction = str(self.model_cfg.get("default_instruction") or "follow the instruction")
-        replan = self.model_cfg.get("replan_steps")
-        self.replan_steps = None if _is_none_like(replan) else int(replan)
-        if self.replan_steps is not None and self.replan_steps <= 0:
-            raise ValueError(f"replan_steps must be positive or null, got {self.replan_steps}")
-
-        # Per-env stored observations (keyed by env_idx, order preserved).
-        self._batch: dict[int, dict] = {}
-        self._order: list[int] = []
-
-        self.allow_dummy_policy = _is_true(self.model_cfg.get("allow_dummy_policy", False))
-        self._engine = None
-        self._wam_policy = None
-        self._preprocessor = None
-        if self.allow_dummy_policy:
-            print("[OpenWAM] allow_dummy_policy=true; checkpoint loading skipped (protocol debug only).")
-            return
-
-        ckpt_dir = str(_resolve_ckpt_dir(self.model_cfg))
+    def __init__(self,model_cfg):
+        self.cfg=dict(model_cfg)
+        if self.cfg.get('action_type','ee')!='ee':raise ValueError('DexBench OpenWAM requires action_type=ee')
+        self.robot_dims=get_robot_action_dim_info(self.cfg.get('env_cfg_type') or 'tianji_marvin_wuji')
+        if len(self.robot_dims['arm_dim'])!=2 or self.robot_dims['ee_dim']!=[20,20]:raise ValueError('Two Wuji20 hands required')
+        self.task_name=self.cfg['task_name']
+        self.prompt_embodiment=self.cfg.get('prompt_embodiment','tianji_wujihand2_real')
+        self.replan_steps=self.cfg.get('replan_steps')
+        self.allow_dummy_policy=str(self.cfg.get('allow_dummy_policy',False)).lower() in {'1','true'}
+        self._batch={};self._order=[]
+        if self.allow_dummy_policy:return
+        configure_eval_cuda(self.cfg.get('seed'))
         from omegaconf import OmegaConf
-        saved_cfg = OmegaConf.load(Path(ckpt_dir) / "config.yaml")
-        saved_type = OmegaConf.select(saved_cfg, "dataloader.type")
-        if saved_type != "mobile_arena_ee":
-            raise ValueError(f"MobileArena OpenWAM requires dataloader=mobile_arena_ee, got {saved_type!r}")
-        if OmegaConf.select(saved_cfg, "model.architecture.action_dim") != 80:
-            raise ValueError("MobileArena EE checkpoint must use the original 80D OpenWAM model")
-        if OmegaConf.select(saved_cfg, "dataloader.action_mode") != "mobile_arena_ee":
-            raise ValueError("MobileArena EE checkpoint requires dataloader.action_mode=mobile_arena_ee")
-        stats = np.load(Path(ckpt_dir) / "normalization_stats.npy", allow_pickle=True).item()
-        if "mobile_arena_ee_state" not in stats:
-            raise ValueError("MobileArena EE checkpoint is missing its separate state normalization statistics")
-
-        # OpenWAM's own deploy defaults; the correctness-critical keys are
-        # force-overridden below, so no separate pinned eval yaml is needed.
-        deploy_config = self.model_cfg.get("openwam_deploy_config")
-        if _is_none_like(deploy_config):
-            deploy_config = str(self.openwam_root / "configs" / "deploy.yaml")
-        device = str(self.model_cfg.get("device") or "cuda")
-
-        from openwam.deploy.server import _load_deploy_yaml, build_server_from_config
-
-        deploy_cfg = _load_deploy_yaml(deploy_config)
-        # Correctness-first: batch inference forbids the single-stream /
-        # shape-sensitive acceleration paths. Force them off even if the yaml
-        # drifts; engine.generate_batch fails fast if these were re-enabled.
-        OmegaConf.update(deploy_cfg, "optimization.dit_cache.enabled", False, merge=False)
-        OmegaConf.update(deploy_cfg, "optimization.compile.enabled", False, merge=False)
-        OmegaConf.update(deploy_cfg, "optimization.decode_video", False, merge=False)
-        OmegaConf.update(deploy_cfg, "inference.inference_mode", "sync", merge=False)
-
-        print(f"[OpenWAM] loading checkpoint from {ckpt_dir} on {device} ...")
-        server = build_server_from_config(deploy_cfg, ckpt_dir, device=device, ckpt_name=self.model_cfg.get("checkpoint_file") or None)
+        root=_resolve_ckpt_dir(self.cfg)
+        saved=OmegaConf.load(root/'config.yaml')
+        stats=np.load(root/'normalization_stats.npy',allow_pickle=True).item()
+        _validate_checkpoint_contract(saved,stats)
+        from openwam.deploy.server import _load_deploy_yaml,build_server_from_config
+        deploy=_load_deploy_yaml(str(OPENWAM_ROOT/'configs/deploy.yaml'))
+        for key in ['optimization.dit_cache.enabled','optimization.compile.enabled','optimization.decode_video']:
+            OmegaConf.update(deploy,key,False,merge=False)
+        OmegaConf.update(deploy,'inference.inference_mode','sync',merge=False)
+        step=int(self.cfg.get('checkpoint_num') or 60000)
+        weight=root/f'checkpoint_step_{step}.safetensors'
+        if not weight.is_file():raise FileNotFoundError(weight)
+        server=build_server_from_config(deploy,str(root),device=self.cfg.get('device','cuda'),ckpt_name=weight.name)
         server._init_policy()
-        self._engine = server.engine
-        self._wam_policy = server._policy  # for the binary-dim legality projection
-        self._preprocessor = server._obs_preprocessor
+        self._engine=server.engine;self._policy=server._policy;self._preprocessor=server._obs_preprocessor
+        if self.replan_steps is None:self.replan_steps=32
+        self._metadata=dict(policy_name='OpenWAM',checkpoint_path=str(weight),checkpoint_optimizer_step=step,
+                            step_source='native checkpoint filename and completed training log',
+                            action_horizon=32,replan_steps=self.replan_steps,action_dim=54,model_action_dim=80,
+                            stats_sha256=hashlib.sha256((root/'normalization_stats.npy').read_bytes()).hexdigest(),
+                            real_checkpoint=True,device='cuda')
 
-        if self.replan_steps is None:
-            horizon = OmegaConf.select(server.cfg, "inference.inference_horizon", default=None)
-            self.replan_steps = None if horizon is None else int(horizon)
+    def get_metadata(self):
+        if self.allow_dummy_policy:raise RuntimeError('No real checkpoint loaded')
+        return dict(self._metadata)
 
-        resolved = {
-            "denoise_steps": OmegaConf.select(server.cfg, "inference.denoise_steps"),
-            "denoise_mode": OmegaConf.select(server.cfg, "inference.denoise_mode"),
-            "num_frames": OmegaConf.select(server.cfg, "inference.num_frames"),
-            "video_num_frames": OmegaConf.select(server.cfg, "inference.video_num_frames"),
-            "replan_steps": self.replan_steps or "full chunk",
-            "dit_cache": OmegaConf.select(server.cfg, "optimization.dit_cache.enabled"),
-            "compile": OmegaConf.select(server.cfg, "optimization.compile.enabled"),
-        }
-        print(f"[OpenWAM] initialized | {resolved}")
+    def _encode_obs(self,obs):
+        state=pack_robot_state(obs,'ee',self.robot_dims,source_type='obs')
+        state58=pack54(state)
+        vision=obs['vision'];images={}
+        for target,candidates in [('head_camera',['cam_head','cam_high']),
+                                  ('left_wrist_camera',['cam_left_wrist']),('right_wrist_camera',['cam_right_wrist'])]:
+            for key in candidates:
+                if key in vision:
+                    value=vision[key]
+                    images[target]=rgb(value['color'] if isinstance(value,dict) else value)
+                    break
+            if target not in images:raise KeyError(f'Missing camera {candidates}')
+        instruction=obs.get('instruction',obs.get('instructions',obs.get('prompt')))
+        task=task_name_for_prompt(instruction,self.task_name,self.prompt_embodiment)
+        prompt=format_prompt_for_inference(task_prompt(instruction,task,self.prompt_embodiment))
+        return dict(images=images,prompt=prompt,state=state58.tolist())
 
-    def _encode_obs(self, obs: Mapping) -> dict:
-        vision = obs.get("vision")
-        if not isinstance(vision, Mapping):
-            raise ValueError("obs['vision'] must be a mapping of camera name -> {'color': image}")
-        images = {}
-        for camera_name, payload_name in _CAMERA_TO_PAYLOAD.items():
-            camera = vision.get(camera_name)
-            if not isinstance(camera, Mapping) or "color" not in camera:
-                raise KeyError(f"missing required camera vision/{camera_name}/color")
-            images[payload_name] = _to_pil(camera["color"], ctx=f"vision/{camera_name}/color")
-            images[payload_name] = mobile_arena_ee_adapter.prepare_camera(images[payload_name], camera_name)
+    def update_obs(self,obs):self.update_obs_batch([obs])
 
-        state = obs.get("state")
-        if not isinstance(state, Mapping):
-            raise ValueError("obs['state'] must be a mapping")
-        model_state = mobile_arena_ee_adapter.pack_state(obs)
+    def update_obs_batch(self,obs_list):
+        order=[int(obs.get('env_idx',i)) for i,obs in enumerate(obs_list)]
+        if len(order)!=len(set(order)):raise ValueError('Duplicate env indices')
+        batch={idx:self._encode_obs(obs) for idx,obs in zip(order,obs_list)}
+        self._order=order;self._batch=batch
 
-        instruction = _decode_instruction(
-            obs.get("instruction", obs.get("instructions", obs.get("task_instruction"))), self.default_instruction
-        )
-        return {
-            "images": images,
-            "prompt": instruction,
-            "state": np.asarray(model_state, dtype=np.float32).tolist(),
-        }
-
-    def _conditions(self, payload: dict) -> dict:
-        """OpenWAM server-equivalent preprocessing: compose multiview + wrap."""
-        obs = self._preprocessor.preprocess(dict(payload))
-        cond = {
-            "observation": obs,
-            "first_frame_image": [obs["image"]],
-            "prompt": obs["prompt"],
-        }
-        if obs.get("state") is not None:
-            cond["proprio"] = obs["state"]
-        return cond
-
-    def _hold_position_chunk(self, payload: dict) -> list[dict]:
-        """Dummy-mode chunk for checking transport without loading weights."""
-        steps = self.replan_steps or 8
-        model_state = np.asarray(payload["state"], dtype=np.float64)
-        return mobile_arena_ee_adapter.unpack_actions(np.tile(model_state, (steps, 1)))
-
-    # ------------------------------------------------------------------
-    # XPolicyLab protocol
-    # ------------------------------------------------------------------
-    def update_obs(self, obs):
-        self.update_obs_batch([obs])
-
-    def update_obs_batch(self, obs_list):
-        if isinstance(obs_list, Mapping):
-            obs_list = [obs_list]
-        if not obs_list:
-            raise ValueError("update_obs_batch received an empty observation list.")
-        self._batch = {}
-        self._order = []
-        for index, obs in enumerate(obs_list):
-            env_idx = int(obs.get("env_idx", index))
-            self._batch[env_idx] = self._encode_obs(obs)
-            self._order.append(env_idx)
+    def _conditions(self,payload):
+        obs=self._preprocessor.preprocess(payload)
+        return dict(observation=obs,first_frame_image=[obs['image']],prompt=obs['prompt'],proprio=obs['state'])
 
     def get_action(self):
-        env_idx = self._order[0] if self._order else 0
-        return self.get_action_batch([env_idx])[0]
+        if not self._order:raise RuntimeError('Call update_obs first')
+        return self.get_action_batch([self._order[0]])[0]
 
-    def get_action_batch(self, env_idx_list=None):
-        if env_idx_list is None:
-            env_idx_list = list(self._order)
-        elif isinstance(env_idx_list, np.ndarray):
-            env_idx_list = env_idx_list.reshape(-1).tolist()
-        elif isinstance(env_idx_list, (int, np.integer)):
-            env_idx_list = [int(env_idx_list)]
-        else:
-            env_idx_list = list(env_idx_list)
-        env_idx_list = [int(e) for e in env_idx_list]
-        if not env_idx_list:
-            raise ValueError("get_action_batch received an empty env_idx_list.")
-
-        missing = [e for e in env_idx_list if e not in self._batch]
-        if missing:
-            raise ValueError(f"No stored observation for env_idx {missing}; call update_obs_batch first.")
-        payloads = [self._batch[e] for e in env_idx_list]
-
+    def get_action_batch(self,env_idx_list=None):
+        if env_idx_list is None:env_idx_list=self._order
+        if not env_idx_list:return []
+        payloads=[self._batch[int(idx)] for idx in env_idx_list]
         if self.allow_dummy_policy:
-            return [self._hold_position_chunk(payload) for payload in payloads]
+            return [unpack58(np.repeat(np.asarray(p['state'],dtype=np.float32)[None],self.replan_steps or 8,axis=0)) for p in payloads]
+        result=self._engine.generate_batch([self._conditions(p) for p in payloads])['actions']
+        if hasattr(result,'detach'):result=result.detach().cpu().numpy()
+        actions=np.asarray(result,dtype=np.float32)
+        # The copied engine applies its checkpoint normalizer once: gather80
+        # -> physical raw58. Never unnormalize or change the frame a second time.
+        if actions.ndim!=3 or actions.shape[0]!=len(payloads) or actions.shape[-1]!=58:
+            raise ValueError(f'Expected physical raw58 from engine, got {actions.shape}')
+        actions=self._policy._project_binary_dims(actions)
+        steps=actions.shape[1] if self.replan_steps is None else min(self.replan_steps,actions.shape[1])
+        return [unpack58(chunk[:steps]) for chunk in actions]
 
-        conditions = [self._conditions(p) for p in payloads]
-        result = self._engine.generate_batch(conditions)
-        actions = result["actions"]
-        if hasattr(actions, "cpu"):
-            actions = actions.detach().cpu().numpy()
-        actions = np.asarray(actions)
-        expected_dim = self.raw_action_dim
-        if actions.ndim != 3 or actions.shape[0] != len(env_idx_list) or actions.shape[2] != expected_dim:
-            raise RuntimeError(
-                f"generate_batch returned actions of shape {actions.shape}; "
-                f"expected (B={len(env_idx_list)}, T, {expected_dim})."
-            )
-        # Same final legality projection the OpenWAM server applies (no-op when
-        # the checkpoint declares no binary command dims).
-        actions = self._wam_policy._project_binary_dims(actions)
-
-        n_exec = actions.shape[1]
-        if self.replan_steps is not None:
-            n_exec = min(self.replan_steps, n_exec)
-        return [mobile_arena_ee_adapter.unpack_actions(actions[b, :n_exec]) for b in range(actions.shape[0])]
-
-    def reset(self):
-        self._batch = {}
-        self._order = []
+    def reset(self):self._batch={};self._order=[]

@@ -79,7 +79,6 @@ def _register_builtins():
     from openwam.dataloader.interndata_a1 import InternDataA1Dataset
     from openwam.dataloader.libero import LiberoDataset
     from openwam.dataloader.mixture import MixtureDataset
-    from openwam.dataloader.mobile_arena_ee import MobileArenaEEDataset
     from openwam.dataloader.muka_franka import MukaFrankaDataset
     from openwam.dataloader.oxe_droid import OxeDroidDataset
     from openwam.dataloader.robocasa365 import MultiTaskRoboCasa365Dataset
@@ -87,13 +86,18 @@ def _register_builtins():
     from openwam.dataloader.robocoin import MultiRobotCOINDataset
     from openwam.dataloader.robodojo import MultiTaskRoboDojoDataset
     from openwam.dataloader.robotwin import MultiTaskRoboTwinDataset
+    from openwam.dataloader.egovla import MultiTaskEgoVLADataset
+    from openwam.dataloader.spark0 import MultiTaskSpark0Dataset
+    from openwam.dataloader.dexbench import DexBenchLeRobotDataset
     from openwam.dataloader.vlabench import VLABenchDataset
 
     register_dataset("robotwin")(MultiTaskRoboTwinDataset)
     register_dataset("robodojo")(MultiTaskRoboDojoDataset)
+    register_dataset("spark0")(MultiTaskSpark0Dataset)
+    register_dataset("dexbench")(DexBenchLeRobotDataset)
+    register_dataset("egovla")(MultiTaskEgoVLADataset)
     register_dataset("agibotworld")(MultiAgiBotWorldDataset)
     register_dataset("mixture")(MixtureDataset)
-    register_dataset("mobile_arena_ee")(MobileArenaEEDataset)
     register_dataset("robocasa_gr1")(MultiRoboCasaGR1Dataset)
     register_dataset("robocoin")(MultiRobotCOINDataset)
     register_dataset("ebench")(EBenchDataset)

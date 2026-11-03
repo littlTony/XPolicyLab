@@ -1,0 +1,66 @@
+{
+  "cff-version": "1.2.0",
+  "message": "If you use UniT, please cite the paper below.",
+  "title": "UniT",
+  "authors": [
+    {
+      "family-names": "Chen",
+      "given-names": "Boyu"
+    },
+    {
+      "family-names": "Chen",
+      "given-names": "Yi"
+    },
+    {
+      "family-names": "Qiu",
+      "given-names": "Lu"
+    },
+    {
+      "family-names": "Bai",
+      "given-names": "Jerry"
+    },
+    {
+      "family-names": "Ge",
+      "given-names": "Yuying"
+    },
+    {
+      "family-names": "Ge",
+      "given-names": "Yixiao"
+    }
+  ],
+  "url": "https://github.com/xpeng-robotics/UniT",
+  "preferred-citation": {
+    "type": "article",
+    "title": "UniT: Toward a Unified Physical Language for Human-to-Humanoid Policy Learning and World Modeling",
+    "authors": [
+      {
+        "family-names": "Chen",
+        "given-names": "Boyu"
+      },
+      {
+        "family-names": "Chen",
+        "given-names": "Yi"
+      },
+      {
+        "family-names": "Qiu",
+        "given-names": "Lu"
+      },
+      {
+        "family-names": "Bai",
+        "given-names": "Jerry"
+      },
+      {
+        "family-names": "Ge",
+        "given-names": "Yuying"
+      },
+      {
+        "family-names": "Ge",
+        "given-names": "Yixiao"
+      }
+    ],
+    "journal": "arXiv preprint arXiv:2604.19734",
+    "year": 2026,
+    "doi": "10.48550/arXiv.2604.19734",
+    "url": "https://arxiv.org/abs/2604.19734"
+  }
+}

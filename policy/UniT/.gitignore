@@ -1,0 +1,4 @@
+/.generated/
+/checkpoints/
+/training/__pycache__/
+/training/cpu_preflight_*.log

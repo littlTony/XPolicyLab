@@ -1,216 +1,150 @@
-import os
-import sys
 from pathlib import Path
-from typing import Any
-
-import cv2
+import json,sys,re,hashlib
 import numpy as np
-import torch
-from torchvision.transforms import InterpolationMode
-from torchvision.transforms import functional as tv_resize
-
 from XPolicyLab.model_template import ModelTemplate
-from XPolicyLab.utils import mobile_arena_joint_layout
-from XPolicyLab.utils.process_data import (
-    get_robot_action_dim_info,
-    pack_robot_state,
-    unpack_robot_state,
-)
+from XPolicyLab.utils.process_data import get_robot_action_dim_info,pack_robot_state
+from XPolicyLab.utils.checkpoint_resolver import resolve_checkpoint_root
+
+POLICY_DIR=Path(__file__).resolve().parent
+for p in [POLICY_DIR/'FastWAM',POLICY_DIR/'FastWAM/src']:
+    if str(p) not in sys.path:sys.path.insert(0,str(p))
+from fastwam.datasets.dexbench_contract import CONTRACT,pack54,unpack58,task_prompt,inference_image
+
+def truth(x):return str(x).lower() in ['true','1','yes']
+
+def _weight_step(path):
+    match=re.fullmatch(r'step_(\d+)\.pt',Path(path).name)
+    return int(match.group(1)) if match else None
 
 
-POLICY_DIR = Path(__file__).resolve().parent
-FASTWAM_ROOT = POLICY_DIR / "FastWAM"
-FASTWAM_SRC = FASTWAM_ROOT / "src"
+def _requested_step(value):
+    if value is None or str(value).strip().lower() in ['', 'none', 'null', 'latest']:return None
+    match=re.fullmatch(r'(?:steps?[_-]?)?(\d+)(?:\.pt)?',str(value).strip())
+    if match is None:raise ValueError(f'Invalid FastWAM checkpoint_num: {value}')
+    return int(match.group(1))
 
-
-def _is_true(value: Any) -> bool:
-    if isinstance(value, bool):
-        return value
-    if value is None:
-        return False
-    return str(value).strip().lower() in {"1", "true", "yes", "y"}
-
-
-def _is_none_like(value: Any) -> bool:
-    if value is None:
-        return True
-    return isinstance(value, str) and value.strip().lower() in {"", "none", "null"}
-
-
-def _standardize_rgb(image: np.ndarray, *, mobile_arena: bool = False) -> np.ndarray:
-    """Apply the same per-camera resize used before FastWAM training.
-
-    MobileArena MP4s are written as 224x224 frames by ``process_mobile_arena.py`` and
-    the FastWAM processor then resizes each camera to 240x320 before the
-    three-camera RobotWin mosaic is built.  Runtime observations arrive at
-    their native camera size, so replaying only the final 240x320 resize would
-    feed a different image geometry to the checkpoint.
-    """
-    image = np.asarray(image)
-    if image.ndim != 3 or image.shape[-1] != 3:
-        raise ValueError(f"Expected HWC image with 3 channels, got {image.shape}")
-    if image.dtype != np.uint8:
-        image = np.clip(image, 0, 255).astype(np.uint8)
-    if mobile_arena and image.shape[:2] != (224, 224):
-        image = cv2.resize(image, (224, 224), interpolation=cv2.INTER_LINEAR)
-    if image.shape[:2] != (240, 320):
-        # Match FastWAMProcessor's torchvision Resize(BILINEAR, antialias=True)
-        # used on the 224x224 LeRobot frames; this preserves RGB channels.
-        chw = torch.from_numpy(np.ascontiguousarray(image)).permute(2, 0, 1)
-        chw = tv_resize.resize(
-            chw,
-            [240, 320],
-            interpolation=InterpolationMode.BILINEAR,
-            antialias=True,
-        )
-        image = chw.permute(1, 2, 0).contiguous().numpy()
-    if image.shape != (240, 320, 3):
-        raise ValueError(f"Expected standardized RGB shape (240, 320, 3), got {image.shape}")
-    return image
-
-
-def _get_instruction(obs: dict, fallback: str) -> str:
-    # Match MM-ABC/XPolicyLab's runtime contract: instruction first, with
-    # legacy task_instruction accepted only as a fallback.
-    value = obs.get("instruction", obs.get("instructions"))
-    if value is None:
-        value = obs.get("task_instruction")
-    if isinstance(value, (list, tuple)):
-        return str(value[0]) if value else fallback
-    if value is None:
-        return fallback
-    if hasattr(value, "item"):
-        value = value.item()
-    text = str(value).strip()
-    return text if text else fallback
-
+def resolve_runtime(model_cfg):
+    from omegaconf import OmegaConf
+    root=Path(resolve_checkpoint_root(model_cfg,POLICY_DIR/'checkpoints',policy_dir=POLICY_DIR))
+    requested=_requested_step(model_cfg.get('checkpoint_num'))
+    if root.is_file():
+        weights=root
+        if requested is not None and _weight_step(weights)!=requested:raise FileNotFoundError('Explicit FastWAM weights do not match checkpoint_num')
+        roots=[root.parent,*root.parents]
+        root=next((p for p in roots if (p/'config.yaml').exists()),root.parent)
+    else:
+        candidates=[p for p in (root/'checkpoints/weights').glob('step_*.pt') if p.is_file() and _weight_step(p) is not None]
+        if requested is not None:candidates=[p for p in candidates if _weight_step(p)==requested]
+        weights=max(candidates,key=_weight_step) if candidates else None
+    if weights is None:raise FileNotFoundError(f'No FastWAM weights matching checkpoint_num={requested} under {root}')
+    cfg=OmegaConf.load(root/'config.yaml')
+    if OmegaConf.to_container(cfg.get('action_contract',{}),resolve=True)!=CONTRACT:raise ValueError('Checkpoint is not absolute DexBench EE58')
+    for split in ['train','val']:
+        ds=cfg.data[split]
+        if ds.contract_id!=CONTRACT['id'] or ds.processor.action_output_dim!=58 or ds.processor.proprio_output_dim!=58:raise ValueError('Wrong saved processor contract')
+        if ds.processor.action_state_transforms or ds.processor.get('delta_action_dim_mask'):raise ValueError('Absolute contract forbids delta transforms')
+    for n in ['action_dit_config','video_dit_config']:
+        if cfg.model[n].action_dim!=58:raise ValueError('Wrong saved action head')
+    if cfg.model.proprio_dim!=58:raise ValueError('Wrong saved state head')
+    stats=root/'dataset_stats.json'
+    if json.loads(stats.read_text()).get('action_contract')!=CONTRACT:raise ValueError('Wrong checkpoint statistics contract')
+    return str(weights),str(stats),OmegaConf.to_container(cfg,resolve=True)
 
 class Model(ModelTemplate):
-    def __init__(self, model_cfg):
-        self.model_cfg = dict(model_cfg)
-        self.action_type = self.model_cfg["action_type"]
-        self.env_cfg_type = self.model_cfg.get("env_cfg_type")
-        self.mobile_arena_mode = _is_true(self.model_cfg.get("mobile_arena", True))
-        if self.mobile_arena_mode:
-            configured_dim = self.model_cfg.get("action_dim")
-            if configured_dim is not None and int(configured_dim) != mobile_arena_joint_layout.MODEL_DIM:
-                raise ValueError(f"FastWAM MobileArena requires action_dim=45, got {configured_dim}.")
-        self.action_horizon = 1
-        self.replan_steps = int(self.model_cfg.get("replan_steps") or 24)
-        self.default_instruction = str(
-            self.model_cfg.get("default_instruction")
-            or self.model_cfg.get("prompt")
-            or "follow the instruction"
-        )
-        self.robot_action_dim_info = (
-            None if self.mobile_arena_mode else get_robot_action_dim_info(self.env_cfg_type)
-        )
-        self.last_obs = None
-        self.last_instruction = self.default_instruction
-        self.model = None
+    def __init__(self,model_cfg):
+        self.model_cfg=dict(model_cfg)
+        self.action_type=str(self.model_cfg.get('action_type') or 'ee')
+        self.env_cfg_type=self.model_cfg.get('env_cfg_type','tianji_marvin_wuji')
+        if self.action_type!='ee' or self.env_cfg_type!='tianji_marvin_wuji':raise ValueError('Expected tianji_marvin_wuji absolute EE')
+        self.robot_action_dim_info=get_robot_action_dim_info(self.env_cfg_type)
+        if self.robot_action_dim_info['ee_dim']!=[20,20]:raise ValueError('Expected two Wuji20 hands')
+        raw_replan=self.model_cfg.get('replan_steps',24)
+        self.replan_steps=24 if raw_replan is None else int(raw_replan)
+        if not 1<=self.replan_steps<=32:raise ValueError('FastWAM replan_steps must be in [1,32]')
+        self.action_dim=58; self.action_horizon=32
+        if truth(self.model_cfg.get('allow_dummy_policy',False)):
+            raise ValueError('Production FastWAM requires real checkpoint weights')
+        self.model=None
+        self.reset()
+        self.model=self._load_model()
+        self.action_horizon=int(self.model.action_horizon)
+        if self.action_horizon!=32:raise ValueError('Expected saved action horizon32')
 
-        self.allow_dummy_policy = _is_true(self.model_cfg.get("allow_dummy_policy", False))
-        checkpoint_path = self.model_cfg.get("checkpoint_path") or self.model_cfg.get("ckpt_setting")
-        dataset_stats_path = self.model_cfg.get("dataset_stats_path")
-
-        if self.allow_dummy_policy:
-            print("[FastWAM] allow_dummy_policy=true; real checkpoint loading is skipped for debug flow only.")
-            return
-
-        if _is_none_like(checkpoint_path):
-            raise FileNotFoundError("FastWAM requires checkpoint_path/ckpt_setting for real deployment.")
-        if _is_none_like(dataset_stats_path):
-            raise FileNotFoundError("FastWAM requires dataset_stats_path for real deployment.")
-
-        for path in (str(FASTWAM_ROOT), str(FASTWAM_SRC)):
-            if path not in sys.path:
-                sys.path.insert(0, path)
-
+    def _load_model(self):
+        import torch
         from experiments.robotwin.fastwam_policy.deploy_policy import get_model
+        if str(self.model_cfg.get('device') or 'cuda').startswith('cuda') and not torch.cuda.is_available():
+            raise RuntimeError('CUDA is required for this FastWAM server')
+        fraction=float(self.model_cfg.get('cuda_memory_fraction') or 1.0)
+        if not 0<fraction<=1:raise ValueError('cuda_memory_fraction must be in (0,1]')
+        if torch.cuda.is_available():torch.cuda.set_per_process_memory_fraction(fraction)
+        weights,stats,cfg=resolve_runtime(self.model_cfg)
+        args=dict(self.model_cfg,ckpt_setting=weights,dataset_stats_path=stats,checkpoint_config=cfg,
+                  action_dim=58,image_tensor_builder=inference_image,sim_task='dexbench_ee58')
+        engine=get_model(args)
+        payload=torch.load(weights,map_location='cpu',mmap=True,weights_only=False)
+        step=int(payload['step'])
+        if step!=_weight_step(weights):raise ValueError('Checkpoint internal step differs from filename')
+        for name in ['mot','proprio_encoder']:
+            expected=getattr(engine.model,name).state_dict(); actual=payload[name]
+            if set(expected)!=set(actual) or any(expected[k].shape!=actual[k].shape for k in expected):
+                raise ValueError(f'Incomplete checkpoint coverage: {name}')
+        self._metadata=dict(policy_name='FastWAM',checkpoint_path=weights,checkpoint_optimizer_step=step,
+                            dataset_stats_path=stats,dataset_stats_sha256=hashlib.sha256(Path(stats).read_bytes()).hexdigest(),
+                            action_dim=54,model_action_dim=58,action_horizon=32,replan_steps=self.replan_steps,
+                            task_name=self.model_cfg.get('task_name'),action_contract=CONTRACT,
+                            video_size=cfg['data']['train']['video_size'],device=str(engine.model.device))
+        return engine
 
-        upstream_cfg = dict(self.model_cfg)
-        upstream_cfg["ckpt_setting"] = str(Path(checkpoint_path).expanduser().resolve())
-        upstream_cfg["dataset_stats_path"] = str(Path(dataset_stats_path).expanduser().resolve())
-        upstream_cfg.setdefault("sim_cfg_name", "sim_robotwin.yaml")
-        upstream_cfg.setdefault("sim_task", "robotwin_uncond_3cam_384_1e-4")
-        self.model = get_model(upstream_cfg)
-        self.action_horizon = int(self.model.action_horizon)
-        self.replan_steps = int(self.model.replan_steps)
+    def get_metadata(self):return dict(self._metadata)
 
-    def _encode_obs_for_fastwam(self, obs: dict) -> dict:
-        vision = obs["vision"]
-        if self.mobile_arena_mode:
-            state_vector = mobile_arena_joint_layout.pack(obs.get("state", obs)).astype(np.float32)
-        else:
-            state_vector = pack_robot_state(
-                obs,
-                self.action_type,
-                self.robot_action_dim_info,
-                source_type="obs",
-                state_type="state",
-            ).astype(np.float32)
-        return {
-            "observation": {
-                "head_camera": {"rgb": _standardize_rgb(vision["cam_head"]["color"], mobile_arena=self.mobile_arena_mode)},
-                "left_camera": {"rgb": _standardize_rgb(vision["cam_left_wrist"]["color"], mobile_arena=self.mobile_arena_mode)},
-                "right_camera": {"rgb": _standardize_rgb(vision["cam_right_wrist"]["color"], mobile_arena=self.mobile_arena_mode)},
-            },
-            "joint_action": {"vector": state_vector},
-        }
+    def _encode(self,obs):
+        cameras={}
+        for source,target in [('cam_head','head_camera'),('cam_left_wrist','left_camera'),('cam_right_wrist','right_camera')]:
+            x=np.asarray(obs['vision'][source]['color'])
+            if x.ndim!=3 or x.shape[-1]!=3 or x.dtype!=np.uint8:raise ValueError(f'Expected decoded uint8 RGB: {source}')
+            cameras[target]={'rgb':np.ascontiguousarray(x)}
+        state=pack_robot_state(obs,'ee',self.robot_action_dim_info,source_type='obs',state_type='state')
+        vector=pack54(state)
+        text=obs.get('instruction',obs.get('instructions',self.model_cfg.get('default_instruction','follow the instruction')))
+        if isinstance(text,(list,tuple)):text=text[0]
+        task=self.model_cfg.get('task_name') or 'auto'
+        if task=='auto':
+            match=re.fullmatch(r'\[([^/\]]+)/([^\]]+)\] (.+)',str(text),re.DOTALL)
+            if match is None:raise ValueError('task_name=auto requires the exported [embodiment/task] instruction')
+            task=match[2]
+            if obs.get('task_name') not in [None,task]:raise ValueError('Observation task disagrees with instruction prefix')
+        prompt=task_prompt(str(text),task,self.model_cfg.get('prompt_embodiment','tianji_wujihand2_real'))
+        return {'observation':cameras,'joint_action':{'vector':vector}},prompt
 
-    def update_obs(self, obs):
-        self.last_obs = self._encode_obs_for_fastwam(obs)
-        self.last_instruction = _get_instruction(obs, self.default_instruction)
+    def update_obs(self,obs):
+        self.last_obs,self.last_instruction=self._encode(obs)
+        self._batch={}
 
-    def update_obs_batch(self, obs_list):
-        if not obs_list:
-            raise ValueError("update_obs_batch received an empty observation list.")
-        self._batch_obs = {}
-        self._batch_instruction = {}
+    def update_obs_batch(self,obs_list):
+        batch={}
         for obs in obs_list:
-            env_idx = int(obs["env_idx"])
-            self._batch_obs[env_idx] = self._encode_obs_for_fastwam(obs)
-            self._batch_instruction[env_idx] = _get_instruction(obs, self.default_instruction)
+            idx=int(obs['env_idx'])
+            if idx in batch:raise ValueError('Duplicate env index')
+            batch[idx]=self._encode(obs)
+        if not batch:raise ValueError('Empty observations')
+        self._batch=batch; self.last_obs=None
 
-    def _zero_actions(self):
-        if self.mobile_arena_mode:
-            return [mobile_arena_joint_layout.unpack(row) for row in np.zeros((self.replan_steps, 45), dtype=np.float32)]
-        dim = sum(self.robot_action_dim_info["arm_dim"]) + sum(self.robot_action_dim_info["ee_dim"])
-        zeros = np.zeros((self.replan_steps, dim), dtype=np.float32)
-        return unpack_robot_state(zeros, self.action_type, self.robot_action_dim_info, source_type="obs")
+    def _infer(self,obs,instruction):
+        if obs is None:raise ValueError('Call update_obs first')
+        # Upstream engine applies saved action unnormalization exactly once.
+        raw=np.asarray(self.model._infer_action_chunk(obs,instruction),dtype=np.float32)
+        if raw.ndim!=2 or raw.shape[1]!=58 or len(raw)<self.replan_steps or not np.isfinite(raw).all():raise ValueError('Expected finite physical EE58 action chunk')
+        return unpack58(raw[:self.replan_steps])
 
-    def _infer_actions(self, obs, instruction):
-        if self.allow_dummy_policy:
-            return self._zero_actions()
-        if obs is None:
-            raise ValueError("No observation is available. Call update_obs() before get_action().")
-        action_chunk = self.model._infer_action_chunk(obs, instruction)
-        action_chunk = np.asarray(action_chunk, dtype=np.float32)
-        if action_chunk.ndim == 1:
-            action_chunk = action_chunk[None, :]
-        n_exec = min(self.replan_steps, action_chunk.shape[0])
-        action_chunk = action_chunk[:n_exec]
-        if self.mobile_arena_mode:
-            return [mobile_arena_joint_layout.unpack(row) for row in action_chunk]
-        return unpack_robot_state(action_chunk, self.action_type, self.robot_action_dim_info, source_type="obs")
+    def get_action(self):return self._infer(self.last_obs,self.last_instruction)
 
-    def get_action(self):
-        return self._infer_actions(self.last_obs, self.last_instruction)
-
-    def get_action_batch(self, env_idx_list=None):
-        if not hasattr(self, "_batch_obs"):
-            raise ValueError("No batch observation is available. Call update_obs_batch() first.")
-        if env_idx_list is None:
-            env_idx_list = list(self._batch_obs)
-        return [
-            self._infer_actions(self._batch_obs[int(env_idx)], self._batch_instruction[int(env_idx)])
-            for env_idx in env_idx_list
-        ]
+    def get_action_batch(self,env_idx_list=None):
+        ids=list(self._batch) if env_idx_list is None else [int(i) for i in env_idx_list]
+        if not ids or len(ids)!=len(set(ids)):raise ValueError('Invalid active environment indices')
+        if any(i not in self._batch for i in ids):raise ValueError('Requested inactive environment ID')
+        return [self._infer(*self._batch[i]) for i in ids]
 
     def reset(self):
-        self.last_obs = None
-        self.last_instruction = self.default_instruction
-        self._batch_obs = {}
-        self._batch_instruction = {}
-        if self.model is not None:
-            self.model.reset()
+        self.last_obs=None; self.last_instruction=''; self._batch={}
+        if self.model is not None:self.model.reset()

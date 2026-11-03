@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "FastWAM: standalone Wan2.2-TI2V-5B training/inference package"
 requires-python = ">=3.10"
 dependencies = [
+  "scipy==1.15.3",
   "accelerate==1.12.0",
   "av==16.0.1",
   "boto3==1.35.99",

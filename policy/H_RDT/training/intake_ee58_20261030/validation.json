@@ -1,0 +1,64 @@
+{
+  "scope": "H-RDT independent DexBench EE58 training preparation",
+  "preflight": "/personal/wenwei/DexBench/XPolicyLab/policy/H_RDT/training/generated/DexBench-hrdt_ee58_check-tianji_marvin_wuji-ee-42_isvgf5d7/preflight.json",
+  "data_status": "passed",
+  "samples": 24,
+  "language_cache": "pending: Missing complete 60-instruction T5 cache: /mnt/xspark-data/wenwei/DexBench/XPolicyLab/policy/H_RDT/data/dexbench_ee58_t5_60/manifest.json; run training/prepare_language.py",
+  "training_ready": false,
+  "pretrain_header": {
+    "method": "official runner allocated on meta + pretrained checkpoint header tensors on meta",
+    "state_dim": 58,
+    "action_dim": 58,
+    "padding_dim": 0,
+    "loaded_backbone_keys": 526,
+    "fresh_interface_keys": [
+      "model.img_pos_emb",
+      "model.action_decoder.ffn_norm.weight",
+      "model.action_decoder.ffn_norm.bias",
+      "model.action_decoder.ffn.fc1.weight",
+      "model.action_decoder.ffn.fc1.bias",
+      "model.action_decoder.ffn.fc2.weight",
+      "model.action_decoder.ffn.fc2.bias",
+      "model.action_decoder.adaLN_modulation.1.weight",
+      "model.action_decoder.adaLN_modulation.1.bias",
+      "action_encoder.state_adaptor.0.weight",
+      "action_encoder.state_adaptor.0.bias",
+      "action_encoder.state_adaptor.2.weight",
+      "action_encoder.state_adaptor.2.bias",
+      "action_encoder.state_adaptor.4.weight",
+      "action_encoder.state_adaptor.4.bias",
+      "action_encoder.action_adaptor.0.weight",
+      "action_encoder.action_adaptor.0.bias",
+      "action_encoder.action_adaptor.2.weight",
+      "action_encoder.action_adaptor.2.bias",
+      "action_encoder.action_adaptor.4.weight",
+      "action_encoder.action_adaptor.4.bias"
+    ],
+    "shape_mismatches": [],
+    "unexpected_keys": [],
+    "known_unused_checkpoint_keys": [
+      "video_adapter.0.weight",
+      "video_adapter.0.bias",
+      "video_adapter.2.weight",
+      "video_adapter.2.bias"
+    ],
+    "gpu_used": false,
+    "weights_not_materialized": true
+  },
+  "guards": {
+    "rank_guard": "passed: Expected 8 ranks",
+    "language_guard": "passed: Missing complete 60-instruction T5 cache"
+  },
+  "scheduler_CPU_test": {
+    "source": "peer review in current existing environment, actual AcceleratedScheduler+AdamW+constant_with_warmup with mocked num_processes8; CUDA=False",
+    "step_scheduler_with_optimizer": false,
+    "update499_lr": 9.98e-05,
+    "update500_lr": 0.0001,
+    "update500_scheduler_epoch": 500
+  },
+  "training_started": false,
+  "GPU_forward_backward": "unverified",
+  "T5_embeddings_generated": false,
+  "original_server": "unchanged, joint-only, not EE58 validated",
+  "output_reserved": false
+}

@@ -1,76 +1,41 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 if [[ $# -lt 6 ]]; then
-  echo "Usage: $0 <bench_name> <ckpt_name> <env_cfg_type> <action_type> <seed> <gpu_id>" >&2
-  exit 1
+    echo "Usage: $0 <bench_name> <ckpt_name> <env_cfg_type> ee <seed> <gpu_ids> [train.py options]" >&2
+    exit 1
 fi
-
-bench_name=$1
-ckpt_name=$2
-env_cfg_type=$3
-action_type=$4
-seed=$5
-gpu_id=$6
-
-POLICY_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# ckpt_setting is the run directory name; pass it verbatim as ckpt_name to eval.sh.
-ckpt_setting="${bench_name}-${ckpt_name}-${env_cfg_type}-${action_type}-${seed}"
-ckpt_dir="${POLICY_DIR}/checkpoints/${ckpt_setting}"
-train_config_name="${OPENPI_TRAIN_CONFIG_NAME:-}"
-if [[ -z "${train_config_name}" ]]; then
-  if [[ "${bench_name}" == "MobileArena" ]]; then
-    train_config_name="pi05_mobile_arena_full"
-  else
-    train_config_name="pi05_base_aloha_full_sim_arx-x5_seed_0"
-  fi
+source "$(dirname "$(readlink -f "$0")")/runtime.sh"
+bench_name=$1; ckpt_name=$2; env_cfg_type=$3; action_type=$4; seed=$5; gpu_ids=$6
+shift 6
+if [[ "${action_type}" != ee ]]; then
+    echo 'DexBench Pi0.5 trains absolute EE xyz+wxyz + absolute Wuji20 joints; action_type must be ee' >&2
+    exit 2
 fi
-if [[ "${train_config_name}" == "pi05_mobile_arena_full" ]]; then
-  lerobot_repo_id="${OPENPI_LEROBOT_REPO_ID:-mobile_arena_data}"
-else
-  lerobot_repo_id="${OPENPI_LEROBOT_REPO_ID:-${bench_name}-${ckpt_name}-${env_cfg_type}-${action_type}}"
+export OPENPI_TRAIN_CONFIG_NAME="${OPENPI_TRAIN_CONFIG_NAME:-pi05_wuji_marvin_54d}"
+export OPENPI_LEROBOT_REPO_ID="${OPENPI_LEROBOT_REPO_ID:-dexbench_12tasks}"
+if [[ "${OPENPI_TRAIN_CONFIG_NAME}" != pi05_wuji_marvin_54d || "${OPENPI_LEROBOT_REPO_ID}" != dexbench_12tasks ]]; then
+    echo 'Training and deploy config must use pi05_wuji_marvin_54d / dexbench_12tasks' >&2
+    exit 2
 fi
-gpu_count=$(awk -F',' '{print NF}' <<<"${gpu_id}")
-fsdp_devices="${OPENPI_FSDP_DEVICES:-$(( gpu_count < 2 ? 1 : 2 ))}"
-default_batch_size=1
-if [[ "${train_config_name}" == "pi05_mobile_arena_full" ]]; then
-  # Keep the launch script aligned with the MobileArena config (global batch size 128).
-  default_batch_size=128
-fi
-
-mkdir -p "${ckpt_dir}"
-export CUDA_VISIBLE_DEVICES="${gpu_id}"
-
-# LeRobot loads parquet via HuggingFace datasets, which builds pyarrow mmap cache
-# under HF_DATASETS_CACHE. Keep dataset on shared storage, but use per-host local
-# cache to avoid NFS lock contention when multiple nodes train concurrently.
-LOCAL_CACHE_ROOT="${OPENPI_LOCAL_CACHE_ROOT:-/tmp/openpi-cache-$(hostname)}"
-mkdir -p "${LOCAL_CACHE_ROOT}/hf/datasets" "${LOCAL_CACHE_ROOT}/jax"
-export HF_DATASETS_CACHE="${LOCAL_CACHE_ROOT}/hf/datasets"
-export JAX_COMPILATION_CACHE_DIR="${LOCAL_CACHE_ROOT}/jax"
-export HF_LEROBOT_HOME="${OPENPI_HF_LEROBOT_HOME:-${HF_LEROBOT_HOME:-${POLICY_DIR}/data}}"
-export PYTHONPATH="${POLICY_DIR}/openpi/src${PYTHONPATH:+:${PYTHONPATH}}"
-
-echo "[Pi_05] train_config_name=${train_config_name}"
-echo "[Pi_05] lerobot_repo_id=${lerobot_repo_id}"
-echo "[Pi_05] fsdp_devices=${fsdp_devices}"
-echo "[Pi_05] batch_size=${OPENPI_BATCH_SIZE:-${default_batch_size}}"
-echo "[Pi_05] local_cache_root=${LOCAL_CACHE_ROOT}"
-echo "[Pi_05] checkpoint_dir=${ckpt_dir}"
-
-cd "${POLICY_DIR}/openpi/"
-PYTHON_BIN="${OPENPI_PYTHON:-${POLICY_DIR}/openpi/.venv/bin/python}"
-if [[ ! -x "${PYTHON_BIN}" ]]; then
-  echo "[Pi_05][ERROR] Python interpreter not found: ${PYTHON_BIN}" >&2
-  exit 1
-fi
-XLA_PYTHON_CLIENT_MEM_FRACTION="${XLA_PYTHON_CLIENT_MEM_FRACTION:-0.9}" \
-  "${PYTHON_BIN}" scripts/train.py "${train_config_name}" \
-    --exp-name="${ckpt_setting}" \
-    --data.repo-id="${lerobot_repo_id}" \
-    --data.assets.asset-id="${lerobot_repo_id}" \
-    --fsdp-devices="${fsdp_devices}" \
-    --checkpoint-dir-override="${ckpt_dir}" \
-    --batch-size="${OPENPI_BATCH_SIZE:-${default_batch_size}}" \
-    --seed="${seed}" \
-    --overwrite
+"${PI05_PYTHON_BIN}" "${PI05_DIR}/check_contract.py" --env-cfg-type "${env_cfg_type}" --require-stats
+ckpt_setting="${bench_name}-${ckpt_name}-${env_cfg_type}-ee-${seed}"
+ckpt_dir="${PI05_DIR}/checkpoints/${ckpt_setting}"
+gpu_count=$(awk -F, '{print NF}' <<<"${gpu_ids}")
+default_fsdp=$(( gpu_count < 2 ? 1 : 2 ))
+fsdp_devices="${OPENPI_FSDP_DEVICES:-${default_fsdp}}"
+export CUDA_VISIBLE_DEVICES="${gpu_ids}"
+cache_root="${OPENPI_LOCAL_CACHE_ROOT:-/tmp/dexbench-pi05-$(hostname)}"
+mkdir -p "${cache_root}/hf/datasets" "${cache_root}/jax"
+export HF_DATASETS_CACHE="${cache_root}/hf/datasets"
+export JAX_COMPILATION_CACHE_DIR="${cache_root}/jax"
+export XLA_PYTHON_CLIENT_MEM_FRACTION="${XLA_PYTHON_CLIENT_MEM_FRACTION:-0.9}"
+resume_args=()
+if [[ "${OPENPI_RESUME:-0}" == 1 ]]; then resume_args+=(--resume); fi
+echo "[Pi_05] config=${OPENPI_TRAIN_CONFIG_NAME} dataset=${HF_LEROBOT_HOME}/${OPENPI_LEROBOT_REPO_ID} action=absolute_ee54 fsdp=${fsdp_devices} output=${ckpt_dir}"
+cd "${PI05_OPENPI_ROOT}"
+exec "${PI05_PYTHON_BIN}" scripts/train.py "${OPENPI_TRAIN_CONFIG_NAME}" \
+    --exp-name="${ckpt_setting}" --data.repo-id="${OPENPI_LEROBOT_REPO_ID}" \
+    --fsdp-devices="${fsdp_devices}" --checkpoint-dir-override="${ckpt_dir}" \
+    --seed="${seed}" --batch-size=256 --num-workers=4 \
+    --num-train-steps=60000 --save-interval=1000 --keep-period=5000 \
+    --lr-schedule.decay-steps=60000 "${resume_args[@]}" "$@"

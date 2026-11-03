@@ -19,8 +19,10 @@ import openpi.models.pi0_fast as pi0_fast
 import openpi.models.tokenizer as _tokenizer
 import openpi.policies.aloha_policy as aloha_policy
 import openpi.policies.droid_policy as droid_policy
+import openpi.policies.egovla_policy as egovla_policy
 import openpi.policies.libero_policy as libero_policy
 import openpi.policies.wuji_policy as wuji_policy
+from openpi.policies.dexbench_contract import ACTION_CONTRACT
 import openpi.shared.download as _download
 import openpi.shared.normalize as _normalize
 import openpi.training.droid_rlds_dataset as droid_rlds_dataset
@@ -98,6 +100,9 @@ class DataConfig:
 
     # If true, will use the LeRobot dataset task to define the prompt.
     prompt_from_task: bool = False
+
+    # Saved with checkpoint normalization assets to bind action semantics.
+    action_contract: dict[str, Any] | None = None
 
     # Only used for RLDS data loader (ie currently only used for DROID).
     rlds_data_dir: str | None = None
@@ -180,8 +185,6 @@ class DataConfigFactory(abc.ABC):
     assets: AssetsConfig = dataclasses.field(default_factory=AssetsConfig)
     # Base config that will be updated by the factory.
     base_config: tyro.conf.Suppress[DataConfig | None] = None
-    # Optional override for datasets whose stats do not contain q01/q99.
-    use_quantile_norm_override: bool | None = None
 
     @abc.abstractmethod
     def create(self, assets_dirs: pathlib.Path, model_config: _model.BaseModelConfig) -> DataConfig:
@@ -195,11 +198,7 @@ class DataConfigFactory(abc.ABC):
             repo_id=repo_id,
             asset_id=asset_id,
             norm_stats=self._load_norm_stats(epath.Path(self.assets.assets_dir or assets_dirs), asset_id),
-            use_quantile_norm=(
-                self.use_quantile_norm_override
-                if self.use_quantile_norm_override is not None
-                else model_config.model_type != ModelType.PI0
-            ),
+            use_quantile_norm=model_config.model_type != ModelType.PI0,
         )
 
     def _load_norm_stats(self, assets_dir: epath.Path, asset_id: str | None) -> dict[str, _transforms.NormStats] | None:
@@ -391,6 +390,10 @@ class LeRobotWujiDataConfig(DataConfigFactory):
 
     @override
     def create(self, assets_dirs: pathlib.Path, model_config: _model.BaseModelConfig) -> DataConfig:
+        # Reuse the original SparkArena Wuji data pipeline for absolute EE54.
+        if self.base_config and self.base_config.action_contract is not None:
+            if self.extra_delta_transform or model_config.action_dim != 54:
+                raise ValueError("DexBench EE54 forbids delta conversion")
         repack_transform = _transforms.Group(
             inputs=[
                 _transforms.RepackTransform(
@@ -426,6 +429,52 @@ class LeRobotWujiDataConfig(DataConfigFactory):
             repack_transforms=repack_transform,
             data_transforms=data_transforms,
             model_transforms=model_transforms,
+            action_sequence_keys=self.action_sequence_keys,
+        )
+
+
+@dataclasses.dataclass(frozen=True)
+class LeRobotEgoVLADataConfig(DataConfigFactory):
+    """EgoVLA H1+Inspire upper-body joint data (7+12 joints per side)."""
+
+    use_delta_joint_actions: bool = True
+    action_sequence_keys: Sequence[str] = ("action",)
+
+    @override
+    def create(self, assets_dirs: pathlib.Path, model_config: _model.BaseModelConfig) -> DataConfig:
+        repack_transform = _transforms.Group(
+            inputs=[
+                _transforms.RepackTransform(
+                    {
+                        "observation/image": "observation.images.cam_high",
+                        "observation/left_wrist_image": "observation.images.cam_left_wrist",
+                        "observation/right_wrist_image": "observation.images.cam_right_wrist",
+                        "observation/camera_mask": "observation.camera_mask",
+                        "observation/state": "observation.state",
+                        "actions": "action",
+                        "prompt": "prompt",
+                    }
+                )
+            ]
+        )
+        data_transforms = _transforms.Group(
+            inputs=[egovla_policy.EgoVLAInputs(model_type=model_config.model_type)],
+            outputs=[egovla_policy.EgoVLAOutputs(action_dim=model_config.action_dim)],
+        )
+        if self.use_delta_joint_actions:
+            # Match official Pi_05 semantics: arm joints are delta targets and
+            # dexterous-hand joints remain absolute.
+            delta_action_mask = _transforms.make_bool_mask(7, -12, 7, -12)
+            data_transforms = data_transforms.push(
+                inputs=[_transforms.DeltaActions(delta_action_mask)],
+                outputs=[_transforms.AbsoluteActions(delta_action_mask)],
+            )
+
+        return dataclasses.replace(
+            self.create_base_config(assets_dirs, model_config),
+            repack_transforms=repack_transform,
+            data_transforms=data_transforms,
+            model_transforms=ModelTransformFactory()(model_config),
             action_sequence_keys=self.action_sequence_keys,
         )
 
@@ -743,55 +792,66 @@ _CONFIGS = [
         fsdp_devices=2,
         num_train_steps=60000,
     ),
-    # MobileArena m92uw: selected 45D controllable state/action and three RGB cameras.
-    # Full-parameter training; the 45D projection layers are randomly initialized because
-    # the released pi05_base checkpoint has 32D action/state projections.
-    TrainConfig(
-        name="pi05_mobile_arena_full",
-        model=pi0_config.Pi0Config(pi05=True, action_dim=45, action_horizon=50, max_token_len=256),
-        data=LeRobotWujiDataConfig(
-            repo_id="mobile_arena_data",
-            assets=AssetsConfig(asset_id="mobile_arena_data"),
-            base_config=DataConfig(prompt_from_task=True),
-            base_image_key="observation.images.cam_head",
-            extra_delta_transform=False,
-            use_quantile_norm_override=False,
-        ),
-        weight_loader=weight_loaders.PartialCheckpointWeightLoader(
-            "gs://openpi-assets/checkpoints/pi05_base/params"
-        ),
-        freeze_filter=nnx.Nothing,
-        # Full fine-tuning on one 8-GPU host with the validated global batch size.
-        batch_size=128,
-        fsdp_devices=2,
-        num_workers=12,
-        num_train_steps=60_000,
-        ema_decay=0.99,
-    ),
-    # Tianji Marvin + dual Wuji Hand Gen1 (54D). Set data.repo_id to your LeRobot dataset
+    # Tianji Marvin + dual WujiHand2 (20 joints per hand, EE54). Set data.repo_id to your LeRobot dataset
     # before compute_norm_stats / train. Skip RoboDojo process_data.py; use wuji mcap→LeRobot.
     TrainConfig(
         name="pi05_wuji_marvin_54d",
         model=pi0_config.Pi0Config(pi05=True, action_dim=54, action_horizon=50, max_token_len=256),
         data=LeRobotWujiDataConfig(
-            # Replace with your LeRobot repo id or local dataset id under HF_LEROBOT_HOME.
-            repo_id="tianji_marvin_wuji",
-            assets=AssetsConfig(
-                assets_dir=str(_WUJI_ASSETS_DIR),
-                asset_id="tianji_marvin_wuji",
-            ),
-            base_config=DataConfig(
-                prompt_from_task=True,
-            ),
-            extra_delta_transform=True,
-            # If your dataset uses cam_high instead of stereo_right, set:
-            # base_image_key="observation.images.cam_high",
+            repo_id="dexbench_12tasks",
+            base_image_key="observation.images.cam_high",
+            extra_delta_transform=False,
+            base_config=DataConfig(prompt_from_task=True, video_backend="pyav",
+                                   action_contract=ACTION_CONTRACT),
+        ),
+        assets_base_dir=str(pathlib.Path(__file__).resolve().parents[3] / "assets"),
+        weight_loader=weight_loaders.PartialCheckpointWeightLoader(
+            "/personal/xspark_shared/model_weights/openpi-assets/checkpoints/pi05_base/params"
+        ),
+        seed=42, batch_size=256, num_workers=8, num_train_steps=60_000,
+        policy_metadata={"action_contract": "dexbench-pi05-absolute-ee-wuji20-v1"},
+        lr_schedule=_optimizer.CosineDecaySchedule(
+            warmup_steps=1_000, peak_lr=2.5e-5, decay_steps=60_000, decay_lr=2.5e-6,
+        ),
+    ),
+
+    # EgoVLA H1 + Inspire: full-parameter Pi0.5 fine-tuning on the 38D
+    # upper-body joint subspace.  batch_size is global; 64 / 8 GPUs = 8/GPU.
+    TrainConfig(
+        name="pi05_egovla_joint38_full",
+        model=pi0_config.Pi0Config(pi05=True, action_dim=38, action_horizon=50),
+        data=LeRobotEgoVLADataConfig(
+            repo_id="EgoVLA_benchmark",
+            base_config=DataConfig(prompt_from_task=True),
+            use_delta_joint_actions=True,
         ),
         weight_loader=weight_loaders.PartialCheckpointWeightLoader(
             "gs://openpi-assets/checkpoints/pi05_base/params"
         ),
-        num_train_steps=30_000,
+        seed=0,
         batch_size=64,
+        fsdp_devices=8,
+        num_train_steps=30_000,
+    ),
+    # RGB-correct rebuild of Spark0 real-bench v5. The repack transform is the
+    # same 54D/cam_high recipe used by the original v5 run.
+    TrainConfig(
+        name="pi05_wuji_marvin_54d_v5_rgbfix",
+        model=pi0_config.Pi0Config(pi05=True, action_dim=54, action_horizon=50, max_token_len=256),
+        data=LeRobotWujiDataConfig(
+            repo_id="spark0_real_bench_v5_23h",
+            base_image_key="observation.images.cam_high",
+            base_config=DataConfig(
+                prompt_from_task=True,
+            ),
+            extra_delta_transform=True,
+        ),
+        weight_loader=weight_loaders.PartialCheckpointWeightLoader(
+            "/personal/xspark_shared/model_weights/openpi-assets/checkpoints/pi05_base/params"
+        ),
+        num_train_steps=30_000,
+        batch_size=256,
+        fsdp_devices=1,
         lr_schedule=_optimizer.CosineDecaySchedule(
             warmup_steps=1_000,
             peak_lr=5e-5,
@@ -799,6 +859,8 @@ _CONFIGS = [
             decay_lr=5e-6,
         ),
     ),
+
+
 ]
 
 if len({config.name for config in _CONFIGS}) != len(_CONFIGS):

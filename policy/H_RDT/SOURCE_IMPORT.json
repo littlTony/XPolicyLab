@@ -1,0 +1,14 @@
+{
+  "name": "H_RDT",
+  "official_url": "https://github.com/HongzheBi/H_RDT.git",
+  "official_project_page": "https://embodiedfoundation.github.io/hrdt",
+  "path": "/personal/wenwei/DexBench/XPolicyLab/policy/H_RDT/upstream",
+  "commit": "8be02cb5e631898dfab12f9b6bbb77e32999547a",
+  "clean": true,
+  "old_readme_github_link": "https://github.com/embodiedfoundation/H-RDT",
+  "old_link_status": "404; superseded by official project-page Code link",
+  "benchmark": "SparkArena",
+  "source_only": true,
+  "training_started": false,
+  "reference_configs": "/personal/wenwei/DexBench/XPolicyLab/policy/H_RDT/reference_configs/sparkarena_0921"
+}

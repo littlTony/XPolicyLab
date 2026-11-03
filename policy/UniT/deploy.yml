@@ -1,0 +1,16 @@
+policy_name: UniT
+protocol: ws
+host: localhost
+port: null
+bench_name: DexBench
+task_name: null
+ckpt_name: tianji_wuji
+env_cfg_type: tianji_marvin_wuji
+seed: 42
+action_type: ee
+gpu_id: null
+eval_batch: false
+checkpoint_step: 60000
+execute_steps: 16
+device: cuda:0
+processor_path: null

@@ -45,6 +45,7 @@ Repository = "https://github.com/Physical-Intelligence/openpi"
 
 [dependency-groups]
 lerobot = [
+    "h5py>=3.11,<4",
     "lerobot==0.4.4",
 ]
 dev = [

@@ -16,3 +16,6 @@ pip install torch==2.7.1+cu128 torchvision==0.22.1+cu128 --extra-index-url https
 pip install opencv-python
 pip install -e "${FASTWAM_DIR}"
 pip install -e "${ROOT_DIR}/XPolicyLab"
+
+# DexBench absolute wxyz/rot6d adapter.
+python -m pip install scipy==1.15.3

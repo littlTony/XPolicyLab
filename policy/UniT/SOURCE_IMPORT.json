@@ -1,0 +1,19 @@
+{
+  "name": "UniT",
+  "official_url": "https://github.com/xpeng-robotics/UniT.git",
+  "cloned_url": "https://github.com/xpeng-robotics/UniT.git",
+  "path": "/personal/wenwei/DexBench/XPolicyLab/policy/UniT/UniT",
+  "commit": "800c0a428d431964dad4e7adc9c667d639432249",
+  "clean": true,
+  "attempts": [
+    {
+      "url": "https://github.com/xpeng-robotics/UniT.git",
+      "returncode": 0,
+      "temporary_path": "/personal/wenwei/DexBench/XPolicyLab/policy/UniT/.upstream-import-0055a8634a7947219570fc3ef96559c1"
+    }
+  ],
+  "benchmark": "SparkArena",
+  "source_only": true,
+  "training_started": false,
+  "reference_configs": "/personal/wenwei/DexBench/XPolicyLab/policy/UniT/reference_configs/sparkarena_0908"
+}

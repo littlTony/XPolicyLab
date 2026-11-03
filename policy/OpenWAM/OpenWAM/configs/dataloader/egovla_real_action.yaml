@@ -1,0 +1,37 @@
+type: egovla
+
+# v2 contract: proprio=qpos[t], target=raw action[t]. Never qpos[t+1].
+dataset_dir: /personal/xiangpc/0912_Xpolicylab_bench/openwam/data/egovla_benchmark_joint38_real_action_v2
+embodiment: ego_h1_inspire
+action_mode: joint
+
+# Compact H1+Inspire order: [left arm7, left hand12, right arm7, right hand12].
+# The OpenWAM action/state heads are 80-D; only slots 0:38 are active.
+unify_action: true
+unify_action_map: ["0-37"]
+unify_state_map: ["0-37"]
+
+num_frames: 33
+video_stride: 4
+window_stride: 1
+split: train
+
+# EgoVLA has mixed wrist-camera availability, while RGB head frames are always
+# present. This recipe uses a uniform head-only contract because OpenWAM does
+# not require wrists in this configuration. The saved checkpoint makes
+# deployment use the identical head-only path and ignore live wrists.
+height: 384
+width: 320
+multiview: false
+target_camera: cam_head
+
+# joint contains raw action statistics; joint_state contains qpos statistics.
+normalize_mode: min-max
+normalization_stats_path: /personal/xiangpc/0912_Xpolicylab_bench/openwam/data/egovla_benchmark_joint38_real_action_v2/meta/normalization_stats.npy
+
+color_jitter:
+  enabled: true
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.2
+  hue: 0.0

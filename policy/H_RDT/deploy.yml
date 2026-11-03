@@ -1,0 +1,30 @@
+policy_name: H_RDT
+protocol: ws
+bench_name: DexBench
+task_name: null
+env_cfg_type: tianji_marvin_wuji
+action_type: ee
+gpu_id: null
+seed: 42
+eval_batch: false
+
+# XPolicyLab model server
+host: localhost
+port: 6000
+
+# H-RDT runtime
+ckpt_name: tianji_wuji
+checkpoint_path: null
+config_path: null
+lang_embedding_path: null
+lang_embedding_dir: H_RDT/datasets/xpolicylab/lang_embeddings
+stats_path: null
+device: cuda
+dtype: bfloat16
+vision_backbone_id: dino-siglip
+vision_image_size: 384
+allow_dummy_lang_embedding: false
+
+# EE58 reads all statistics, model config and language vectors from the run.
+# Use an exact bound instruction, or explicitly choose its training key here.
+ee58_instruction_key: null

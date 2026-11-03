@@ -1,7 +1,9 @@
-data/
-!FastWAM/configs/data/
 checkpoints/
-FastWAM/checkpoints/
+data/
+logs/
+.cache/
+__pycache__/
+*.pyc
+FastWAM/checkpoints
 FastWAM/runs/
-FastWAM/data/
-!FastWAM/configs/data/text_embeds_cache/
+FastWAM/wandb/

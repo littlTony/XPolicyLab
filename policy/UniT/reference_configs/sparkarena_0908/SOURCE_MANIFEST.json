@@ -1,0 +1,33 @@
+{
+  "benchmark": "SparkArena",
+  "inspection_only": true,
+  "training_started": false,
+  "warning": "Historical absolute paths and runtime patches; not a ready-to-run launcher.",
+  "files": [
+    {
+      "file": "train_pipeline_0908-SparkArena.sh",
+      "source": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/train_pipeline_0908-SparkArena.sh",
+      "sha256": "e816374c8072f3aa86a131b2a6151fc2e9bff1d657f71f9afbad21fd13ebd2de"
+    },
+    {
+      "file": "manifest_0908-SparkArena.json",
+      "source": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/manifest_0908-SparkArena.json",
+      "sha256": "6e2424339ff3379017a56c2e71976376b58696c8a0750533cfa0d07aa3efb7b9"
+    },
+    {
+      "file": "completed_tokenizer_0908-SparkArena.json",
+      "source": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/completed_tokenizer_0908-SparkArena.json",
+      "sha256": "37454ce7300f8fe1af18f52abde8d2490664e66872eda2077c509cef53629bd9"
+    },
+    {
+      "file": "runtime_configs_0908-SparkArena/gr00t_dual_system_local_weights.json",
+      "source": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/runtime_configs_0908-SparkArena/gr00t_dual_system_local_weights.json",
+      "sha256": "3263b2132d90231adc16a9db5eb849afdb966fe30cde51d3995aa1b8612421b0"
+    },
+    {
+      "file": "runtime_configs_0908-SparkArena/gr00t_tokenizer_local_weights.json",
+      "source": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/runtime_configs_0908-SparkArena/gr00t_tokenizer_local_weights.json",
+      "sha256": "03343c672839aa5ecefe562ccf1b2585150860c77cd7fb3b8bd949b67378459f"
+    }
+  ]
+}

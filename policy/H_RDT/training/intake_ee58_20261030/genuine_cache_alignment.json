@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "actual_native_Consumer_vs_public_Model": true,
+  "genuine_T5_cache_records": 60,
+  "state_action_and_language_tokens": "match",
+  "native_RGB384_letterbox_pixels": "exact match in head,left,right order",
+  "wire54_oracle_actions": "match",
+  "networks": "explicit vision/policy stubs; no model-quality assertion",
+  "GPU_used": false
+}

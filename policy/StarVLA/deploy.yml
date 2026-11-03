@@ -1,0 +1,30 @@
+policy_name: StarVLA
+protocol: ws
+bench_name: DexBench
+task_name: null
+env_cfg_type: tianji_marvin_wuji
+action_type: ee
+ckpt_name: tianji_wuji
+gpu_id: null
+seed: 42
+eval_batch: true
+
+# XPolicyLab model server
+host: localhost
+port: 6000
+
+# Upstream StarVLA runtime
+starvla_root: source_starvla
+checkpoint_path: null
+starvla_server_host: 127.0.0.1
+starvla_server_port: 5694
+unnorm_key: arx_x5
+use_ddim: true
+num_ddim_steps: 10
+image_size: [224, 224]
+execute_horizon: 16
+include_state: auto
+# EE58 branch serves the native full model directly through XPolicyLab.
+device: cuda
+require_runtime_contract: true
+required_pi_v3_forward: null

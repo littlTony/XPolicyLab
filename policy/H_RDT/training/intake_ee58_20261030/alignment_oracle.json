@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "real_public_Model_update_get": true,
+  "state_norm": "independent checkpoint state stats",
+  "action_oracle": "normalized GT -> checkpoint action denorm -> row6D SO3 -> wire54 dictionaries",
+  "cameras": [
+    "head",
+    "left_wrist",
+    "right_wrist"
+  ],
+  "RGB384_letterbox_pixels": "exactly equal to training transform",
+  "batch_envs": 2,
+  "chunk": 16,
+  "native_dim": 58,
+  "wire_dim": 54,
+  "network_stubs": [
+    "vision encoder outputs",
+    "GT policy action output"
+  ],
+  "T5_cache": "explicit synthetic test fixture, not genuine T5",
+  "GPU_used": false,
+  "real_weights_inference": "not tested",
+  "production_fixture_guard": "passed"
+}

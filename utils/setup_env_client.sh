@@ -16,6 +16,14 @@ env_gpu_id="${12}"
 policy_server_ip="${13:-localhost}"
 protocol_override="${14:-}"
 
+# The simulator can have its own older XPolicyLab checkout. Select the same
+# adapter tree whose deploy.yml and policy server are being used for this run.
+if [[ -z "${XPOLICYLAB_ROOT:-}" ]]; then
+    XPOLICYLAB_ROOT="$(cd "${UTILS_DIR}/.." && pwd)"
+fi
+export XPOLICYLAB_ROOT
+
+
 # shellcheck source=resolve_eval_env_type.sh
 source "${UTILS_DIR}/resolve_eval_env_type.sh"
 eval_env_mode="$(resolve_eval_env_type)" || exit 1

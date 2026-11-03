@@ -1,0 +1,86 @@
+# SparkArena hyperparameters applied to the current DexBench EE58 dataset.
+run_id: prepared_by_train_sparkarena
+run_root_dir: prepared_by_train_sparkarena
+seed: 0
+wandb_entity: null
+wandb_project: starvla-sparkarena
+is_debug: false
+version_id: '0.21'
+framework:
+  name: QwenPI_v3
+  qwenvl:
+    base_vlm: /personal/xspark_shared/model_weights/Qwen3-VL-4B-Instruct
+    attn_implementation: flash_attention_2
+    vl_hidden_dim: 2560
+    num_vl_layers: 36
+  action_model:
+    action_model_type: LayerwiseFM
+    action_dim: null # Derived from EE9 + shared Wuji20 dimensions, verified against EE58 contract.
+    state_dim: null
+    action_horizon: 16
+    future_action_window_size: 15
+    past_action_window_size: 0
+    repeated_diffusion_steps: 16 # Mirror trainer value; native forward reads trainer.repeated_diffusion_steps.
+    num_inference_timesteps: 4
+    add_pos_embed: true
+    max_seq_len: 1024
+    num_target_vision_tokens: 32
+    noise_beta_alpha: 1.5
+    noise_beta_beta: 1.0
+    noise_s: 0.999
+    num_timestep_buckets: 1000
+    diffusion_model_cfg:
+      action_dit_hidden_dim: 1024
+      dropout: 0.2
+      final_dropout: true
+      interleave_self_attention: true
+      norm_type: ada_norm
+      positional_embeddings: null
+      attention_head_dim: 64
+      cross_attention_dim: 1024
+      num_layers: 36
+      input_embedding_dim: 1024
+      num_attention_heads: 16
+datasets:
+  vla_data:
+    dataset_py: lerobot_datasets
+    include_state: true
+    video_backend: torchvision_av
+    data_root_dir: prepared_by_train_sparkarena
+    data_mix: xpolicylab_dexbench_ee58_qwen_pi_v3
+    action_type: absolute_ee58
+    action_mode: abs
+    action_source: dexbench_ee58_export_action
+    action_temporal_offset: 0
+    action_derived_from_state: false
+    xpolicylab_normalization_mode: q99
+    camera_names: [front, left_wrist, right_wrist]
+    black_camera_names: []
+    per_device_batch_size: 4
+    image_size: [224, 224]
+    obs_image_size: [224, 224]
+    state_action_dtype: float16
+    # Native loader calls the v2.1 JSONL/episode-parquet family "v2.0".
+    lerobot_version: v2.0
+    delete_pause_frame: false
+    drop_incomplete_action_chunks: false
+    num_workers: 4
+trainer:
+  # Actual historical forward reads this trainer field, defaulting to16;
+  # framework.action_model.repeated_diffusion_steps does not control that repeat.
+  repeated_diffusion_steps: 16
+  max_train_steps: 60000
+  num_warmup_steps: 5000
+  save_interval: 10000
+  eval_interval: 10000
+  learning_rate: {base: 1.0e-5, qwen_vl_interface: 1.0e-5, action_model: 1.0e-4}
+  lr_scheduler_type: cosine_with_min_lr
+  scheduler_specific_kwargs: {min_lr: 5.0e-7}
+  freeze_modules: null
+  loss_scale: {vla: 1.0}
+  logging_frequency: 10
+  gradient_clipping: 1.0
+  gradient_accumulation_steps: 1
+  gradient_checkpointing: true
+  optimizer: {name: AdamW, betas: [0.9, 0.95], eps: 1.0e-8, weight_decay: 1.0e-8}
+  save_format: pt

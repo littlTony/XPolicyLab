@@ -1,0 +1,27 @@
+{
+  "policy": "FastWAM",
+  "host": "A800_16",
+  "gpu_indices": [0,1,2,3,4,5,6,7],
+  "dataset": "/personal/xiangpc/0812_Xpolicylab_bench/FastWAM/data/spark0_bench_7tasks_0908",
+  "dataset_contract": {
+    "episodes": 700,
+    "frames": 154251,
+    "videos": 2100,
+    "action_source": "raw HDF5 action/* at same timestep",
+    "state_source": "raw HDF5 state/* at same timestep",
+    "next_state_used_as_action": false,
+    "views": ["cam_head", "cam_left_wrist", "cam_right_wrist"]
+  },
+  "text_embedding_cache": "/personal/xiangpc/0812_Xpolicylab_bench/FastWAM/data/spark0_bench_7tasks_0908/text_embeddings_0908_7task",
+  "text_embedding_count": 0,
+  "attempts": [
+    {"pid": 2174703, "log": "/personal/xiangpc/training_0908_7task/fastwam_0908_7task/logs_0908_7task/text_embeddings.log", "result": "stopped_after_5m_D_state"},
+    {"pid": 2186907, "log": "/personal/xiangpc/training_0908_7task/fastwam_0908_7task/logs_0908_7task/text_embeddings_retry.log", "result": "stopped_after_5m_D_state"},
+    {"pid": 2208487, "log": "/personal/xiangpc/training_0908_7task/fastwam_0908_7task/logs_0908_7task/text_embeddings_final.log", "result": "stopped_after_5m_D_state"}
+  ],
+  "status": "blocked_before_encoder_import",
+  "blocker": "JuiceFS shared Python stdlib/site-package reads remain in D(wait_on_page_bit); local 58G env copy measured ~2MB/s and was aborted",
+  "training_started": false,
+  "output_dir": "/personal/xiangpc/0812_Xpolicylab_bench/FastWAM/Xpolicylab/policy/FastWAM/checkpoints_0908_7task",
+  "created_utc": "2026-09-08"
+}

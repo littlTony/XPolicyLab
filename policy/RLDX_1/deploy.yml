@@ -1,0 +1,17 @@
+policy_name: RLDX_1
+protocol: ws
+host: localhost
+port: null
+bench_name: DexBench
+task_name: auto
+ckpt_name: tianji_wuji
+env_cfg_type: tianji_marvin_wuji
+action_type: ee
+seed: null
+gpu_id: null
+eval_batch: true
+allow_dummy_policy: false
+replan_steps: 16
+prompt_embodiment: tianji_wujihand2_real
+
+checkpoint_num: 60000

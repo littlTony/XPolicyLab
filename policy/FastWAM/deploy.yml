@@ -1,42 +1,44 @@
 policy_name: FastWAM
 protocol: ws
 eval_batch: true
-
-# Server transport: overridden by setup_eval_policy_server.sh per launch.
-# Keys are `port` / `host` because XPolicyLab/setup_policy_server.py reads
-# those names (deploy_cfg.get("port") / deploy_cfg.get("host")).
 port: null
 host: localhost
-
-# Identifiers + per-launch wiring (set via --overrides from the eval scripts).
-bench_name: MobileArena
-task_name: null
-ckpt_name: null
-env_cfg_type: mobile_arena
-action_type: joint
-action_dim: 45
-mobile_arena: true
-seed: null
-
-# Policy artefacts: resolved in setup_eval_policy_server.sh from ckpt_name.
+bench_name: DexBench
+task_name: auto
+ckpt_name: tianji_wuji
+env_cfg_type: tianji_marvin_wuji
+action_type: ee
+action_dim: 54
+seed: 42
+gpu_id: null
 checkpoint_path: null
 dataset_stats_path: null
-
-# FastWAM upstream policy hyperparameters.  The task must match the MobileArena
-# training config so the composed model keeps action/proprio dimensions at 45.
+checkpoint_root: null
+checkpoint_num: 60000
+joint_only: false
 sim_cfg_name: sim_robotwin.yaml
-sim_task: mobile_arena_uncond_3cam_384_1e-4
+sim_task: dexbench_ee58
 device: cuda
+cuda_memory_fraction: 1.0
 mixed_precision: bf16
-# null -> upstream default (num_frames - 1, typically 32 for robotwin).
 action_horizon: null
 replan_steps: 24
 num_inference_steps: 10
 sigma_shift: null
 text_cfg_scale: 1.0
-negative_prompt: ""
+negative_prompt: ''
 rand_device: cpu
 tiled: false
 timing_enabled: false
 default_instruction: follow the instruction
-allow_dummy_policy: false
+request_timeout_s: 300.0
+connect_timeout_s: 30.0
+handshake_timeout_s: 120.0
+max_connect_attempts: 30
+connect_retry_delay_s: 2.0
+max_connect_seconds: 600.0
+close_timeout_s: 20.0
+env_cfg_root: null
+model_base_path: null
+prompt_embodiment: tianji_wujihand2_real
+ckpt_dir: null

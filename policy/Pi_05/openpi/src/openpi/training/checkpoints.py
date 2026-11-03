@@ -1,19 +1,17 @@
 from __future__ import annotations
 
+import json
+
 import asyncio
 import concurrent.futures as futures
 import dataclasses
 import logging
-
-import numpy as np
 from typing import Protocol
 
 from etils import epath
 import jax
-import jax.experimental.multihost_utils as multihost_utils
 import orbax.checkpoint as ocp
 import orbax.checkpoint.future as future
-from orbax.checkpoint import options as ocp_options
 
 from openpi.shared import array_typing as at
 import openpi.shared.normalize as _normalize
@@ -26,18 +24,11 @@ def initialize_checkpoint_dir(
 ) -> tuple[ocp.CheckpointManager, bool]:
     checkpoint_dir = epath.Path(checkpoint_dir).resolve()
     resuming = False
-    is_primary_host = jax.process_index() == 0
-    # Every host has to take the same branch, so the primary host's view of the shared
-    # directory decides for the whole job, and only the primary host mutates it.
-    dir_exists = bool(checkpoint_dir.exists())
-    if jax.process_count() > 1:
-        dir_exists = bool(np.asarray(multihost_utils.broadcast_one_to_all(np.asarray(dir_exists))).item())
-    if dir_exists:
+    if checkpoint_dir.exists():
         if overwrite:
-            if is_primary_host:
-                checkpoint_dir.rmtree()
-                logging.info(f"Wiped checkpoint directory {checkpoint_dir}")
-            multihost_utils.sync_global_devices("checkpoint_dir_overwrite")
+            checkpoint_dir.rmtree()
+            checkpoint_dir.mkdir(parents=True, exist_ok=True)
+            logging.info(f"Wiped checkpoint directory {checkpoint_dir}")
         elif resume:
             resuming = True
         else:
@@ -46,9 +37,7 @@ def initialize_checkpoint_dir(
                 "to indicate how to handle it."
             )
 
-    if is_primary_host:
-        checkpoint_dir.mkdir(parents=True, exist_ok=True)
-    multihost_utils.sync_global_devices("checkpoint_dir_init")
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
 
     mngr = ocp.CheckpointManager(
         checkpoint_dir,
@@ -62,8 +51,6 @@ def initialize_checkpoint_dir(
             keep_period=keep_period,
             create=False,
             async_options=ocp.AsyncOptions(timeout_secs=7200),
-            # Multi-host: barrier-synchronized saves, metadata written by the primary only.
-            multiprocessing_options=ocp_options.MultiprocessingOptions(primary_host=0),
         ),
     )
 
@@ -89,6 +76,10 @@ def save_state(
         norm_stats = data_config.norm_stats
         if norm_stats is not None and data_config.asset_id is not None:
             _normalize.save(directory / data_config.asset_id, norm_stats)
+            if data_config.action_contract is not None:
+                (directory / data_config.asset_id / "action_contract.json").write_text(
+                    json.dumps(data_config.action_contract, indent=2) + "\n"
+                )
 
     # Split params that can be used for inference into a separate item.
     with at.disable_typechecking():

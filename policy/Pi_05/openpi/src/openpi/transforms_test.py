@@ -128,16 +128,3 @@ def test_extract_prompt_from_task_dataframe():
 
     data = transform({"task_index": 1})
     assert data["prompt"] == "Hello, world!"
-
-
-
-def test_extract_prompt_from_task_column_with_numeric_index():
-    tasks = pd.DataFrame(
-        {
-            "task_index": [0, 1],
-            "task": ["Move the left arm", "Place the bowl on the plate"],
-        },
-        index=[0, 1],
-    )
-    transform = _transforms.PromptFromLeRobotTask(tasks)
-    assert transform({"task_index": 1})["prompt"] == "Place the bowl on the plate"

@@ -1,6 +1,15 @@
 #!/bin/bash
 set -euo pipefail
-export XLA_PYTHON_CLIENT_MEM_FRACTION=0.3
+source "$(dirname "$(readlink -f "$0")")/runtime.sh"
+
+# Headless Isaac must not prompt; PhysX may also call zenity after CUDA 700.
+: "${OMNI_KIT_ACCEPT_EULA:=Y}"
+export OMNI_KIT_ACCEPT_EULA
+: "${ACCEPT_EULA:=Y}"
+export ACCEPT_EULA
+if [[ -n "${EVAL_WEB_HEADLESS_BIN:-}" && -d "${EVAL_WEB_HEADLESS_BIN}" ]]; then
+    export PATH="${EVAL_WEB_HEADLESS_BIN}:${PATH}"
+fi
 
 bench_name=$1
 task_name=$2

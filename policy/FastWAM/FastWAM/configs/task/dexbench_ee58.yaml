@@ -1,0 +1,205 @@
+# @package _global_
+defaults:
+- override /data: robotwin
+- override /model: fastwam
+- _self_
+batch_size: 8
+num_workers: 8
+lr_scheduler_type: cosine
+learning_rate: 0.0001
+num_epochs: 16
+max_steps: 60000
+log_every: 10
+save_every: 2500
+eval_every: 500
+eval_num_inference_steps: 10
+gradient_accumulation_steps: 4
+mixed_precision: bf16
+seed: 42
+max_grad_norm: 1.0
+weight_decay: 0.01
+resume: null
+wandb:
+  enabled: true
+  workspace: null
+  project: fast-wam
+  name: dexbench_ee58
+  group: null
+  mode: offline
+data:
+  train:
+    dataset_dirs:
+    - /personal/wenwei/DexBench/data_preprocess/data/dexbench_12tasks
+    shape_meta:
+      images:
+      - key: cam_high
+        raw_shape:
+        - 3
+        - 480
+        - 640
+        shape:
+        - 3
+        - 240
+        - 320
+      - key: cam_left_wrist
+        raw_shape:
+        - 3
+        - 480
+        - 640
+        shape:
+        - 3
+        - 240
+        - 320
+      - key: cam_right_wrist
+        raw_shape:
+        - 3
+        - 480
+        - 640
+        shape:
+        - 3
+        - 240
+        - 320
+      action:
+      - key: default
+        raw_shape: 58
+        shape: 58
+      state:
+      - key: default
+        raw_shape: 58
+        shape: 58
+    num_frames: 33
+    global_sample_stride: 1
+    action_video_freq_ratio: 4
+    video_size:
+    - 384
+    - 320
+    camera_key: null
+    val_set_proportion: 0.01
+    is_training_set: true
+    pretrained_norm_stats: /personal/wenwei/DexBench/XPolicyLab/policy/FastWAM/data/dataset_stats.json
+    skip_padding_as_possible: false
+    concat_multi_camera: robotwin
+    processor:
+      _target_: fastwam.datasets.lerobot.processors.fastwam_processor.FastWAMProcessor
+      shape_meta: ${data.train.shape_meta}
+      num_obs_steps: ${data.train.num_frames}
+      num_output_cameras: 3
+      action_output_dim: 58
+      proprio_output_dim: 58
+      action_state_transforms: null
+      use_stepwise_action_norm: false
+      norm_default_mode: z-score
+      norm_exception_mode: null
+      action_state_merger:
+        _target_: fastwam.datasets.lerobot.transforms.action_state_merger.ConcatLeftAlign
+      train_transforms:
+      - _target_: fastwam.datasets.lerobot.transforms.image.ToTensor
+      - _target_: torchvision.transforms.Resize
+        size:
+        - 240
+        - 320
+      val_transforms:
+      - _target_: fastwam.datasets.lerobot.transforms.image.ToTensor
+      - _target_: torchvision.transforms.Resize
+        size:
+        - 240
+        - 320
+    text_embedding_cache_dir: /personal/wenwei/DexBench/XPolicyLab/policy/FastWAM/data/text_embeds_cache
+    context_len: 128
+    _target_: fastwam.datasets.dexbench.DexBenchDataset
+    contract_id: dexbench-fastwam-world-ee58-wuji20-v1
+  val:
+    dataset_dirs:
+    - /personal/wenwei/DexBench/data_preprocess/data/dexbench_12tasks
+    shape_meta:
+      images:
+      - key: cam_high
+        raw_shape:
+        - 3
+        - 480
+        - 640
+        shape:
+        - 3
+        - 240
+        - 320
+      - key: cam_left_wrist
+        raw_shape:
+        - 3
+        - 480
+        - 640
+        shape:
+        - 3
+        - 240
+        - 320
+      - key: cam_right_wrist
+        raw_shape:
+        - 3
+        - 480
+        - 640
+        shape:
+        - 3
+        - 240
+        - 320
+      action:
+      - key: default
+        raw_shape: 58
+        shape: 58
+      state:
+      - key: default
+        raw_shape: 58
+        shape: 58
+    num_frames: 33
+    global_sample_stride: 1
+    action_video_freq_ratio: 4
+    video_size:
+    - 384
+    - 320
+    camera_key: null
+    val_set_proportion: 0.01
+    is_training_set: false
+    pretrained_norm_stats: /personal/wenwei/DexBench/XPolicyLab/policy/FastWAM/data/dataset_stats.json
+    skip_padding_as_possible: false
+    concat_multi_camera: robotwin
+    processor:
+      _target_: fastwam.datasets.lerobot.processors.fastwam_processor.FastWAMProcessor
+      shape_meta: ${data.val.shape_meta}
+      num_obs_steps: ${data.val.num_frames}
+      num_output_cameras: 3
+      action_output_dim: 58
+      proprio_output_dim: 58
+      action_state_transforms: null
+      use_stepwise_action_norm: false
+      norm_default_mode: z-score
+      norm_exception_mode: null
+      action_state_merger:
+        _target_: fastwam.datasets.lerobot.transforms.action_state_merger.ConcatLeftAlign
+      train_transforms:
+      - _target_: fastwam.datasets.lerobot.transforms.image.ToTensor
+      - _target_: torchvision.transforms.Resize
+        size:
+        - 240
+        - 320
+      val_transforms:
+      - _target_: fastwam.datasets.lerobot.transforms.image.ToTensor
+      - _target_: torchvision.transforms.Resize
+        size:
+        - 240
+        - 320
+    text_embedding_cache_dir: /personal/wenwei/DexBench/XPolicyLab/policy/FastWAM/data/text_embeds_cache
+    context_len: 128
+    _target_: fastwam.datasets.dexbench.DexBenchDataset
+    contract_id: dexbench-fastwam-world-ee58-wuji20-v1
+action_contract:
+  id: dexbench-fastwam-world-ee58-wuji20-v1
+  source: absolute_world_xyz_wxyz_wuji20
+  model: left_xyz3_rot6d6_hand20_right_xyz3_rot6d6_hand20
+  hand_order: isaac_stage_major_index_middle_pinky_ring_thumb
+  rot6d: matrix_columns_0_then_1
+  action_alignment: action_t_no_extra_shift
+  cameras:
+  - cam_high
+  - cam_left_wrist
+  - cam_right_wrist
+  color: RGB
+model:
+  mot_checkpoint_mixed_attn: false

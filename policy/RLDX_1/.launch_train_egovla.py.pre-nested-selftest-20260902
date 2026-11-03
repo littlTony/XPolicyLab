@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+"""Launch RLDX training with isolated EgoVLA/ZeRO-3 compatibility fixes.
+
+RLDX passes ``transformers.BatchFeature`` objects between model modules.
+DeepSpeed 0.17.6 only walks concrete ``dict`` containers when installing its
+ZeRO-3 backward hooks, so parameters can be released before a checkpointed
+backward recomputation.  BatchFeature is a MutableMapping, not a dict.  Teach
+DeepSpeed's tensor walker about such mappings before loading the unchanged
+upstream launcher.
+"""
+
+from __future__ import annotations
+
+import os
+import pathlib
+import runpy
+from collections.abc import MutableMapping
+from typing import Any, Callable
+
+
+def install_zero3_mutable_mapping_patch() -> None:
+    import deepspeed.runtime.zero.parameter_offload as parameter_offload
+    import deepspeed.runtime.zero.stage3 as stage3
+    import deepspeed.runtime.zero.utils as zero_utils
+
+    current = zero_utils.apply_to_tensors_only
+    if getattr(current, "_xpolicylab_mutable_mapping_patch", False):
+        return
+
+    original = current
+
+    def apply_to_tensors_only(
+        function: Callable[[Any], Any], value: Any, warning_msg_fn: Callable[[Any], str] | None = None
+    ) -> Any:
+        if isinstance(value, MutableMapping) and not isinstance(value, dict):
+            for key in list(value.keys()):
+                value[key] = apply_to_tensors_only(function, value[key], warning_msg_fn)
+            return value
+        return original(function, value, warning_msg_fn)
+
+    apply_to_tensors_only._xpolicylab_mutable_mapping_patch = True  # type: ignore[attr-defined]
+    zero_utils.apply_to_tensors_only = apply_to_tensors_only
+    parameter_offload.apply_to_tensors_only = apply_to_tensors_only
+    stage3.apply_to_tensors_only = apply_to_tensors_only
+
+    # Fail closed if the installed Transformers container is not traversed.
+    import torch
+    from transformers.feature_extraction_utils import BatchFeature
+
+    visited: list[tuple[int, ...]] = []
+    probe = BatchFeature(data={"tensor": torch.zeros(2, 3)})
+    parameter_offload.apply_to_tensors_only(lambda tensor: visited.append(tuple(tensor.shape)) or tensor, probe)
+    if visited != [(2, 3)]:
+        raise RuntimeError(f"ZeRO-3 MutableMapping patch self-test failed: {visited}")
+    if not (
+        zero_utils.apply_to_tensors_only
+        is parameter_offload.apply_to_tensors_only
+        is stage3.apply_to_tensors_only
+    ):
+        raise RuntimeError("ZeRO-3 MutableMapping patch did not replace every imported tensor walker")
+
+
+def main() -> None:
+    install_zero3_mutable_mapping_patch()
+    if int(os.environ.get("LOCAL_RANK", "0")) == 0:
+        print("[XPolicyLab] enabled ZeRO-3 tensor hooks for BatchFeature/MutableMapping", flush=True)
+
+    upstream = pathlib.Path(__file__).resolve().parent / "RLDX-1" / "rldx" / "experiment" / "launch_train.py"
+    if not upstream.is_file():
+        raise FileNotFoundError(upstream)
+    runpy.run_path(str(upstream), run_name="__main__")
+
+
+if __name__ == "__main__":
+    main()

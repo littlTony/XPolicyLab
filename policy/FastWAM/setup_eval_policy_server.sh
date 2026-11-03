@@ -1,11 +1,17 @@
 #!/bin/bash
 set -euo pipefail
+source "$(dirname "$(readlink -f "$0")")/runtime.sh"
+if (( $# < 9 || $# > 10 )); then
+    echo "Usage: $0 bench task ckpt env_cfg ee seed gpu conda_prefix port [host]" >&2
+    exit 2
+fi
 
 bench_name=$1
 task_name=$2
 ckpt_name=$3
 env_cfg_type=$4
 action_type=$5
+if [[ "${action_type}" != ee ]]; then echo "FastWAM requires ee" >&2; exit 2; fi
 seed=$6
 policy_gpu_id=$7
 policy_conda_env=$8
@@ -14,72 +20,46 @@ policy_server_host=${10:-localhost}
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 XPL_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-BENCH_ROOT="$(cd "${XPL_ROOT}/.." && pwd)"
+BENCH_ROOT="${EVAL_MAIN_ROOT}"
 UTILS_DIR="${XPL_ROOT}/utils"
 
 policy_name="$(basename "${SCRIPT_DIR}")"
 POLICY_DIR="${XPL_ROOT}/policy/${policy_name}"
-FASTWAM_DIR="${POLICY_DIR}/FastWAM"
 yaml_file="${POLICY_DIR}/deploy.yml"
 
-# Checkpoint is selected by ckpt_name (not task_name). task_name is only the
-# simulator task forwarded to the env client; ckpt_name is the full run
-# directory name under checkpoints/, so the same checkpoint can be evaluated
-# across tasks.
-# Shared checkpoint-dir precedence (POLICY_DIR = policy dir,
-# CKPT_ROOT = its checkpoints dir):
-#   1. FASTWAM_CKPT_SETTING explicit override (CKPT_ROOT/<setting>)
-#   2. ckpt_name as an absolute path
-#   3. ckpt_name as a relative path (POLICY_DIR-relative)
-#   4. 5-tuple concat run-dir under checkpoints/
-#   5. checkpoints/<ckpt_name> verbatim (backward compatible)
-CKPT_ROOT="${FASTWAM_CKPT_ROOT:-${POLICY_DIR}/checkpoints}"
-ckpt_setting="${FASTWAM_CKPT_SETTING:-${ckpt_name}}"
+# FastWAM source root: default is the vendored copy inside this policy dir.
+# Weights are NOT vendored; they resolve under policy/FastWAM/checkpoints/.
+FASTWAM_ROOT="${FASTWAM_ROOT:-${POLICY_DIR}/FastWAM}"
+CKPT_ROOT="${POLICY_DIR}/checkpoints"
 run_dir_name="${bench_name}-${ckpt_name}-${env_cfg_type}-${action_type}-${seed}"
-if [[ -n "${FASTWAM_CKPT_SETTING:-}" ]]; then
-    ckpt_dir="${CKPT_ROOT}/${ckpt_setting}"
-elif [[ "${ckpt_name}" == /* ]]; then
-    ckpt_dir="${ckpt_name}"
-elif [[ "${ckpt_name}" == */* ]]; then
-    ckpt_dir="${POLICY_DIR}/${ckpt_name}"
-elif [[ -d "${CKPT_ROOT}/${run_dir_name}" ]]; then
-    ckpt_dir="${CKPT_ROOT}/${run_dir_name}"
-else
-    ckpt_dir="${CKPT_ROOT}/${ckpt_setting}"
-fi
-weights_dir="${ckpt_dir}/checkpoints/weights"
-dataset_stats_path="${FASTWAM_DATASET_STATS_PATH:-${ckpt_dir}/dataset_stats.json}"
 
-allow_dummy_policy="${FASTWAM_ALLOW_DUMMY_POLICY:-false}"
-checkpoint_path="${FASTWAM_CHECKPOINT_PATH:-}"
-if [[ -z "${checkpoint_path}" && "${allow_dummy_policy}" != "true" ]]; then
-    if [[ -d "${weights_dir}" ]]; then
-        checkpoint_path=$(find "${weights_dir}" -maxdepth 1 -type f -name 'step_*.pt' | sort -V | tail -n 1)
-    fi
-    if [[ -z "${checkpoint_path}" ]]; then
-        checkpoint_path="${weights_dir}/step_latest.pt"
-    fi
+# Let the shared checkpoint resolver in Model select absolute/path/run roots.
+ckpt_dir="${FASTWAM_CKPT_DIR:-}"
+
+if [[ "${FASTWAM_ALLOW_DUMMY_POLICY:-false}" != false ]]; then
+    echo 'Dummy inference is not supported by the production server' >&2; exit 2
 fi
-if [[ -n "${checkpoint_path}" && -d "${checkpoint_path}" ]]; then
-    indexed_checkpoint=$(find "${checkpoint_path}" -maxdepth 1 -type f -name 'step_*.pt' | sort -V | tail -n 1)
-    if [[ -n "${indexed_checkpoint}" ]]; then
-        checkpoint_path="${indexed_checkpoint}"
-    fi
-fi
+checkpoint_num="${FASTWAM_CHECKPOINT_NUM:-60000}"
+cuda_memory_fraction="${FASTWAM_CUDA_MEMORY_FRACTION:-1.0}"
+
+
 
 echo -e "\033[33m[SERVER] policy=${policy_name}, task=${task_name}, ckpt=${ckpt_name}\033[0m"
-echo -e "\033[33m[SERVER] checkpoint_path: ${checkpoint_path:-<dummy-policy>}\033[0m"
-echo -e "\033[33m[SERVER] dataset_stats_path: ${dataset_stats_path}\033[0m"
+echo -e "\033[33m[SERVER] ckpt_dir: ${ckpt_dir}\033[0m"
+echo -e "\033[33m[SERVER] checkpoint_num: ${checkpoint_num}\033[0m"
 echo -e "\033[33m[SERVER] policy_server_host=${policy_server_host} policy_server_port=${policy_server_port}\033[0m"
 
-source "$(conda info --base)/etc/profile.d/conda.sh"
-conda activate "${policy_conda_env}"
-
-if grep -Eq "^mobile_arena:[[:space:]]*true" "${yaml_file}"; then
-    action_dim=45
+# Resolve the policy python: accept either a conda env prefix path (preferred —
+# robust to broken conda base configs) or an env name for `conda activate`.
+if [[ -x "${policy_conda_env}/bin/python" ]]; then
+    PYTHON_BIN="${policy_conda_env}/bin/python"
 else
-    action_dim=$(bash "${UTILS_DIR}/get_action_dim.sh" "${BENCH_ROOT}" "${env_cfg_type}")
+    source "$(conda info --base)/etc/profile.d/conda.sh"
+    conda activate "${policy_conda_env}"
+    PYTHON_BIN="python"
 fi
+
+action_dim=$(bash "${UTILS_DIR}/get_action_dim.sh" "${BENCH_ROOT}" "${env_cfg_type}")
 echo -e "\033[33m[SERVER] action_dim=${action_dim}\033[0m"
 
 # Scope env vars to this server process only; never export them in the
@@ -87,10 +67,11 @@ echo -e "\033[33m[SERVER] action_dim=${action_dim}\033[0m"
 exec env \
     PYTHONWARNINGS=ignore::UserWarning \
     PYTHONUNBUFFERED=1 \
+    TOKENIZERS_PARALLELISM=false \
+    PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
     CUDA_VISIBLE_DEVICES="${policy_gpu_id}" \
-    PYTHONPATH="${BENCH_ROOT}:${FASTWAM_DIR}:${FASTWAM_DIR}/src:${PYTHONPATH:-}" \
-    DIFFSYNTH_MODEL_BASE_PATH="${FASTWAM_DIR}/checkpoints" \
-    python -u "${XPL_ROOT}/setup_policy_server.py" \
+    PYTHONPATH="${XPL_ROOT}/..:${XPL_ROOT}:${FASTWAM_ROOT}:${BENCH_ROOT}:${PYTHONPATH:-}" \
+    "${PYTHON_BIN}" -u "${XPL_ROOT}/setup_policy_server.py" \
         --config_path "${yaml_file}" \
         --overrides \
             port="${policy_server_port}" \
@@ -103,6 +84,7 @@ exec env \
             policy_name="${policy_name}" \
             action_type="${action_type}" \
             action_dim="${action_dim}" \
-            checkpoint_path="${checkpoint_path}" \
-            dataset_stats_path="${dataset_stats_path}" \
-            allow_dummy_policy="${allow_dummy_policy}"
+            fastwam_root="${FASTWAM_ROOT}" \
+            ckpt_dir="${ckpt_dir}" \
+            checkpoint_num="${checkpoint_num}" \
+            cuda_memory_fraction="${cuda_memory_fraction}"

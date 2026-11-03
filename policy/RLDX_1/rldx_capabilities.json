@@ -1,0 +1,25 @@
+{
+  "schema_version": "1",
+  "benchmark": "EgoVLA",
+  "meaning": "Private RLDX_1 evaluation contract; this file is intentionally separate from the benchmark-wide capability whitelist.",
+  "native_contract": {
+    "action": "absolute joint position target, shape [num_envs, 50]",
+    "control_hz": 30,
+    "egovla_robot_key": "h1_inspire",
+    "xpolicylab_robot_key": "ego_h1_inspire",
+    "robot_action_dim_info": {"arm_dim": [7, 7], "ee_dim": [12, 12]},
+    "camera_keys": ["cam_head", "cam_left_wrist", "cam_right_wrist"],
+    "video_recipe": {"length": 4, "stride": 2}
+  },
+  "policies": {
+    "RLDX_1": {
+      "evaluation": true,
+      "process": false,
+      "train": false,
+      "action_types": ["joint"],
+      "dataset_formats": ["lerobot_v2.1"],
+      "status": "private-contract-verified",
+      "notes": "Private RLDX-1 H1 Inspire adapter. Requires the selected private root, four-import origin gate, and checkpoint/runtime preflight."
+    }
+  }
+}

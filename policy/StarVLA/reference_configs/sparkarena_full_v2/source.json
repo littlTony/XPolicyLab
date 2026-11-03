@@ -1,0 +1,22 @@
+{
+  "upstream_url": "https://github.com/starVLA/starVLA",
+  "upstream_commit": "985c2238627481f25476fbee478083812dd82a21",
+  "framework": "QwenPI_v3",
+  "scope": "SparkArena tianji_marvin_wuji joint; training preparation only",
+  "reference_config": "/personal/xiangpc/starvla_runs/sparkarena_full_v2_seed0_a800x8/XPolicylab/policy/starVLA/checkpoints/SParkArena-full_v2-tianji_marvin_wuji-joint-0/config.full.yaml",
+  "reference_config_sha256": "7d0496bad543704224b14960f349bb7eae2f69e5ec01a9652cc572c5547167fe",
+  "CPU_GA_numeric_and_boundary_test": "passed, 2026-10-30; real CPU AdamW; DeepSpeed protocol stand-in; not a GPU/DeepSpeed integration test",
+  "training_started": false,
+  "GPU_forward_backward": "unverified",
+  "FA2_on_GPU": "unverified",
+  "Qwen_checkpointing_CPU_API": "passed on a 310240-parameter random Qwen3VL, no model forward, no 4B weights loaded",
+  "default_world_size": 8,
+  "micro_batch": 4,
+  "gradient_accumulation": 2,
+  "effective_batch": 64,
+  "optimizer_updates": 80000,
+  "preflight_report": "/mnt/xspark-data/wenwei/DexBench/XPolicyLab/policy/StarVLA/.generated/SparkArena-qwen_pi_v3_wuji_test-tianji_marvin_wuji-joint-0_byzr4sj1/preflight.json",
+  "preflight_samples": 14,
+  "native_loader_steps": 154251,
+  "rank_guard": "passed: validates snapshots then rejects WORLD_SIZE=1 before model initialization"
+}

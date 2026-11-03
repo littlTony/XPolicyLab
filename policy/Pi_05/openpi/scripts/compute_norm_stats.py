@@ -1,11 +1,10 @@
+import json
 """Compute normalization statistics for a config.
 
 This script is used to compute the normalization statistics for a given config. It
 will compute the mean and standard deviation of the data in the dataset and save it
 to the config assets directory.
 """
-
-import dataclasses
 
 import numpy as np
 import tqdm
@@ -88,13 +87,8 @@ def create_rlds_dataloader(
     return data_loader, num_batches
 
 
-def main(config_name: str, max_frames: int | None = None, repo_id: str | None = None):
+def main(config_name: str, max_frames: int | None = None):
     config = _config.get_config(config_name)
-    if repo_id is not None:
-        config = dataclasses.replace(config, data=dataclasses.replace(
-            config.data, repo_id=repo_id,
-            assets=dataclasses.replace(config.data.assets, asset_id=repo_id),
-        ))
     data_config = config.data.create(config.assets_dirs, config.model)
 
     if data_config.rlds_data_dir is not None:
@@ -118,6 +112,8 @@ def main(config_name: str, max_frames: int | None = None, repo_id: str | None = 
     output_path = config.assets_dirs / data_config.repo_id
     print(f"Writing stats to: {output_path}")
     normalize.save(output_path, norm_stats)
+    if data_config.action_contract is not None:
+        (output_path / "action_contract.json").write_text(json.dumps(data_config.action_contract, indent=2) + "\n")
 
 
 if __name__ == "__main__":

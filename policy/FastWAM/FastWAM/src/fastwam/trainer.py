@@ -6,11 +6,12 @@ import re
 from math import ceil
 from pathlib import Path
 import time
+import warnings
 
 import numpy as np
 import torch
 from accelerate import Accelerator
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 from PIL import Image
 from torch.optim.lr_scheduler import ConstantLR, CosineAnnealingLR, LinearLR, SequentialLR
 from torch.utils.data import DataLoader
@@ -48,6 +49,13 @@ class Wan22Trainer:
         self.seed = int(cfg.seed)
         
         self.resume = cfg.resume
+        if cfg.get("action_contract") is not None and self.resume:
+            from fastwam.datasets.dexbench_contract import CONTRACT
+            resume_path = Path(str(self.resume)).resolve()
+            resume_root = next((r for r in [resume_path, *resume_path.parents] if (r / "config.yaml").is_file()), None)
+            if resume_root is None or OmegaConf.to_container(OmegaConf.load(resume_root / "config.yaml").get("action_contract", {})) != CONTRACT:
+                raise ValueError("Resume checkpoint lacks matching absolute DexBench EE58 contract")
+        self.save_optimizer_state = bool(cfg.get("save_optimizer_state", True))
         self.mixed_precision = str(cfg.mixed_precision).strip().lower()
         if self.mixed_precision not in {"no", "fp16", "bf16"}:
             raise ValueError(
@@ -165,12 +173,24 @@ class Wan22Trainer:
         self.wandb_run = None
 
     def _build_loader(self, dataset, worker_init_fn=None):
+        sampling_mode = str(self.cfg.get("train_sampling", "frame_uniform"))
+        task_ids = None
+        if sampling_mode == "task_uniform":
+            if not hasattr(dataset, "get_sample_task_ids"):
+                raise TypeError("Task-balanced sampling requires dataset.get_sample_task_ids().")
+            if getattr(dataset, "skip_padding_as_possible", False):
+                raise ValueError("Task-balanced sampling requires skip_padding_as_possible=false.")
+            task_ids = dataset.get_sample_task_ids()
         self.train_sampler = ResumableEpochSampler(
             dataset=dataset,
             seed=self.seed,
             batch_size=self.batch_size,
             num_processes=self.accelerator.num_processes,
+            sampling_mode=sampling_mode,
+            task_ids=task_ids,
         )
+        logger.info("Training sampling: mode=%s samples_per_epoch=%d task_frame_counts=%s",
+                    sampling_mode, self.train_sampler.num_samples, self.train_sampler.task_counts)
         return DataLoader(
             dataset,
             batch_size=self.batch_size,
@@ -274,8 +294,24 @@ class Wan22Trainer:
         if not resume_path.exists():
             raise FileNotFoundError(f"Resume checkpoint not found: {resume}")
         logger.info("Loading weight checkpoint only: %s", resume)
-        self.accelerator.unwrap_model(self.model).load_checkpoint(str(resume_path), optimizer=None)
-        logger.warning("Loaded .pt weights only; optimizer/scheduler/step were not restored under ZeRO2.")
+        payload = self.accelerator.unwrap_model(self.model).load_checkpoint(str(resume_path), optimizer=None)
+        loaded_step = payload.get("step") if isinstance(payload, dict) else None
+        if loaded_step is not None:
+            self.global_step = int(loaded_step)
+            # The optimizer moments cannot be recovered from a failed ZeRO save.
+            # Continue the configured 80k scheduler at the checkpoint step.
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", UserWarning)
+                for _ in range(self.global_step):
+                    self.scheduler.step()
+            logger.warning(
+                "Loaded weights-only checkpoint at step=%d; optimizer and dataloader state were reset.",
+                self.global_step,
+            )
+        else:
+            logger.warning(
+                "Loaded .pt weights only; checkpoint has no step; optimizer/scheduler/step were not restored."
+            )
 
     def _set_dit_only_train_mode(self):
         # Match DiffSynth's freeze_except("dit"): only DiT stays trainable/in-train-mode.
@@ -576,6 +612,7 @@ class Wan22Trainer:
             "global_step": int(self.global_step),
             "epoch": int(self.epoch),
             "batch_in_epoch": int(self.batch_in_epoch),
+            "sampling": self.train_sampler.sampling_state_dict(),
         }
         with open(state_file, "w", encoding="utf-8") as f:
             json.dump(payload, f, ensure_ascii=True, indent=2)
@@ -589,26 +626,32 @@ class Wan22Trainer:
             ckpt_path = self._save_weights_checkpoint(step_tag=step_tag)
         self.accelerator.wait_for_everyone()
 
-        state_path = os.path.join(self.state_dir, step_tag)
-        ensure_dir(state_path)
-        self.accelerator.save_state(output_dir=state_path)
-        if self.accelerator.is_main_process:
-            self._save_trainer_state(state_path)
-        self.accelerator.wait_for_everyone()
+        state_path = None
+        if self.save_optimizer_state:
+            state_path = os.path.join(self.state_dir, step_tag)
+            ensure_dir(state_path)
+            self.accelerator.save_state(output_dir=state_path)
+            if self.accelerator.is_main_process:
+                self._save_trainer_state(state_path)
+            self.accelerator.wait_for_everyone()
 
         return {"weights_path": ckpt_path, "state_path": state_path}
 
     def load_training_state(self, state_dir: str):
-        self.accelerator.load_state(input_dir=state_dir)
         state_file = Path(state_dir) / "trainer_state.json"
+        payload = None
         if state_file.exists():
             with open(state_file, "r", encoding="utf-8") as f:
                 payload = json.load(f)
+        self.train_sampler.validate_resume_state(None if payload is None else payload.get("sampling"))
+        self.accelerator.load_state(input_dir=state_dir)
+        if payload is not None:
             self.global_step = int(payload["global_step"])
 
             if "epoch" in payload and "batch_in_epoch" in payload:
-                self.epoch = int(payload["epoch"])
-                self.batch_in_epoch = int(payload["batch_in_epoch"])
+                self.epoch, self.batch_in_epoch = self.train_sampler.normalize_resume_position(
+                    int(payload["epoch"]), int(payload["batch_in_epoch"])
+                )
                 self.train_sampler.set_epoch_offset(self.epoch)
                 self.train_sampler.set_resume_batch_offset(self.batch_in_epoch)
                 logger.info(

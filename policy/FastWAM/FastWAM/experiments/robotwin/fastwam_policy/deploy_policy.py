@@ -23,6 +23,11 @@ if str(PROJECT_ROOT) not in sys.path:
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from fastwam.datasets.dataset_utils import (
+    CenterCrop,
+    Normalize,
+    ResizeSmallestSideAspectPreserving,
+)
 from fastwam.datasets.lerobot.processors.fastwam_processor import FastWAMProcessor
 from fastwam.datasets.lerobot.robot_video_dataset import DEFAULT_PROMPT
 from fastwam.datasets.lerobot.utils.normalizer import load_dataset_stats_from_json
@@ -117,6 +122,46 @@ def _compose_sim_cfg(
     return cfg
 
 
+def _apply_runtime_robot_dim(cfg: DictConfig, action_dim: Optional[int]) -> None:
+    """Align the upstream RoboTwin config with XPolicyLab's embodiment.
+
+    The stock FastWAM RoboTwin config describes the official 14-DoF robot.
+    XPolicyLab already resolves the selected embodiment's packed state/action
+    dimension before launching the policy server.  Evaluation must propagate
+    that value into both the model and processor configuration, otherwise a
+    54-DoF Tianji/Wuji checkpoint is instantiated as a 14-DoF model and cannot
+    be loaded.
+    """
+
+    if action_dim is None:
+        return
+    runtime_dim = int(action_dim)
+    if runtime_dim <= 0:
+        raise ValueError(f"`action_dim` must be positive, got {runtime_dim}")
+
+    for split_name in ("train", "val"):
+        split_cfg = cfg.data.get(split_name)
+        if split_cfg is None:
+            continue
+        processor_cfg = split_cfg.get("processor")
+        if processor_cfg is not None:
+            processor_cfg.action_output_dim = runtime_dim
+            processor_cfg.proprio_output_dim = runtime_dim
+        shape_meta = split_cfg.get("shape_meta")
+        if shape_meta is None:
+            continue
+        for section_name in ("action", "state"):
+            for item in shape_meta.get(section_name, []):
+                if str(item.get("key", "")) != "default":
+                    raise ValueError(
+                        "Runtime action_dim override only supports the merged "
+                        f"`default` key, got {item.get('key')!r} in "
+                        f"data.{split_name}.shape_meta.{section_name}."
+                    )
+                item.raw_shape = runtime_dim
+                item.shape = runtime_dim
+
+
 def _resolve_dataset_stats_path(dataset_stats_path: Optional[str]) -> Path:
     if _is_none_like(dataset_stats_path):
         raise FileNotFoundError(
@@ -155,6 +200,8 @@ class WorldActionRobotWinPolicy:
         tiled: bool,
         timing_enabled: bool,
         num_video_frames: int,
+        video_size: tuple[int, int],
+        image_tensor_builder=None,
     ) -> None:
         model_cfg_copy = OmegaConf.create(OmegaConf.to_container(model_cfg, resolve=True))
         model_cfg_copy.load_text_encoder = True
@@ -178,6 +225,20 @@ class WorldActionRobotWinPolicy:
         self.tiled = bool(tiled)
         self.timing_enabled = bool(timing_enabled)
         self._num_video_frames = int(num_video_frames)
+        video_h, video_w = int(video_size[0]), int(video_size[1])
+        if video_h <= 0 or video_w <= 0:
+            raise ValueError(f"`video_size` must be positive [H, W], got {video_size}")
+        self.video_size = (video_h, video_w)
+        self._image_tensor_builder = image_tensor_builder
+        self._resize_transform = ResizeSmallestSideAspectPreserving(
+            args={"img_w": video_w, "img_h": video_h},
+        )
+        self._crop_transform = CenterCrop(
+            args={"img_w": video_w, "img_h": video_h},
+        )
+        self._normalize_transform = Normalize(
+            args={"mean": 0.5, "std": 0.5},
+        )
 
         self.pending_actions: deque[np.ndarray] = deque()
         self.episode_count = 0
@@ -185,11 +246,12 @@ class WorldActionRobotWinPolicy:
         self._timing_rollout = {"infer_s": 0.0, "sim_s": 0.0}
 
         logger.info(
-            "Initialized WorldActionRobotWinPolicy | ckpt=%s | stats=%s | horizon=%d | replan=%d",
+            "Initialized WorldActionRobotWinPolicy | ckpt=%s | stats=%s | horizon=%d | replan=%d | video_size=%s",
             checkpoint_path,
             dataset_stats_path,
             self.action_horizon,
             self.replan_steps,
+            self.video_size,
         )
 
     def _normalize_state(self, state: np.ndarray) -> torch.Tensor:
@@ -219,6 +281,11 @@ class WorldActionRobotWinPolicy:
         return denorm.numpy()
 
     def _build_robotwin_image_tensor(self, observation: Dict[str, Any]) -> torch.Tensor:
+        if self._image_tensor_builder is not None:
+            image_tensor = self._image_tensor_builder(
+                observation, processor=self.processor, video_size=self.video_size,
+            )
+            return image_tensor.to(device=self.model.device, dtype=self.model.torch_dtype)
         obs_data = observation["observation"]
         head = _resize_rgb(obs_data["head_camera"]["rgb"], (320, 256))
         left = _resize_rgb(obs_data["left_camera"]["rgb"], (160, 128))
@@ -226,12 +293,12 @@ class WorldActionRobotWinPolicy:
         bottom = np.concatenate([left, right], axis=1)
         image = np.concatenate([head, bottom], axis=0)  # [384, 320, 3]
 
-        image_tensor = torch.from_numpy(image).permute(2, 0, 1).unsqueeze(0).to(
-            device=self.model.device,
-            dtype=self.model.torch_dtype,
-        )
-        image_tensor = image_tensor * (2.0 / 255.0) - 1.0
-        return image_tensor
+        # Match RobotVideoDataset: robotwin mosaic, then video_size resize/crop/norm.
+        image_tensor = torch.from_numpy(image).permute(2, 0, 1).unsqueeze(0)
+        image_tensor = self._resize_transform(image_tensor)
+        image_tensor = self._crop_transform(image_tensor)
+        image_tensor = self._normalize_transform(image_tensor)
+        return image_tensor.to(device=self.model.device, dtype=self.model.torch_dtype)
 
     def _infer_action_chunk(self, observation: Dict[str, Any], instruction: str) -> np.ndarray:
         image_tensor = self._build_robotwin_image_tensor(observation)
@@ -324,6 +391,23 @@ def get_model(usr_args: Dict[str, Any]):
         sim_cfg_name=sim_cfg_name,
         sim_task=sim_task,
     )
+    checkpoint_cfg = usr_args.get("checkpoint_config")
+    if checkpoint_cfg is not None:
+        # The XPolicyLab adapter has validated these saved training dimensions
+        # against the robot. Do not overwrite a mismatched checkpoint head.
+        OmegaConf.set_struct(cfg, False)
+        cfg.model = OmegaConf.create(checkpoint_cfg["model"])
+        cfg.data = OmegaConf.create(checkpoint_cfg["data"])
+        cfg.eval_num_inference_steps = checkpoint_cfg["eval_num_inference_steps"]
+        # Keep evaluation-only loading semantics from sim_robotwin.yaml.
+        cfg.model.load_text_encoder = True
+        cfg.model.skip_dit_load_from_pretrain = True
+        cfg.model.action_dit_pretrained_path = None
+    else:
+        _apply_runtime_robot_dim(
+            cfg,
+            _parse_optional_int(usr_args.get("action_dim")),
+        )
 
     checkpoint_path = usr_args.get("ckpt_setting")
     if _is_none_like(checkpoint_path):
@@ -368,6 +452,10 @@ def get_model(usr_args: Dict[str, Any]):
     timing_enabled = _parse_bool(
         usr_args.get("timing_enabled", cfg.EVALUATION.get("timing_enabled", False))
     )
+    raw_video_size = cfg.data.train.get("video_size")
+    if raw_video_size is None:
+        raise ValueError("`data.train.video_size` is required to match training image size.")
+    video_size = (int(raw_video_size[0]), int(raw_video_size[1]))
 
     policy = WorldActionRobotWinPolicy(
         model_cfg=cfg.model,
@@ -387,6 +475,8 @@ def get_model(usr_args: Dict[str, Any]):
         tiled=tiled,
         timing_enabled=timing_enabled,
         num_video_frames=(int(cfg.data.train.num_frames) - 1) // int(cfg.data.train.action_video_freq_ratio) + 1,
+        video_size=video_size,
+        image_tensor_builder=usr_args.get("image_tensor_builder"),
     )
     return policy
 

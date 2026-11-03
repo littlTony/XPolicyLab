@@ -1,0 +1,470 @@
+{
+  "status": "passed",
+  "sampled_episodes": 24,
+  "physical_tasks": 12,
+  "predictor": "GT normalized oracle only; no neural weight inference",
+  "actual_paths": "Model init/update_obs/get_action/batch/reset + native transforms/collate + sidecar validation + row6D decode",
+  "configured_policy_updates": 60000,
+  "configured_tokenizer_updates": 40000,
+  "global_batch": 64,
+  "fixture_is_trained_checkpoint": false,
+  "GPU_and_large_neural_weights_used": false,
+  "cases": [
+    {
+      "task": "add_food_to_pot",
+      "episode": 0,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "add_food_to_pot",
+      "episode": 2884,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "collect_objects",
+      "episode": 11,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "collect_objects",
+      "episode": 2894,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "dual_bottles_pick",
+      "episode": 21,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "dual_bottles_pick",
+      "episode": 2905,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "grasp_two_items",
+      "episode": 32,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "grasp_two_items",
+      "episode": 2915,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "hammer_beat",
+      "episode": 42,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "hammer_beat",
+      "episode": 2926,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "insert_block",
+      "episode": 53,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "insert_block",
+      "episode": 2936,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "place_fruit_on_plate",
+      "episode": 63,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "place_fruit_on_plate",
+      "episode": 2946,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "put_food_in_microwave",
+      "episode": 73,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "put_food_in_microwave",
+      "episode": 2957,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "retrieve_gap",
+      "episode": 84,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "retrieve_gap",
+      "episode": 2967,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "screw_nut_onto_bolt",
+      "episode": 94,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "screw_nut_onto_bolt",
+      "episode": 2978,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "stack_bowls",
+      "episode": 105,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "stack_bowls",
+      "episode": 2988,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "stack_paper_cups",
+      "episode": 115,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    },
+    {
+      "task": "stack_paper_cups",
+      "episode": 2999,
+      "state_shape": [
+        1,
+        1,
+        128
+      ],
+      "action_shape": [
+        1,
+        16,
+        128
+      ],
+      "camera_grid": [
+        3,
+        3
+      ],
+      "teacher_images_used": false
+    }
+  ]
+}

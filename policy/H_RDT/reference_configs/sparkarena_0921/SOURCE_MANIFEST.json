@@ -1,0 +1,38 @@
+{
+  "benchmark": "SparkArena",
+  "inspection_only": true,
+  "training_started": false,
+  "warning": "Historical absolute paths and runtime patches; not a ready-to-run launcher.",
+  "files": [
+    {
+      "file": "README_SparkArena_samplerfix.md",
+      "source": "/personal/xiangpc/training_hrdt_sparkarena_samplerfix_0921/README_SparkArena_samplerfix.md",
+      "sha256": "0b2accf1ee61849393c89644fa87235129f79fb884a08391de33d6b3eebb0ea0"
+    },
+    {
+      "file": "launch_train.sh",
+      "source": "/personal/xiangpc/training_hrdt_sparkarena_samplerfix_0921/launch_train.sh",
+      "sha256": "d66a6090a49eb6ff22f321cb76f361c444daf809ea9dc61cae68fea67fa82222"
+    },
+    {
+      "file": "hrdt_sparkarena_7task.yaml",
+      "source": "/personal/xiangpc/training_hrdt_sparkarena_samplerfix_0921/hrdt_sparkarena_7task.yaml",
+      "sha256": "d3ff2c2984dead921095b7d8e63edf73a4312d5333078f59dd13f9b0afbb5843"
+    },
+    {
+      "file": "preflight.sh",
+      "source": "/personal/xiangpc/training_hrdt_sparkarena_samplerfix_0921/preflight.sh",
+      "sha256": "1ab5ec6ea30c6e72d8ae47dedd563d3dc09d7efe5ef260f1c3140641293eace5"
+    },
+    {
+      "file": "prepare_data.sh",
+      "source": "/personal/xiangpc/training_hrdt_sparkarena_samplerfix_0921/prepare_data.sh",
+      "sha256": "50a0df963714ef17008a681f1bacc0d69859d7a34e69f74980bb76f64912eb7c"
+    },
+    {
+      "file": "checkpoints/hrdt-sparkarena-joint54-samplerfix-s42-bs64-80k/training_contract.json",
+      "source": "/personal/xiangpc/training_hrdt_sparkarena_samplerfix_0921/checkpoints/hrdt-sparkarena-joint54-samplerfix-s42-bs64-80k/training_contract.json",
+      "sha256": "9bb71273be6f2b0aa4f97abf7949c0e034b3b5b2f99fbaca1077afc463d8c04e"
+    }
+  ]
+}

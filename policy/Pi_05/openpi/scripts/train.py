@@ -49,8 +49,7 @@ def init_logging():
 
 
 def init_wandb(config: _config.TrainConfig, *, resuming: bool, log_code: bool = False, enabled: bool = True):
-    if not enabled or jax.process_index() != 0:
-        # Multi-host: the primary host owns the run, the other hosts log as no-ops.
+    if not enabled:
         wandb.init(mode="disabled")
         return
 
@@ -279,22 +278,5 @@ def main(config: _config.TrainConfig):
     checkpoint_manager.wait_until_finished()
 
 
-def init_distributed() -> None:
-    """Initialize JAX's multi-process runtime when launched with coordinator env vars."""
-    coordinator = os.environ.get("JAX_COORDINATOR_ADDRESS")
-    if not coordinator or jax.distributed.is_initialized():
-        return
-    process_id = int(os.environ["JAX_PROCESS_ID"])
-    num_processes = int(os.environ["JAX_NUM_PROCESSES"])
-    jax.distributed.initialize(coordinator, num_processes, process_id)
-    logging.info(
-        "Initialized distributed JAX runtime: process %d/%d, coordinator %s",
-        process_id,
-        num_processes,
-        coordinator,
-    )
-
-
 if __name__ == "__main__":
-    init_distributed()
     main(_config.cli())

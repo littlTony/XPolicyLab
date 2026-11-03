@@ -1,0 +1,26 @@
+type: dexbench
+data_format: lerobot_v3
+contract_id: dexbench-world-wxyz-wuji20-alpha80-v1
+dataset_dir: /personal/wenwei/DexBench/data_preprocess/data/dexbench_12tasks
+embodiment: tianji_marvin_wuji
+action_mode: eef
+unify_action: true
+unify_action_map: ["0-2", "3-8", "10-29", "34-36", "37-42", "44-63"]
+unify_state_map: ["0-2", "3-8", "10-29", "34-36", "37-42", "44-63"]
+num_frames: 33
+video_stride: 4
+window_stride: 1
+split: train
+height: 384
+width: 320
+multiview: true
+camera_layout: [observation.images.cam_high, observation.images.cam_left_wrist, observation.images.cam_right_wrist]
+target_camera: observation.images.cam_high
+normalize_mode: min-max
+normalization_stats_path: /personal/wenwei/DexBench/XPolicyLab/policy/OpenWAM/data/meta/normalization_stats.npy
+color_jitter:
+  enabled: false
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.2
+  hue: 0.0

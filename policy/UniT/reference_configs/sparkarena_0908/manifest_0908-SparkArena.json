@@ -1,0 +1,116 @@
+{
+  "model": "unit",
+  "experiment": "0908-SparkArena",
+  "run_root": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena",
+  "owner_alias": "15",
+  "machine": "A800_15",
+  "gpus": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "raw_data": "/personal/tjy/spark0_bench",
+  "tasks": [
+    "collect_objects",
+    "dual_bottles_pick",
+    "hammer_beat",
+    "insert_block",
+    "retrieve_gap",
+    "stack_bowls"
+  ],
+  "episodes": 600,
+  "frames": 151410,
+  "fps": 25,
+  "views": [
+    "cam_head",
+    "cam_left_wrist",
+    "cam_right_wrist"
+  ],
+  "joint_order": [
+    "left_arm_joint_states:7",
+    "left_ee_joint_states:20",
+    "right_arm_joint_states:7",
+    "right_ee_joint_states:20"
+  ],
+  "joint_dim": 54,
+  "action_semantics": "Original HDF5 action/* at the same frame; never state[t+1]. Original action and next state happen numerically equal in sampled sim episodes; explicit source field and per-episode hashes establish provenance.",
+  "state_semantics": "Original HDF5 state/* at the same frame",
+  "training_dataset": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/data/SparkArena_joint54_3view_0908-SparkArena",
+  "global_batch_size": 64,
+  "save_steps": 10000,
+  "wandb_project": "xpolicylab-0908-SparkArena",
+  "launcher": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/train_pipeline_0908-SparkArena.sh",
+  "single_instance_lock": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/pipeline_0908-SparkArena.lock",
+  "stages": {
+    "tokenizer": {
+      "max_steps": 40000,
+      "save_total_limit": 4,
+      "checkpoint_root": "/personal/xiangpc/0811_Xpolicylab_bench/UniT/policy/UniT/checkpoints_0908-SparkArena/tokenizer_0908-SparkArena",
+      "status_path": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/status_tokenizer_0908-SparkArena.json",
+      "log_path": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/logs_0908-SparkArena/tokenizer_0908-SparkArena.log",
+      "complete_marker": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/completed_tokenizer_0908-SparkArena.json",
+      "wandb_run_id": "unit_tok_0908sparkarena",
+      "wandb_url": "https://wandb.ai/peichengxiang773-hkust/xpolicylab-0908-SparkArena/runs/unit_tok_0908sparkarena",
+      "batch_per_gpu": 8,
+      "gradient_accumulation_steps": 1,
+      "global_batch_size": 64
+    },
+    "policy": {
+      "max_steps": 80000,
+      "save_total_limit": 8,
+      "checkpoint_root": "/personal/xiangpc/0811_Xpolicylab_bench/UniT/policy/UniT/checkpoints_0908-SparkArena/policy_0908-SparkArena",
+      "status_path": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/status_policy_0908-SparkArena.json",
+      "log_path": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/logs_0908-SparkArena/policy_0908-SparkArena.log",
+      "complete_marker": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/completed_policy_0908-SparkArena.json",
+      "wandb_run_id": "unit_policy_0908sparkarena",
+      "wandb_url": "https://wandb.ai/peichengxiang773-hkust/xpolicylab-0908-SparkArena/runs/unit_policy_0908sparkarena",
+      "batch_per_gpu": 4,
+      "gradient_accumulation_steps": 2,
+      "global_batch_size": 64
+    }
+  },
+  "initialization": {
+    "tokenizer": "Fresh official tokenizer config with original frozen pretrained DINOv2; no old task tokenizer weights",
+    "policy": "Fresh official policy-head config with original Qwen2.5-VL-3B-Instruct backbone and this run tokenizer checkpoint-40000"
+  },
+  "phase_gate": "Tokenization subprocess succeeds, on_train_end reaches40000, complete model tensors/trainer_state/metadata validated before policy starts.",
+  "code_sha256": {
+    "train_pipeline_0908-SparkArena.sh": "e816374c8072f3aa86a131b2a6151fc2e9bff1d657f71f9afbad21fd13ebd2de",
+    "adapt_data_0908_SparkArena.py": "687ba2b743d21e9af7017f7a92e900f790ec6fc05834c086433a8db12c896bb6",
+    "probe_batch_0908_SparkArena.py": "b72bcaac313b3071235bb0e2169700354e41321aad6a85ebfe8ab1c1650ba34a",
+    "code_0908-SparkArena/policy/UniT/audit_0908_SparkArena.py": "dc0b3e6413c9b4eee301124cd3075eac22140efd379250e720d10300f1aa3897",
+    "code_0908-SparkArena/policy/UniT/checkpoint_gate_0908_SparkArena.py": "d3f6b5f8ef932f315716bae02e969b3ffa2a89fbf297286263cb706cf644e338",
+    "code_0908-SparkArena/policy/UniT/select_resume_0908_SparkArena.py": "29370bb706f00d8f6b5ae77992b2c98a84671a467afbd322c70c38309e264406",
+    "code_0908-SparkArena/policy/UniT/UniT/gr00t/experiment/data_config_unit.py": "306d79a7e88a5f896172bfac1c7f3615955bcff1961dcfb51fdc2e2f1394a6de",
+    "code_0908-SparkArena/policy/UniT/UniT/gr00t/model/tokenizer/vision_branch_encoder.py": "806ddf20ae24c39c0d787e026042b05a4a574be7371bc359f05c20fc7bff0939"
+  },
+  "updated_at": 1788845673.0902386,
+  "status": "tokenizer_training_verified",
+  "acceptance_path": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/acceptance_0908-SparkArena.json",
+  "optimizer_updates_observed": 110,
+  "wandb_verified": {
+    "url": "https://wandb.ai/peichengxiang773-hkust/xpolicylab-0908-SparkArena/runs/unit_tok_0908sparkarena",
+    "state": "running",
+    "summary": {
+      "_step": 20,
+      "train/global_step": 100,
+      "train/loss": 1.0449,
+      "_timestamp": 1788845661.7655177
+    }
+  },
+  "checkpoint_storage": {
+    "canonical_policy_container": "/personal/xiangpc/0811_Xpolicylab_bench/UniT/policy/UniT/checkpoints_0908-SparkArena",
+    "runtime_output_alias": "/personal/xiangpc/training_0908-SparkArena/unit_0908-SparkArena/checkpoints_0908-SparkArena",
+    "alias_resolves_to": "/mnt/xspark-data/xiangpc/0811_Xpolicylab_bench/UniT/policy/UniT/checkpoints_0908-SparkArena",
+    "weights_physically_under_policy": true,
+    "training_restarted": false,
+    "placement_user_correction": "Weights must be under each original policy, not a combined campaign storage root",
+    "updated_at": 1788847619.9768543,
+    "resume_note": "Existing running/restore launchers can keep their original output alias. Do not remove the alias; it points to this canonical policy container. Checkpoint bytes and run identity unchanged."
+  }
+}

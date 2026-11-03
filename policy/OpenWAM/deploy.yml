@@ -1,41 +1,21 @@
 policy_name: OpenWAM
 protocol: ws
-# True batch inference: the Isaac client runs num_envs (sim_config.yml, default
-# 10) parallel envs; get_action_batch stacks every running env into ONE
-# engine.generate_batch forward pass.
-eval_batch: true
-
-# Server transport: overridden by setup_eval_policy_server.sh per launch.
-port: null
 host: localhost
-
-# Identifiers + per-launch wiring (set via --overrides from the eval scripts).
-bench_name: MobileArena
-task_name: null
-ckpt_name: null
-env_cfg_type: mobile_arena
-action_type: ee
-action_dim: 45
-checkpoint_file: null  # null loads the highest step in ckpt_dir
+port: 6000
+bench_name: DexBench
+task_name: auto
+ckpt_name: tianji_wuji
+env_cfg_type: tianji_marvin_wuji
 seed: 42
+action_type: ee
+eval_batch: true
 gpu_id: null
-
-# --- OpenWAM-specific keys (resolved in setup_eval_policy_server.sh) ---
-# OpenWAM source root. null -> the vendored copy at policy/OpenWAM/OpenWAM/.
+action_dim: 54
 openwam_root: null
-# Checkpoint dir containing config.yaml + checkpoint_step_*.safetensors
-# + normalization_stats.npy (+ tokenizer/). null -> XPolicyLab checkpoints/
-# resolution (explicit path, 5-tuple run dir, or checkpoints/<ckpt_name>).
 ckpt_dir: null
-# OpenWAM deploy hyperparameters yaml. null -> <openwam_root>/configs/deploy.yaml;
-# model.py force-overrides dit_cache/compile/decode_video off + sync regardless.
-openwam_deploy_config: null
 device: cuda
-
-# Actions executed per generated chunk before the client requests a new one.
-# null -> OpenWAM inference.inference_horizon (null there = full 32-step chunk).
-replan_steps: null
-default_instruction: follow the instruction
-# true skips checkpoint loading and returns hold-position chunks (protocol
-# debugging only; never valid for a real evaluation).
+replan_steps: 32
+prompt_embodiment: tianji_wujihand2_real
 allow_dummy_policy: false
+
+checkpoint_num: 60000

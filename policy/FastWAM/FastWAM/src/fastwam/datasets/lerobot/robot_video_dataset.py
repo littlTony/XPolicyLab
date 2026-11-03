@@ -112,6 +112,28 @@ class RobotVideoDataset(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.lerobot_dataset)
 
+    def get_sample_task_ids(self):
+        """Read task labels in actual selected-row order, without decoding videos.
+
+        Task indices are local to each LeRobot dataset; canonical task names merge
+        the same task across shards without merging unrelated task_index=0 values.
+        """
+        task_ids = []
+        for dataset in self.lerobot_dataset.multi_dataset._datasets:
+            rows = dataset.hf_dataset.with_format(None, columns=["task_index"])
+            names = dataset.meta.tasks
+            for task_index in rows["task_index"]:
+                try:
+                    name = names[int(task_index)]
+                except (KeyError, IndexError, TypeError, ValueError) as error:
+                    raise ValueError(f"Unknown task_index {task_index!r} in {dataset.root}") from error
+                if not isinstance(name, str) or not name:
+                    raise ValueError(f"Invalid task name {name!r} in {dataset.root}")
+                task_ids.append(name)
+        if len(task_ids) != len(self):
+            raise ValueError("Task metadata and selected training samples have different lengths.")
+        return task_ids
+
     def _get(self, idx):
         sample_idx = idx
         sample = None

@@ -1,6 +1,6 @@
 defaults:
   - model: dual_system            # [Optional]: dual_system(default), single_system, tri_system
-  - dataloader: robotwin          # [Optional]: robotwin(default), ebench, robocasa365, robocasa_gr1, robodojo, vlabench, libero
+  - dataloader: dexbench          # [Optional]: robotwin(default), ebench, robocasa365, robocasa_gr1, robodojo, vlabench, libero
   - _self_
 
 training:
@@ -14,9 +14,9 @@ training:
   max_grad_norm: 1.0              # Gradient clipping max norm
 
   # --- Schedule ---
-  num_epochs: 5                   # Total training epochs (null = step-only, driven solely by max_steps)
-  max_steps: null                 # Early stop after N steps (null = no limit; required when num_epochs is null)
-  batch_size: 16                   # Per-GPU batch size
+  num_epochs: null                   # Total training epochs (null = step-only, driven solely by max_steps)
+  max_steps: 60000                 # Early stop after N steps (null = no limit; required when num_epochs is null)
+  batch_size: 32                   # Per-GPU batch size
   gradient_accumulation_steps: 1  # Accumulate N micro-batches before optimizer step
 
   # --- LR scheduler ---
@@ -55,7 +55,7 @@ training:
   keep_last_k_ckpts: 1           # Rolling window: keep only the last K checkpoints
 
   # --- Finetune / Resume (mutually exclusive; both point to a training output dir, latest step auto-selected) ---
-  finetune_ckpt_path: null   # non-null: warm-start from latest weights in this dir (step from 0, new output dir)
+  finetune_ckpt_path: /personal/xiangpc/0912_Xpolicylab_bench/openwam/pretrain_model/OpenWAM-Alpha-Pretrain-Foundation-Model/checkpoint_step_154000.safetensors   # non-null: warm-start from latest weights in this dir (step from 0, new output dir)
   resume_ckpt_path: null     # non-null: resume full state from latest in this dir (output reuses this dir)
 
   # --- Data loading ---

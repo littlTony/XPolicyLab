@@ -1,0 +1,9 @@
+.cache/
+__pycache__/
+*.pyc
+.pytest_cache/
+checkpoints/
+openpi/assets/
+openpi/.venv*/
+openpi/wandb/
+results/
