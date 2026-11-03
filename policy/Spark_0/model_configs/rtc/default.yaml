@@ -11,7 +11,7 @@
 # Same allowlist validation as SPARK_0_CONFIG_OVERRIDE; null leaves the
 # framework default untouched.
 enable: true
-inference_delay: 8
+inference_delay: 3
 # Naming trap: execution_horizon (lerobot convention) is the GUIDANCE WINDOW
 # length, i.e. the queue-remaining threshold the client prefetches at when
 # fire_at_remaining is unset. It is NOT the rows executed per cycle.
